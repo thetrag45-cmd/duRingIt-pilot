@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(gstack)",
+      "Skill(gstack:*)",
+      "Bash(~/.claude/skills/gstack/bin/gstack-config set *)",
+      "Bash(touch ~/.claude/skills/gstack/.feature-prompted-continuous-checkpoint)",
+      "Bash(touch ~/.claude/skills/gstack/.feature-prompted-model-overlay)",
+      "WebSearch",
+      "Bash(pandoc \"/Users/zekelim/Downloads/duRingIt_Gary_Tan_Handoff.docx\" -o /tmp/duRingIt_handoff.md)",
+      "Read(//Users/zekelim/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/d59cc9d9-ef22-419b-9f67-a5c1642ca65e/18c95b4a-3a0d-4455-8c3b-40c4522a2e7d/skills/docx/**)",
+      "Bash(python scripts/office/unpack.py \"/Users/zekelim/Downloads/duRingIt_Gary_Tan_Handoff.docx\" /tmp/duRingIt_unpacked/)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(python3 \"/Users/zekelim/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/d59cc9d9-ef22-419b-9f67-a5c1642ca65e/18c95b4a-3a0d-4455-8c3b-40c4522a2e7d/skills/docx/scripts/office/unpack.py\" \"/Users/zekelim/Downloads/duRingIt_Gary_Tan_Handoff.docx\" /tmp/duRingIt_unpacked/)",
+      "Bash(pip3 install *)",
+      "Bash(mkdir -p /tmp/duRingIt_unpacked)",
+      "Bash(unzip -o \"/Users/zekelim/Downloads/duRingIt_Gary_Tan_Handoff.docx\" \"word/document.xml\" -d /tmp/duRingIt_unpacked/)",
+      "Bash(python3 -c ' *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
+    ]
+  }
+}
