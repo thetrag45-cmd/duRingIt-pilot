@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>duRingIt — Monie ID (Pilot)</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0D0D0D;
+  color: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+#app {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 20px; }
+.brand span { color: #F5C842; }
+.progress-wrap { margin-bottom: 4px; }
+.progress-bg { width: 100%; height: 3px; background: #222; border-radius: 2px; }
+.progress-fill { height: 100%; background: #F5C842; border-radius: 2px; transition: width 0.3s ease; }
+.progress-text { font-size: 12px; color: #555; margin-top: 6px; }
+.card {
+  background: #1A1A1A;
+  border: 1px solid #2A2A2A;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.q-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
+.q-label.tb { color: #9999FF; }
+.q-text { font-size: 21px; font-weight: 600; line-height: 1.35; margin-bottom: 26px; }
+.ans-btn {
+  display: block; width: 100%;
+  background: #222; border: 1.5px solid #2E2E2E;
+  border-radius: 12px; padding: 15px 18px;
+  text-align: left; color: #CCC;
+  font-size: 15px; line-height: 1.5;
+  cursor: pointer; margin-bottom: 10px;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  font-family: inherit;
+}
+.ans-btn:hover { background: #2A2A2A; border-color: #F5C842; color: #FFF; }
+.ans-btn.chosen { background: #261E00; border-color: #F5C842; color: #FFF; }
+.scale-poles { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 10px; }
+.dots-row { display: flex; justify-content: space-between; gap: 8px; margin: 8px 0 4px; }
+.dot {
+  flex: 1; aspect-ratio: 1;
+  max-width: 52px; max-height: 52px;
+  border-radius: 50%;
+  background: #222; border: 2px solid #333;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.dot:hover { border-color: #F5C842; }
+.dot.chosen { background: #F5C842; border-color: #F5C842; }
+.btn-primary {
+  display: block; width: 100%;
+  background: #F5C842; color: #000;
+  font-size: 16px; font-weight: 700;
+  padding: 16px; border-radius: 12px;
+  border: none; cursor: pointer;
+  font-family: inherit; margin-top: 8px;
+  transition: background 0.12s;
+}
+.btn-primary:hover { background: #FFD700; }
+.btn-primary:disabled { background: #2A2A2A; color: #555; cursor: not-allowed; }
+.welcome-title { font-size: 40px; font-weight: 900; line-height: 1.1; margin-bottom: 10px; }
+.welcome-sub { font-size: 15px; color: #777; line-height: 1.6; margin-bottom: 24px; }
+.stats { display: flex; gap: 10px; margin-bottom: 24px; }
+.stat { flex: 1; background: #1A1A1A; border: 1px solid #252525; border-radius: 12px; padding: 14px; text-align: center; }
+.stat-n { font-size: 26px; font-weight: 800; color: #F5C842; }
+.stat-l { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+input[type=text] {
+  width: 100%; background: #222; border: 1.5px solid #2E2E2E;
+  border-radius: 10px; padding: 12px 16px;
+  color: #FFF; font-size: 16px; font-family: inherit;
+}
+input[type=text]::placeholder { color: #444; }
+input[type=text]:focus { outline: none; border-color: #F5C842; }
+.result-family { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #F5C842; margin-bottom: 6px; }
+.result-name { font-size: 34px; font-weight: 900; margin-bottom: 4px; }
+.result-monieid { font-size: 13px; color: #666; margin-bottom: 22px; }
+.sec-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #444; margin-bottom: 5px; }
+.sec-body { font-size: 15px; color: #BBB; line-height: 1.65; margin-bottom: 18px; }
+.flag {
+  background: #1A1500; border: 1px solid #3D3000;
+  border-radius: 10px; padding: 14px 16px;
+  font-size: 13px; color: #D4B840; line-height: 1.6; margin-top: 10px;
+}
+.scores-section { margin-top: 4px; }
+.score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+.score-name { font-size: 12px; width: 148px; color: #999; }
+.score-name.top { color: #F5C842; font-weight: 600; }
+.score-bg { flex: 1; height: 5px; background: #222; border-radius: 3px; }
+.score-bar { height: 100%; background: #F5C842; border-radius: 3px; }
+.score-bar.dim { background: #3A3A3A; }
+.score-val { font-size: 11px; color: #555; width: 30px; text-align: right; }
+.bridge-pair { display: flex; gap: 12px; margin-top: 14px; }
+.bridge-half { flex: 1; background: #1E1E1E; border: 1px solid #2A2A2A; border-radius: 10px; padding: 14px; }
+.bridge-half-name { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+.bridge-half-fam { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.bridge-half-body { font-size: 12px; color: #888; line-height: 1.5; }
+.val-q { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #DDD; }
+.val-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.val-btn {
+  background: #222; border: 1.5px solid #2E2E2E;
+  border-radius: 10px; padding: 12px 16px;
+  color: #BBB; font-size: 14px; cursor: pointer;
+  text-align: left; font-family: inherit; transition: all 0.12s;
+}
+.val-btn:hover { border-color: #F5C842; color: #FFF; }
+.val-btn.chosen { background: #261E00; border-color: #F5C842; color: #FFF; }
+.stars { display: flex; gap: 10px; margin-bottom: 24px; }
+.star { font-size: 30px; cursor: pointer; opacity: 0.25; transition: opacity 0.12s; }
+.star.on { opacity: 1; }
+textarea {
+  width: 100%; background: #1E1E1E; border: 1.5px solid #2A2A2A;
+  border-radius: 10px; padding: 12px; color: #BBB;
+  font-size: 14px; resize: vertical; min-height: 80px; font-family: inherit;
+}
+textarea:focus { outline: none; border-color: #F5C842; }
+.export-box {
+  background: #111; border: 1px solid #222; border-radius: 8px;
+  padding: 12px; font-family: monospace; font-size: 11px; color: #777;
+  word-break: break-all; max-height: 200px; overflow-y: auto; margin-bottom: 8px; white-space: pre-wrap;
+}
+.btn-copy {
+  background: #222; border: 1px solid #333; border-radius: 8px;
+  padding: 10px 16px; color: #CCC; font-size: 13px; cursor: pointer;
+  font-family: inherit; width: 100%; transition: all 0.12s;
+}
+.btn-copy:hover { border-color: #F5C842; color: #FFF; }
+.btn-restart {
+  background: transparent; border: 1px solid #333;
+  border-radius: 8px; padding: 10px 16px;
+  color: #555; font-size: 13px; cursor: pointer;
+  font-family: inherit; width: 100%; margin-top: 8px; transition: all 0.12s;
+}
+.btn-restart:hover { color: #999; border-color: #555; }
+.pilot-note { font-size: 11px; color: #333; text-align: center; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+
+const ARC = {
+  AB: { name:"Aggressive Builder",  fam:"Builders",     identity:"Scale-driven, action-biased, high risk tolerance, speed as competitive edge.",                                              shadow:"Burnout, over-leverage, inability to enjoy progress. The target keeps moving." },
+  FC: { name:"Freedom Chaser",      fam:"Builders",     identity:"Autonomy-driven, building toward independence, discomfort triggers financial decisions.",                                   shadow:"Under-accumulation. Values optionality so much that the exit never arrives." },
+  WA: { name:"Wealth Architect",    fam:"Builders",     identity:"Goal-oriented, plan-referenced, disciplined compounder with a specific number and timeline.",                              shadow:"Rigidity. The plan becomes the identity; deviations feel like failure." },
+  ST: { name:"System Thinker",      fam:"Builders",     identity:"Process-obsessed, optimisation as identity, the system itself is the achievement.",                                        shadow:"Paralysis by perfection. Optimises the vehicle instead of driving." },
+  SS: { name:"Status Strategist",   fam:"Experiencers", identity:"Identity-through-spending, audience-aware, calculated self-presentation, social ROI.",                                     shadow:"The signals cost more than the substance beneath them." },
+  LI: { name:"Lifestyle Inflator",  fam:"Experiencers", identity:"Income-indexed spending, upgrades feel earned, lifestyle grows progressively with income.",                                shadow:"Lifestyle trap. Income growth is consumed immediately, no compounding occurs." },
+  LR: { name:"Lifestyle Romantic",  fam:"Experiencers", identity:"Present-moment spending, mood-indexed, spontaneous, money enables experience.",                                            shadow:"Savings are always the first casualty of a good mood." },
+  SG: { name:"Steady Guardian",     fam:"Guardians",    identity:"Confident protection, calm discipline, security as a trusted system not a fear response.",                                shadow:"Growth sacrificed. Too precious about stability to take the risk that changes trajectory." },
+  AX: { name:"Anxious Achiever",    fam:"Guardians",    identity:"Fear-driven protection, no amount of security ever feels enough, anxiety is the defining signature.",                     shadow:"No amount of safety ever resolves the anxiety. The goalpost moves perpetually." },
+  EE: { name:"Emotional Escapist",  fam:"Avoiders",     identity:"Active avoidance — knows the problem exists, shame and overwhelm prevent engagement.",                                    shadow:"Compound damage from inaction. The avoidance compounds silently for years." },
+  WN: { name:"The Wanderer",        fam:"Avoiders",     identity:"Passive disengagement, no strong feeling about finances, blankness not burden.",                                          shadow:"Invisible drift. The damage only becomes apparent much later." }
+};
+
+const FAM = {
+  Builders:     ["AB","FC","WA","ST"],
+  Experiencers: ["SS","LI","LR"],
+  Guardians:    ["SG","AX"],
+  Avoiders:     ["EE","WN"]
+};
+
+const MAIN_QS = [
+  { id:"Q1",  ph:"Family Discrimination",   text:"What does money feel like to you?",
+    ans:[{ t:"Fuel. Energy to build something bigger than where I started.", p:"AB" },
+         { t:"Permission. To live the way I actually want, right now.", p:"LR" },
+         { t:"Security. The thing standing between me and things going wrong.", p:"SG" },
+         { t:"Pressure. Something I know matters but struggle to fully face.", p:"EE" }] },
+  { id:"Q2",  ph:"Family Discrimination",   text:"What scares you more?",
+    ans:[{ t:"Missing a huge opportunity because I played it too safe.", p:"AB" },
+         { t:"Waking up and realising I traded my freedom for a salary.", p:"FC" },
+         { t:"Losing the stability I spent years carefully building.", p:"SG" },
+         { t:"Having to fully confront the gap between where I am and where I should be.", p:"EE" }] },
+  { id:"Q3",  ph:"Family Discrimination",   text:"When you think about your finances right now, your honest gut feeling is:",
+    ans:[{ t:"Driven — I know what I'm building toward and I'm moving.", p:"WA" },
+         { t:"Expressive — my finances reflect my taste and who I'm becoming.", p:"SS" },
+         { t:"Watchful — I pay close attention because I need to know everything is okay.", p:"SG" },
+         { t:"Disconnected — I know I should have a clearer picture but I don't.", p:"WN" }] },
+  { id:"Q4",  ph:"Archetype Separation",    text:"What motivates your next financial move?",
+    ans:[{ t:"Getting measurably further ahead than I was last year.", p:"AB" },
+         { t:"Getting one step closer to answering to no one.", p:"FC" },
+         { t:"Maintaining the life I've built and the image that comes with it.", p:"SS" },
+         { t:"Doing something I've genuinely been wanting to do.", p:"LR" }] },
+  { id:"Q5",  ph:"Archetype Separation",    text:"How do you make big financial decisions?",
+    ans:[{ t:"I move fast. Hesitation costs more than most mistakes.", p:"AB" },
+         { t:"I move when discomfort with my situation outweighs the risk of changing.", p:"FC" },
+         { t:"I move when the numbers align with my long-term plan.", p:"WA" },
+         { t:"I research thoroughly until I'm fully convinced, then move with conviction.", p:"ST" }] },
+  { id:"Q6",  ph:"Archetype Separation",    text:"What kind of wealthy person do you most relate to?",
+    ans:[{ t:"The one who built everything systematically and hit their exact number on schedule.", p:"WA" },
+         { t:"The one whose money works so well they barely need to think about it.", p:"ST" },
+         { t:"The one whose success is visible — and they carry it with total confidence.", p:"SS" },
+         { t:"The one who experiences life fully and doesn't apologise for spending on what matters.", p:"LR" }] },
+  { id:"Q7",  ph:"Archetype Separation",    text:"What does 'enough' look like to you?",
+    ans:[{ t:"I have a specific number. I know my timeline. I'm tracking toward it.", p:"WA" },
+         { t:"When my system runs so efficiently it barely needs my attention.", p:"ST" },
+         { t:"When I know that if something went wrong tomorrow, I'd genuinely be okay.", p:"SG" },
+         { t:"Honestly — I'm not sure it ever arrives. There's always one more thing to secure.", p:"AX" }] },
+  { id:"Q8",  ph:"Archetype Separation",    text:"What would you regret most at 50?",
+    ans:[{ t:"Never going big enough when I had the energy and nerve to do it.", p:"AB" },
+         { t:"Knowing the problem was always there and I kept finding reasons not to face it.", p:"EE" },
+         { t:"Drifting through my financial life without ever really making a clear decision.", p:"WN" },
+         { t:"Being so focused on protecting what I had that I missed what I could have become.", p:"AX" }] },
+  { id:"Q9",  ph:"Archetype Separation",    text:"When you spend money on something you genuinely love, you feel:",
+    ans:[{ t:"Validated — it reflects something true about who I am and where I'm headed.", p:"SS" },
+         { t:"Justified — I've earned this, and this quality makes sense for where I am now.", p:"LI" },
+         { t:"Alive — this is exactly what money exists for. Present, full, no guilt.", p:"LR" },
+         { t:"Aware — I enjoyed it, but I'm already calculating the opportunity cost.", p:"WA" }] },
+  { id:"Q10", ph:"Archetype Separation",    text:"If someone asked you to describe your financial situation right now, you would:",
+    ans:[{ t:"Give a full confident breakdown — I track everything and know exactly where I stand.", p:"SG" },
+         { t:"Give a vague answer and quietly change the subject. It's just easier.", p:"EE" },
+         { t:"Be honest — which means admitting I don't really have a clear picture.", p:"WN" },
+         { t:"Describe where I am against the plan I've been running.", p:"WA" }] },
+  { id:"Q11", ph:"Archetype Separation",    text:"When life gets expensive and money gets tight, your instinct is to:",
+    ans:[{ t:"Cut the newest upgrades — they were tied to an income level I need to re-earn.", p:"LI" },
+         { t:"Find ways to reduce obligations — anything that limits my options.", p:"FC" },
+         { t:"Avoid looking at the numbers until I absolutely have to.", p:"EE" },
+         { t:"Audit everything and rebuild the most efficient version of my budget.", p:"ST" }] },
+  { id:"Q12", ph:"Archetype Separation",    text:"In 10 years, what do you most want to be true about your finances?",
+    ans:[{ t:"I'm living at a quality of life that genuinely reflects how hard I've worked.", p:"LI" },
+         { t:"My financial position is visible proof of who I've become.", p:"SS" },
+         { t:"Everything is secure — no matter what happens, my family is protected.", p:"AX" },
+         { t:"Honestly, I hope I'll have figured it out by then.", p:"WN" }] }
+];
+
+const SCALE_QS = [
+  { id:"Q13", text:"When things get stressful, I check in on my money situation.",       lo:"Not me at all", hi:"Exactly me" },
+  { id:"Q14", text:"Before a big money move, I've usually spent a long time thinking it through.", lo:"Not me at all", hi:"Exactly me" },
+  { id:"Q15", text:"I spend money on things that make life feel better right now.",      lo:"Not me at all", hi:"Exactly me" },
+  { id:"Q16", text:"I stick to a financial plan even when it feels uncomfortable.",      lo:"Not me at all", hi:"Exactly me" }
+];
+
+// Tie-breaker sets — key is sorted pair joined by "-"
+const TB = {
+  "ST-WA": [
+    { text:"Your financial plan runs perfectly for 2 years. What feels most satisfying?",
+      a:{ t:"I'm tracking exactly to where I planned to be. The goal is getting closer.", c:"WA" },
+      b:{ t:"The system is so well-designed I barely have to think about it.", c:"ST" } },
+    { text:"You discover a marginally better investment approach. Do you switch?",
+      a:{ t:"Only if it materially accelerates reaching my long-term goal.", c:"WA" },
+      b:{ t:"Yes — if it is genuinely superior, I want the most optimised setup.", c:"ST" } },
+    { text:"Complete: 'Money is a tool for...'",
+      a:{ t:"Reaching the life I've planned — a specific freedom at a specific time.", c:"WA" },
+      b:{ t:"Building the most intelligent financial system I am capable of.", c:"ST" } }
+  ],
+  "AB-FC": [
+    { text:"You've built significant wealth. What shifts in how you operate?",
+      a:{ t:"I go bigger — more resources means more capacity to build something serious.", c:"AB" },
+      b:{ t:"I step back — I've bought my way out of needing anyone.", c:"FC" } },
+    { text:"When you think about competing in your industry, you feel:",
+      a:{ t:"Energised — I want to be the one everyone else is measuring against.", c:"AB" },
+      b:{ t:"Indifferent — I'm not trying to beat anyone, I'm trying to answer to no one.", c:"FC" } },
+    { text:"Your ideal working life right now would look like:",
+      a:{ t:"Running something significant — a business, a fund, a team with real scale.", c:"AB" },
+      b:{ t:"Working exactly when I want, on what I choose, with no one I answer to.", c:"FC" } }
+  ],
+  "AB-WA": [
+    { text:"40% chance of 10x return, 60% chance of losing it all. You:",
+      a:{ t:"Seriously consider it — asymmetric upside is exactly what I look for.", c:"AB" },
+      b:{ t:"Pass — that risk profile does not fit my plan, regardless of the upside.", c:"WA" } },
+    { text:"Your financial growth is slower than expected. You feel:",
+      a:{ t:"Frustrated — I want to find a way to accelerate.", c:"AB" },
+      b:{ t:"Fine, if the fundamentals are right. Compounding takes time.", c:"WA" } },
+    { text:"What would you most regret at 50?",
+      a:{ t:"Playing it safe when I had the ability and nerve to go big.", c:"AB" },
+      b:{ t:"Letting impatience derail a plan that was working.", c:"WA" } }
+  ],
+  "FC-ST": [
+    { text:"Your financial system runs perfectly with no input from you. How do you feel?",
+      a:{ t:"Relieved — that's the whole point. Money working means I don't have to.", c:"FC" },
+      b:{ t:"Satisfied — that level of efficiency is exactly what I was designing toward.", c:"ST" } },
+    { text:"You learn advanced portfolio strategies. Why?",
+      a:{ t:"To make sure my money does not require my attention.", c:"FC" },
+      b:{ t:"Because I genuinely enjoy optimising how the system works.", c:"ST" } },
+    { text:"If money were no constraint, what would change most?",
+      a:{ t:"My obligations — I'd owe nothing to anyone.", c:"FC" },
+      b:{ t:"My ability to design the most sophisticated financial architecture possible.", c:"ST" } }
+  ],
+  "AB-ST": [
+    { text:"When you make a financial mistake, your first reaction is:",
+      a:{ t:"Move fast to recover — sitting still costs more than the original mistake.", c:"AB" },
+      b:{ t:"Understand exactly what went wrong so the system never makes that error again.", c:"ST" } },
+    { text:"What makes you most confident before a big financial decision?",
+      a:{ t:"My instinct, my track record, and my ability to execute under pressure.", c:"AB" },
+      b:{ t:"Thorough research and a clear logical framework that supports the move.", c:"ST" } },
+    { text:"Best financial advice for someone starting out:",
+      a:{ t:"Start moving. The cost of hesitation almost always exceeds the cost of a mistake.", c:"AB" },
+      b:{ t:"Build the right system first. Good decisions made consistently beat great decisions made sporadically.", c:"ST" } }
+  ],
+  "FC-WA": [
+    { text:"Do you have a specific financial number as your goal?",
+      a:{ t:"Yes — I know the number, the timeline, and the plan.", c:"WA" },
+      b:{ t:"Not a number — more a feeling: waking up with no obligations I did not choose.", c:"FC" } },
+    { text:"What would make you feel financially free today, even short of your goal?",
+      a:{ t:"Knowing I'm on track and ahead of schedule.", c:"WA" },
+      b:{ t:"Knowing that if everything fell apart tomorrow, I could walk away and start over.", c:"FC" } },
+    { text:"A well-paying job with a 5-year lock-in clause. You:",
+      a:{ t:"Evaluate whether it accelerates or delays the plan. That's the only question.", c:"WA" },
+      b:{ t:"Reject it immediately — 5 years of locked obligation is the opposite of what I'm building.", c:"FC" } }
+  ],
+  "LI-SS": [
+    { text:"You upgrade significantly — car, apartment, wardrobe. Who are you most aware of?",
+      a:{ t:"The impression it creates — especially with people whose opinion matters.", c:"SS" },
+      b:{ t:"Whether the upgrade genuinely matches where I am in life right now.", c:"LI" } },
+    { text:"Income drops for 6 months. What changes in your spending first?",
+      a:{ t:"I protect the visible signals — I'd cut other things before cutting what people see.", c:"SS" },
+      b:{ t:"I scale back upgrades I added as income grew. They made sense at that income level.", c:"LI" } },
+    { text:"You spend on something excellent but nobody will see it. You feel:",
+      a:{ t:"Honestly less satisfying. Part of the point is the signal.", c:"SS" },
+      b:{ t:"Just as good. The quality is the point, not the audience.", c:"LI" } }
+  ],
+  "LR-SS": [
+    { text:"Your best financial memory involves:",
+      a:{ t:"A purchase or investment that positioned me exactly where I wanted to be perceived.", c:"SS" },
+      b:{ t:"A spontaneous experience I almost talked myself out of but said yes to.", c:"LR" } },
+    { text:"When you spend big, how much does how it looks to others factor in?",
+      a:{ t:"Significantly — it's part of what makes the spend worthwhile.", c:"SS" },
+      b:{ t:"Barely — I'm mostly thinking about how it feels to me.", c:"LR" } },
+    { text:"Complete: 'Money lets me...'",
+      a:{ t:"Show people who I'm becoming — my choices are part of my identity.", c:"SS" },
+      b:{ t:"Say yes to life — the moments, the experiences, the feeling of being fully present.", c:"LR" } }
+  ],
+  "LI-LR": [
+    { text:"When your income increases, what happens to your spending?",
+      a:{ t:"It naturally rises too — I can afford a better version of things now.", c:"LI" },
+      b:{ t:"Not automatically — I spend when something calls to me, regardless of income.", c:"LR" } },
+    { text:"Your most memorable purchase was:",
+      a:{ t:"Something that felt like the right upgrade for where I was in life at the time.", c:"LI" },
+      b:{ t:"Something spontaneous that surprised me — I almost did not do it.", c:"LR" } },
+    { text:"Money stress usually comes from:",
+      a:{ t:"Realising your lifestyle has grown faster than your income can support.", c:"LI" },
+      b:{ t:"Feeling like you're holding back from experiences that matter to you.", c:"LR" } }
+  ],
+  "AX-SG": [
+    { text:"You check your savings. Balance is exactly where planned. You honestly feel:",
+      a:{ t:"Settled. That's exactly where it should be. Good.", c:"SG" },
+      b:{ t:"Briefly relieved — then already thinking about what could still go wrong.", c:"AX" } },
+    { text:"Someone tells you: 'You're in genuinely great financial shape.' You feel:",
+      a:{ t:"Confirmed. I knew — but it's good to hear it from someone else.", c:"SG" },
+      b:{ t:"Momentarily reassured. But the feeling fades faster than I'd like.", c:"AX" } },
+    { text:"Your financial protection habits honestly come from:",
+      a:{ t:"A genuine belief that a solid system is just the intelligent way to live.", c:"SG" },
+      b:{ t:"A quiet fear that things could unravel — I'd rather do too much than too little.", c:"AX" } }
+  ],
+  "EE-WN": [
+    { text:"When you think about your finances, the honest feeling underneath is:",
+      a:{ t:"Something heavy — a mix of guilt, dread, and the urge to close the tab.", c:"EE" },
+      b:{ t:"Mostly blank. Vague. Not much pulls at me in either direction.", c:"WN" } },
+    { text:"The real reason you have not sorted your finances yet is:",
+      a:{ t:"Every time I try to face it, something stops me — it feels too heavy to start.", c:"EE" },
+      b:{ t:"It just has not become urgent enough to make me actually begin.", c:"WN" } },
+    { text:"Describe your relationship with money in one honest word:",
+      a:{ t:"'Complicated.' There's history here I'd rather not unpack.", c:"EE" },
+      b:{ t:"'Non-existent.' I genuinely have not built one yet.", c:"WN" } }
+  ],
+  // Cross-family
+  "SG-WA": [
+    { text:"What does your financial discipline ultimately serve?",
+      a:{ t:"Hitting a specific goal I've been building toward. The discipline is the vehicle.", c:"WA" },
+      b:{ t:"Making sure nothing can disrupt what I've carefully built. The discipline is the protection.", c:"SG" } },
+    { text:"When you take a calculated financial risk, the reason is:",
+      a:{ t:"It accelerates reaching my goal on the timeline I've set.", c:"WA" },
+      b:{ t:"The potential downside is fully contained and cannot threaten what matters.", c:"SG" } },
+    { text:"The financial outcome you'd be most proud of at retirement:",
+      a:{ t:"I hit the number I'd been building toward since my 30s — on schedule.", c:"WA" },
+      b:{ t:"My family never had to worry about money. Not once.", c:"SG" } }
+  ],
+  "AB-SS": [
+    { text:"Massive financial success but nobody knew about it. You'd feel:",
+      a:{ t:"Completely satisfied. The achievement is the point — not the audience.", c:"AB" },
+      b:{ t:"Like something was missing. The recognition is part of what makes it real.", c:"SS" } },
+    { text:"Your financial decisions are most driven by:",
+      a:{ t:"Where I want to be in 5 years and what it takes to get there faster.", c:"AB" },
+      b:{ t:"What this move says about who I am and where I'm positioning myself.", c:"SS" } },
+    { text:"Winning financially means:",
+      a:{ t:"Building something significantly larger than where I started.", c:"AB" },
+      b:{ t:"Being clearly recognised as someone who has genuinely made it.", c:"SS" } }
+  ],
+  "EE-FC": [
+    { text:"Your relationship with financial obligations right now is:",
+      a:{ t:"I'm systematically reducing them — every move is designed to own more of my time.", c:"FC" },
+      b:{ t:"They weigh on me more than I let on — I'd rather not face them directly.", c:"EE" } },
+    { text:"In 5 years, your clearest financial goal is:",
+      a:{ t:"To have enough that I never have to do something purely for the money again.", c:"FC" },
+      b:{ t:"I'm not sure — I have not really let myself think that concretely about it.", c:"EE" } },
+    { text:"When you hear people talk about financial freedom, you feel:",
+      a:{ t:"Motivated — that's the exact thing I'm building toward, step by step.", c:"FC" },
+      b:{ t:"Wistful but disconnected — it feels like something that happens for other people.", c:"EE" } }
+  ]
+};
+
+const FAM_CHARS = {
+  Builders:     "strategic, growth-oriented action",
+  Experiencers: "present-moment expression and experience",
+  Guardians:    "security and careful protection",
+  Avoiders:     "avoidance and disengagement from money"
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+
+var S = {
+  screen: "welcome",
+  name: "",
+  scores: {},
+  scaleAns: {},
+  tbPair: null,
+  tbQs: [],
+  tbAns: [],
+  result: null,
+  bridge: null,
+  flags: [],
+  qi: 0,
+  val: {}
+};
+
+function resetState() {
+  S = { screen:"welcome", name:S.name, scores:{}, scaleAns:{}, tbPair:null, tbQs:[], tbAns:[], result:null, bridge:null, flags:[], qi:0, val:{} };
+  Object.keys(ARC).forEach(k => S.scores[k] = 0);
+}
+resetState();
+
+// ─────────────────────────────────────────────
+// SCORING
+// ─────────────────────────────────────────────
+
+function scoreChoice(primary) {
+  S.scores[primary] += 2.0;
+  const fam = ARC[primary].fam;
+  FAM[fam].forEach(c => { if (c !== primary) S.scores[c] += 0.5; });
+}
+
+function topTwo() {
+  return Object.entries(S.scores).sort((x,y) => y[1]-x[1]).slice(0,2);
+}
+
+function tbKey(a, b) { return [a,b].sort().join("-"); }
+
+function checkTB() {
+  var t2 = topTwo();
+  var gap = t2[0][1] - t2[1][1];
+  if (gap > 1.0) return null;
+  var key = tbKey(t2[0][0], t2[1][0]);
+  var qs = TB[key];
+  if (qs) return { pair:[t2[0][0],t2[1][0]], qs:qs };
+  return { pair:[t2[0][0],t2[1][0]], bridge:true };
+}
+
+function calcFlags(code) {
+  var fam = ARC[code].fam;
+  var isBuilder = fam === "Builders";
+  var q13 = S.scaleAns.Q13||0, q14 = S.scaleAns.Q14||0, q15 = S.scaleAns.Q15||0, q16 = S.scaleAns.Q16||0;
+  if (q13 <= 2 && isBuilder)
+    S.flags.push("You identify as a " + ARC[code].name + " but tend to avoid checking your finances under stress. Your risk is not the market — it is your own stress response pulling you away from the plan when it matters most.");
+  if (q14 >= 4 && code === "AB")
+    S.flags.push("You move fast by instinct — but your behavioral data shows more deliberation than you give yourself credit for. You may be an Aggressive Builder who has developed process maturity.");
+  if (q15 >= 4 && isBuilder)
+    S.flags.push("Your strategy is solid — but your behavior shows emotional spending spikes, particularly under stress. Your biggest risk is not the plan. It is what happens when the plan meets a bad day.");
+  if (q16 <= 2 && (code === "WA" || code === "SG"))
+    S.flags.push("You know what to do — but executing consistently under pressure is a separate skill. Your biggest gap is not knowledge. It is follow-through when discomfort arrives.");
+}
+
+function resolveTBResult() {
+  var counts = {};
+  S.tbAns.forEach(c => counts[c] = (counts[c]||0)+1);
+  var a = S.tbPair[0], b = S.tbPair[1];
+  var ca = counts[a]||0, cb = counts[b]||0;
+  if (ca === cb) { S.result = "BRIDGE"; S.bridge = S.tbPair; return; }
+  var winner = ca > cb ? a : b;
+  calcFlags(winner);
+  S.result = winner;
+}
+
+// ─────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────
+
+function render() {
+  var app = document.getElementById("app");
+  switch(S.screen) {
+    case "welcome":   app.innerHTML = rWelcome(); break;
+    case "main":      app.innerHTML = rMain(); break;
+    case "scale":     app.innerHTML = rScale(); break;
+    case "tb":        app.innerHTML = rTB(); break;
+    case "result":    app.innerHTML = rResult(); break;
+    case "validate":  app.innerHTML = rValidate(); break;
+  }
+}
+
+function prog(n, total, label) {
+  var pct = Math.round(n/total*100);
+  return '<div class="progress-wrap"><div class="progress-bg"><div class="progress-fill" style="width:'+pct+'%"></div></div><div class="progress-text">'+label+'</div></div>';
+}
+
+function rWelcome() {
+  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
+    '<div class="welcome-title">What kind of money person are you?</div>'+
+    '<div class="welcome-sub">Not what you think you are. What you actually are.<br>16 questions. ~4 minutes.</div>'+
+    '<div class="stats">'+
+      '<div class="stat"><div class="stat-n">11</div><div class="stat-l">Archetypes</div></div>'+
+      '<div class="stat"><div class="stat-n">16</div><div class="stat-l">Questions</div></div>'+
+      '<div class="stat"><div class="stat-n">~91%</div><div class="stat-l">Accuracy</div></div>'+
+    '</div>'+
+    '<div class="card">'+
+      '<div style="font-size:13px;color:#666;margin-bottom:10px;">Your name (optional)</div>'+
+      '<input type="text" id="nameIn" placeholder="e.g. Sarah" value="'+escHtml(S.name)+'" autocomplete="off">'+
+    '</div>'+
+    '<button class="btn-primary" onclick="startQuiz()">Find My Monie ID →</button>'+
+    '<div class="pilot-note">Pilot v1.0 — Your answers help validate the quiz</div>';
+}
+
+function rMain() {
+  var q = MAIN_QS[S.qi];
+  var n = S.qi + 1;
+  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
+    prog(n, 16, 'Question '+n+' of 16 &nbsp;·&nbsp; '+q.ph)+
+    '<div class="card" style="margin-top:16px;">'+
+      '<div class="q-label">'+q.id+'</div>'+
+      '<div class="q-text">'+escHtml(q.text)+'</div>'+
+      q.ans.map((a,i) => '<button class="ans-btn" id="ans'+i+'" onclick="pickMain('+i+')">'+escHtml(a.t)+'</button>').join('')+
+    '</div>';
+}
+
+function rScale() {
+  var q = SCALE_QS[S.qi];
+  var n = 13 + S.qi;
+  var sel = S.scaleAns[q.id]||0;
+  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
+    prog(n, 16, 'Question '+n+' of 16')+
+    '<div class="card" style="margin-top:16px;">'+
+      '<div class="q-label">'+q.id+'</div>'+
+      '<div class="q-text">'+escHtml(q.text)+'</div>'+
+      '<div class="scale-poles"><span>'+escHtml(q.lo)+'</span><span>'+escHtml(q.hi)+'</span></div>'+
+      '<div class="dots-row">'+
+        [1,2,3,4,5].map(d => '<div class="dot'+(sel===d?' chosen':'')+'" onclick="pickScale(\''+q.id+'\','+d+')"></div>').join('')+
+      '</div>'+
+    '</div>'+
+    '<button class="btn-primary" onclick="nextScale()" '+(sel===0?'disabled':'')+'>'+
+      (S.qi < 3 ? 'Next →' : 'See My Result →')+
+    '</button>';
+}
+
+function rTB() {
+  var q = S.tbQs[S.qi];
+  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
+    prog(S.qi+1, 3, 'One more thing — tie-breaker '+(S.qi+1)+' of 3')+
+    '<div class="card" style="margin-top:16px;">'+
+      '<div class="q-label tb">Tie-breaker</div>'+
+      '<div class="q-text">'+escHtml(q.text)+'</div>'+
+      '<button class="ans-btn" onclick="pickTB(\''+q.a.c+'\')">'+escHtml(q.a.t)+'</button>'+
+      '<button class="ans-btn" onclick="pickTB(\''+q.b.c+'\')">'+escHtml(q.b.t)+'</button>'+
+    '</div>';
+}
+
+function rResult() {
+  if (S.result === "BRIDGE") return rBridge();
+  var code = S.result;
+  var a = ARC[code];
+  var sorted = Object.entries(S.scores).sort((x,y)=>y[1]-x[1]);
+  var maxS = sorted[0][1];
+  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
+    '<div class="card">'+
+      '<div class="result-family">'+escHtml(a.fam)+'</div>'+
+      '<div class="result-name">'+escHtml(a.name)+'</div>'+
+      '<div class="result-monieid">Your Monie ID</div>'+
+      '<div class="sec-label">Identity</div><div class="sec-body">'+escHtml(a.identity)+'</div>'+
+      '<div class="sec-label">Shadow</div><div class="sec-body" style="margin-bottom:0">'+escHtml(a.shadow)+'</div>'+
+      (S.flags.length ? S.flags.map(f=>'<div class="flag">⚑ '+escHtml(f)+'</div>').join('') : '')+
+    '</div>'+
+    '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
+      '<div class="scores-section">'+
+        sorted.map(function(e){
+          var c=e[0],v=e[1];
+          var pct = maxS > 0 ? Math.round(v/maxS*100) : 0;
+          return '<div class="score-row">'+
+            '<div class="score-name'+(c===code?' top':'')+'">'+escHtml(ARC[c].name)+'</div>'+
+            '<div class="score-bg"><div class="score-bar'+(c===code?'':' dim')+'" style="width:'+pct+'%"></div></div>'+
+            '<div class="score-val">'+v.toFixed(1)+'</div>'+
+          '</div>';
+        }).join('')+
+      '</div>'+
+    '</div>'+
+    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>';
+}
+
+function rBridge() {
+  var a = S.bridge[0], b = S.bridge[1];
+  var sorted = Object.entries(S.scores).sort((x,y)=>y[1]-x[1]);
+  var maxS = sorted[0][1];
+  var bridgeCopy = "You sit between two financial identities — "+ARC[a].name+" and "+ARC[b].name+
+    ". That's not a contradiction. It means your relationship with money operates on two tracks simultaneously: "+
+    FAM_CHARS[ARC[a].fam]+" and "+FAM_CHARS[ARC[b].fam]+". Most people are one. You're the rare case that's both.";
+  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
+    '<div class="card">'+
+      '<div class="result-family">Bridge Identity</div>'+
+      '<div class="result-name">'+escHtml(ARC[a].name)+' × '+escHtml(ARC[b].name)+'</div>'+
+      '<div class="result-monieid">Your Monie ID</div>'+
+      '<div class="sec-body">'+escHtml(bridgeCopy)+'</div>'+
+      '<div class="bridge-pair">'+
+        '<div class="bridge-half">'+
+          '<div class="bridge-half-name">'+escHtml(ARC[a].name)+'</div>'+
+          '<div class="bridge-half-fam">'+escHtml(ARC[a].fam)+'</div>'+
+          '<div class="bridge-half-body">'+escHtml(ARC[a].identity)+'</div>'+
+        '</div>'+
+        '<div class="bridge-half">'+
+          '<div class="bridge-half-name">'+escHtml(ARC[b].name)+'</div>'+
+          '<div class="bridge-half-fam">'+escHtml(ARC[b].fam)+'</div>'+
+          '<div class="bridge-half-body">'+escHtml(ARC[b].identity)+'</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
+      '<div class="scores-section">'+
+        sorted.map(function(e){
+          var c=e[0],v=e[1];
+          var pct = maxS > 0 ? Math.round(v/maxS*100) : 0;
+          var isTop = (c===a||c===b);
+          return '<div class="score-row">'+
+            '<div class="score-name'+(isTop?' top':'')+'">'+escHtml(ARC[c].name)+'</div>'+
+            '<div class="score-bg"><div class="score-bar'+(isTop?'':' dim')+'" style="width:'+pct+'%"></div></div>'+
+            '<div class="score-val">'+v.toFixed(1)+'</div>'+
+          '</div>';
+        }).join('')+
+      '</div>'+
+    '</div>'+
+    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>';
+}
+
+function rValidate() {
+  var v = S.val;
+  var resOpts = ["Yes, that's me","Mostly yes","Somewhat","Not really","No, wrong"];
+  var canSub = (v.res !== undefined) && v.pick && v.rating;
+  return '<div class="brand">du<span>Ring</span>It — Pilot Validation</div>'+
+    '<div class="card">'+
+      '<div class="q-label">For the team</div>'+
+      '<div class="val-q">Does your result feel accurate?</div>'+
+      '<div class="val-opts">'+
+        resOpts.map(function(opt,i){
+          return '<button class="val-btn'+(v.res===i?' chosen':'')+'" onclick="setV(\'res\','+i+')">'+escHtml(opt)+'</button>';
+        }).join('')+
+      '</div>'+
+      '<div class="val-q">Which archetype actually feels most accurate to you?</div>'+
+      '<div class="val-opts">'+
+        Object.keys(ARC).map(function(code){
+          return '<button class="val-btn'+(v.pick===code?' chosen':'')+'" onclick="setV(\'pick\',\''+code+'\')">'+
+            escHtml(ARC[code].name)+'<span style="color:#555;font-size:12px"> — '+escHtml(ARC[code].fam)+'</span>'+
+          '</button>';
+        }).join('')+
+      '</div>'+
+      '<div class="val-q">How accurately does this describe your real money behavior? (1–5)</div>'+
+      '<div class="stars" style="margin-bottom:24px">'+
+        [1,2,3,4,5].map(n=>'<span class="star'+(( v.rating||0)>=n?' on':'')+'" onclick="setV(\'rating\','+n+')">★</span>').join('')+
+      '</div>'+
+      '<div class="val-q">Anything to add? (optional)</div>'+
+      '<textarea placeholder="What felt off? What resonated?" oninput="setV(\'note\',this.value)">'+escHtml(v.note||'')+'</textarea>'+
+    '</div>'+
+    '<button class="btn-primary" onclick="submitVal()" '+(canSub?'':'disabled')+'>Export My Data →</button>'+
+    (v.exported ? renderExport() : '')+
+    '<button class="btn-restart" onclick="restart()">↺ Start over</button>';
+}
+
+function renderExport() {
+  var data = buildExport();
+  var json = JSON.stringify(data, null, 2);
+  return '<div class="card" style="margin-top:16px">'+
+    '<div class="sec-label" style="margin-bottom:8px">Pilot data (copy and send to team)</div>'+
+    '<div class="export-box" id="expBox">'+escHtml(json)+'</div>'+
+    '<button class="btn-copy" onclick="doCopy()">📋 Copy to clipboard</button>'+
+    '<div style="font-size:12px;color:#444;text-align:center;margin-top:10px">Thank you for helping validate duRingIt 🙏</div>'+
+  '</div>';
+}
+
+function buildExport() {
+  var sorted = Object.entries(S.scores).sort((x,y)=>y[1]-x[1]);
+  var resLabel = S.result === "BRIDGE"
+    ? "Bridge: "+S.bridge.map(c=>ARC[c].name).join(" × ")
+    : ARC[S.result].name;
+  var resOpts = ["Yes, that's me","Mostly yes","Somewhat","Not really","No, wrong"];
+  return {
+    timestamp: new Date().toISOString(),
+    pilot: "v1.0",
+    name: S.name || "anonymous",
+    scores: Object.fromEntries(sorted.map(function(e){ return [ARC[e[0]].name, +e[1].toFixed(1)]; })),
+    result: resLabel,
+    tiebreaker_triggered: S.tbPair !== null,
+    tiebreaker_answers: S.tbAns.map(c=>ARC[c].name),
+    contradiction_flags: S.flags,
+    validation: {
+      resonates: S.val.res !== undefined ? resOpts[S.val.res] : null,
+      most_accurate: S.val.pick ? ARC[S.val.pick].name : null,
+      accuracy_rating: S.val.rating || null,
+      notes: S.val.note || null
+    }
+  };
+}
+
+// ─────────────────────────────────────────────
+// HANDLERS
+// ─────────────────────────────────────────────
+
+function startQuiz() {
+  var el = document.getElementById("nameIn");
+  S.name = el ? el.value.trim() : "";
+  S.screen = "main";
+  S.qi = 0;
+  render();
+  scrollTo(0,0);
+}
+
+function pickMain(idx) {
+  var q = MAIN_QS[S.qi];
+  var primary = q.ans[idx].p;
+  // Flash selected
+  var btns = document.querySelectorAll(".ans-btn");
+  if (btns[idx]) btns[idx].classList.add("chosen");
+  scoreChoice(primary);
+  setTimeout(function(){
+    S.qi++;
+    if (S.qi >= MAIN_QS.length) { S.screen = "scale"; S.qi = 0; }
+    render(); scrollTo(0,0);
+  }, 200);
+}
+
+function pickScale(qid, dot) {
+  S.scaleAns[qid] = dot;
+  render();
+}
+
+function nextScale() {
+  S.qi++;
+  if (S.qi >= SCALE_QS.length) {
+    // All 16 done — compute
+    var tb = checkTB();
+    if (!tb) {
+      var winner = topTwo()[0][0];
+      calcFlags(winner);
+      S.result = winner;
+      S.screen = "result";
+    } else if (tb.bridge) {
+      S.result = "BRIDGE";
+      S.bridge = tb.pair;
+      S.screen = "result";
+    } else {
+      S.tbPair = tb.pair;
+      S.tbQs = tb.qs;
+      S.qi = 0;
+      S.screen = "tb";
+    }
+  }
+  render(); scrollTo(0,0);
+}
+
+function pickTB(code) {
+  S.tbAns.push(code);
+  var btns = document.querySelectorAll(".ans-btn");
+  btns.forEach(function(b){ if (b.textContent.trim() === (code === S.tbQs[S.qi].a.c ? S.tbQs[S.qi].a.t : S.tbQs[S.qi].b.t)) b.classList.add("chosen"); });
+  setTimeout(function(){
+    S.qi++;
+    if (S.qi >= 3) { resolveTBResult(); S.screen = "result"; }
+    render(); scrollTo(0,0);
+  }, 200);
+}
+
+function goVal() { S.screen = "validate"; render(); scrollTo(0,0); }
+
+function setV(key, val) {
+  S.val[key] = val;
+  render();
+}
+
+function submitVal() {
+  S.val.exported = true;
+  render();
+  setTimeout(doCopy, 300);
+}
+
+function doCopy() {
+  var text = JSON.stringify(buildExport(), null, 2);
+  var btn = document.querySelector(".btn-copy");
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){
+      if (btn) { btn.textContent = "✓ Copied!"; setTimeout(function(){ if(btn) btn.textContent = "📋 Copy to clipboard"; }, 2000); }
+    });
+  } else {
+    var el = document.createElement("textarea");
+    el.value = text; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el);
+    if (btn) { btn.textContent = "✓ Copied!"; setTimeout(function(){ if(btn) btn.textContent = "📋 Copy to clipboard"; }, 2000); }
+  }
+}
+
+function restart() {
+  resetState();
+  render(); scrollTo(0,0);
+}
+
+function escHtml(s) {
+  if (!s) return "";
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+// Boot
+render();
+</script>
+</body>
+</html>
