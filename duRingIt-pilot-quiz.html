@@ -143,6 +143,18 @@ textarea:focus { outline: none; border-color: #F5C842; }
 }
 .btn-restart:hover { color: #999; border-color: #555; }
 .pilot-note { font-size: 11px; color: #333; text-align: center; margin-top: 14px; }
+.hook { font-size: 17px; font-style: italic; color: #F5C842; margin-bottom: 22px; line-height: 1.55; }
+.res-section { margin-bottom: 22px; }
+.res-p { font-size: 15px; color: #C0C0C0; line-height: 1.7; margin-bottom: 10px; }
+.res-p:last-child { margin-bottom: 0; }
+.fear-box { background: #161616; border-left: 3px solid #F5C842; padding: 14px 16px; border-radius: 0 10px 10px 0; margin-bottom: 22px; }
+.fear-text { font-size: 15px; color: #D4AA40; line-height: 1.65; font-style: italic; }
+.tend-list { list-style: none; padding: 0; margin: 0; }
+.tend-list li { font-size: 14px; color: #B0B0B0; line-height: 1.6; padding: 8px 0 8px 20px; position: relative; border-bottom: 1px solid #1E1E1E; }
+.tend-list li:last-child { border-bottom: none; }
+.tend-list li::before { content: "—"; position: absolute; left: 0; color: #F5C842; }
+.shadow-text { font-size: 14px; color: #888; line-height: 1.7; margin-bottom: 8px; }
+.shadow-text:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -153,17 +165,314 @@ textarea:focus { outline: none; border-color: #F5C842; }
 // ─────────────────────────────────────────────
 
 const ARC = {
-  AB: { name:"Aggressive Builder",  fam:"Builders",     identity:"Scale-driven, action-biased, high risk tolerance, speed as competitive edge.",                                              shadow:"Burnout, over-leverage, inability to enjoy progress. The target keeps moving." },
-  FC: { name:"Freedom Chaser",      fam:"Builders",     identity:"Autonomy-driven, building toward independence, discomfort triggers financial decisions.",                                   shadow:"Under-accumulation. Values optionality so much that the exit never arrives." },
-  WA: { name:"Wealth Architect",    fam:"Builders",     identity:"Goal-oriented, plan-referenced, disciplined compounder with a specific number and timeline.",                              shadow:"Rigidity. The plan becomes the identity; deviations feel like failure." },
-  ST: { name:"The Optimizer",        fam:"Builders",     identity:"Process-obsessed, optimisation as identity, the system itself is the achievement.",                                        shadow:"Paralysis by perfection. Optimises the vehicle instead of driving." },
-  SS: { name:"Status Strategist",   fam:"Experiencers", identity:"Identity-through-spending, audience-aware, calculated self-presentation, social ROI.",                                     shadow:"The signals cost more than the substance beneath them." },
-  LI: { name:"Lifestyle Inflator",  fam:"Experiencers", identity:"Income-indexed spending, upgrades feel earned, lifestyle grows progressively with income.",                                shadow:"Lifestyle trap. Income growth is consumed immediately, no compounding occurs." },
-  LR: { name:"Lifestyle Romantic",  fam:"Experiencers", identity:"Present-moment spending, mood-indexed, spontaneous, money enables experience.",                                            shadow:"Savings are always the first casualty of a good mood." },
-  SG: { name:"Steady Guardian",     fam:"Guardians",    identity:"Confident protection, calm discipline, security as a trusted system not a fear response.",                                shadow:"Growth sacrificed. Too precious about stability to take the risk that changes trajectory." },
-  AX: { name:"Anxious Achiever",    fam:"Guardians",    identity:"Fear-driven protection, no amount of security ever feels enough, anxiety is the defining signature.",                     shadow:"No amount of safety ever resolves the anxiety. The goalpost moves perpetually." },
-  EE: { name:"Emotional Escapist",  fam:"Avoiders",     identity:"Active avoidance — knows the problem exists, shame and overwhelm prevent engagement.",                                    shadow:"Compound damage from inaction. The avoidance compounds silently for years." },
-  WN: { name:"The Free Spirit",      fam:"Avoiders",     identity:"Passive disengagement, no strong feeling about finances, blankness not burden.",                                          shadow:"Invisible drift. The damage only becomes apparent much later." }
+  AB: {
+    name: "Aggressive Builder", fam: "Builders",
+    hook: "You don't just want to win. You need to be building something that actually matters.",
+    identity: [
+      "You are scale-driven. The game isn't wealth for comfort — it's wealth as proof that you operated at your maximum capacity. You move faster than most people think is sensible. That's not recklessness. That's a calibration difference. Where others see risk, you see the cost of being too slow.",
+      "Money is a tool but also a scoreboard. You don't fully trust people who aren't hungry. You've probably already tried something — a side hustle, a business, an aggressive investment — because sitting still while the clock runs feels like an active decision to lose.",
+      "The market doesn't scare you. Mediocrity does."
+    ],
+    stress: [
+      "When things slow down or fail, your first instinct is to move harder, not step back. You interpret stillness as surrender. This is your strength in bull markets and your liability everywhere else.",
+      "Under sustained pressure, you tend to chase the next thing before processing what went wrong on the last. The pipeline stays full. The lessons don't always land."
+    ],
+    fear: "What if I go all-in my whole life and still never build something that felt worth it?",
+    tendencies: [
+      "Make financial decisions faster than most people are comfortable with",
+      "Hold parallel bets because one lane feels like underuse",
+      "Define 'enough' as a moving target — the ceiling keeps rising",
+      "Find it hard to feel proud of stability — growth is the only metric that counts",
+      "Sometimes mistake speed for strategy",
+      "Feel irritated by caution in other people",
+      "Struggle to rest without it feeling like falling behind"
+    ],
+    blindspot: "The ceiling risk isn't the market. It's you. The same aggression that builds wealth can also dismantle it when the emotional state shifts and the risk appetite stays fixed. You're not as immune to your own psychology as you think.",
+    shadow: [
+      "The compounding danger is overextension — building past what the foundation can hold. Not out of stupidity, but because you genuinely can't feel your own limits from the inside.",
+      "Burnout, over-leverage, a life spent in permanent sprint mode. The target keeps moving not because the goal is wrong — it's because the identity is builder, not built."
+    ]
+  },
+  FC: {
+    name: "Freedom Chaser", fam: "Builders",
+    hook: "You're not building for wealth. You're building for the day you never have to answer to anyone again.",
+    identity: [
+      "Autonomy is the actual currency. Every financial decision you make is filtered through one question: does this increase or decrease my freedom? A high salary with golden handcuffs still feels like a cage. A lower income with complete ownership of your time can feel like wealth.",
+      "You don't want to escape work. You want to escape obligation. There's a difference. You can be deeply hardworking — often are — but only on your own terms, on things you chose.",
+      "Most people chase financial freedom as a retirement dream. You want it now, or at least within a specific, non-negotiable horizon."
+    ],
+    stress: [
+      "Financial stress for you often isn't about the number — it's about feeling trapped. A tightening budget doesn't just signal scarcity, it signals a timeline slipping. That distinction matters.",
+      "When the walls close in, your instinct is to cut obligations rather than increase income. You'll sacrifice a raise for flexibility before you'll sacrifice flexibility for a raise."
+    ],
+    fear: "What if I spend my whole life escaping — and the exit never actually arrives?",
+    tendencies: [
+      "Evaluate opportunities primarily by what you're giving up, not what you're gaining",
+      "Find long-term commitments physically uncomfortable to sign",
+      "Make moves motivated by discomfort rather than strategy — when staying hurts enough, you go",
+      "Keep finances lean on purpose so you can walk if you need to",
+      "Value optionality to the point where it sometimes delays real accumulation",
+      "Have a quiet suspicion of people who seem too comfortable with their situation",
+      "Struggle to delegate emotional safety to any institution or system you didn't build"
+    ],
+    blindspot: "The irony of the Freedom Chaser is that the relentless pursuit of optionality can become its own trap. Every exit held open is capital not deployed. At some point, the freedom you're chasing requires the very commitment you keep avoiding.",
+    shadow: [
+      "Under-accumulation. You've structured your financial life around not being trapped — but that same structure can prevent the compounding that actually makes the exit possible.",
+      "The exit never arrives not because you lacked the drive. But because optionality kept every door open and no commitment lasted long enough to walk through any of them fully."
+    ]
+  },
+  WA: {
+    name: "Wealth Architect", fam: "Builders",
+    hook: "You already know the number. You're just executing.",
+    identity: [
+      "You are goal-referenced. The plan isn't a vague aspiration — it's a specific number at a specific date with specific milestones tracked monthly. You're not motivated by lifestyle or status. You're motivated by proximity to the destination.",
+      "Discipline is not a personality trait for you. It's a decision architecture. You built a system that removes the need for willpower by eliminating the choice. The plan is the identity.",
+      "You respect compounding at an almost philosophical level. Not just as math — as evidence that doing the right thing consistently beats doing the brilliant thing occasionally."
+    ],
+    stress: [
+      "When the plan gets disrupted — by income drop, unexpected expense, market correction — it doesn't just feel like a financial setback. It feels like an identity setback. The plan is you.",
+      "Your stress response is usually to rebuild the model, not sit with uncertainty. Spreadsheets open. Variables recalculate. Control is restored through planning, not through processing."
+    ],
+    fear: "What if I followed the plan perfectly and arrived somewhere that wasn't actually what I wanted?",
+    tendencies: [
+      "Track net worth on a schedule, not just occasionally",
+      "Have difficulty feeling good about a financial win that wasn't in the plan",
+      "Find spontaneous spending psychologically uncomfortable, even when affordable",
+      "Evaluate opportunities based on how they affect the plan's trajectory",
+      "Get frustrated with people who don't think in timelines",
+      "Sometimes confuse the plan for the goal",
+      "Experience discipline as identity — deviation feels like betrayal, not just mistake"
+    ],
+    blindspot: "The plan can become a cage if the life it was designed for has quietly changed. Rigidity isn't discipline. At some point you have to ask whether the number still corresponds to the person you're becoming.",
+    shadow: [
+      "The worst case is not financial failure. It's perfect execution arriving at a life you no longer want, or a self who doesn't know how to exist without a target to hit.",
+      "Rigidity. The plan becomes the identity; deviations feel like failure rather than updates."
+    ]
+  },
+  ST: {
+    name: "The Optimizer", fam: "Builders",
+    hook: "The system isn't the means. The system is the point.",
+    identity: [
+      "Where others see financial milestones, you see a machine that could run better. You're not primarily motivated by what the money enables — you're motivated by the elegance of how the system works. Optimisation is identity.",
+      "You read the things other people don't. You have opinions on fee structures, index fund expense ratios, tax-loss harvesting windows, brokerage platform superiority. Not because you have to. Because you find it genuinely interesting.",
+      "Other people achieve results. You build the architecture that makes results inevitable."
+    ],
+    stress: [
+      "When the system underperforms, your first instinct is to diagnose before reacting. You want to understand the error before you fix it. This is intellectually responsible. It can also look like paralysis from the outside.",
+      "Financial stress for you is often less about money and more about uncertainty. An unknown variable in a complex system is more unsettling than a known loss."
+    ],
+    fear: "What if I spend so long building the perfect machine that I forgot to actually drive somewhere in it?",
+    tendencies: [
+      "Spend more time optimising the system than making decisions within it",
+      "Research financial options extensively before moving — sometimes indefinitely",
+      "Take genuine pleasure in the craft of financial engineering",
+      "Feel mild contempt for people who make financial decisions without proper frameworks",
+      "Delay execution waiting for the optimal setup",
+      "Have multiple spreadsheet tabs tracking things you've never told anyone about",
+      "Struggle to switch off the analytical mode even in low-stakes situations"
+    ],
+    blindspot: "Optimisation without a destination is a hobby. The process is the achievement — until it isn't. At some point, a suboptimal decision executed is worth more than the perfect decision still being researched.",
+    shadow: [
+      "Paralysis by perfection. You optimise the vehicle while not driving anywhere in particular.",
+      "The compounding cost isn't a bad investment. It's years of frictionless execution that somehow never quite launched."
+    ]
+  },
+  SS: {
+    name: "Status Strategist", fam: "Experiencers",
+    hook: "You're not showing off. You're communicating who you're becoming.",
+    identity: [
+      "Status isn't vanity for you. It's strategy. Every visible financial choice is a signal in a social system you've mapped. You understand, at a level most people don't admit to, that perception is resource. The right signals open doors that competence alone doesn't.",
+      "You're audience-aware in a way that looks effortless from outside. What brand to carry in which room, what to say about where you're going, what's aspirational versus what's try-hard. You calibrate constantly.",
+      "The spending isn't thoughtless. It's calculated self-presentation. You know your ROI — not in spreadsheet terms, but in terms of which doors opened after which signal."
+    ],
+    stress: [
+      "Financial pressure often manifests as social anxiety first. The fear isn't just 'I have less money.' It's 'I will appear to have less money, and the doors that appearance opened will close.'",
+      "Under real squeeze, you're more likely to protect visible signals (the apartment, the car, the brand) before cutting invisible ones (insurance, savings, the future). The present audience is more real than the future self."
+    ],
+    fear: "What if I spent everything on the signal and the substance never actually arrived?",
+    tendencies: [
+      "Make financial decisions partly based on how they'll look to specific people",
+      "Keep an internal model of who perceives what about your financial situation",
+      "Find it uncomfortable to spend on things that won't be seen",
+      "Get genuine social anxiety when forced to reveal financial vulnerability",
+      "Upgrade strategically and in order of visibility",
+      "Sometimes extend beyond your actual position to maintain a position",
+      "Feel quietly competitive about status signals in your peer group"
+    ],
+    blindspot: "Status is borrowed leverage. It can open doors, but it can't pay rent. When the signal cost exceeds the substance beneath it — and it almost always does eventually — the compounding damage is silent until it's sudden.",
+    shadow: [
+      "The signals cost more than the substance beneath them. Long before you feel the impact, the gap has been widening.",
+      "The deeper risk: building an identity around how others perceive you means you will always be chasing someone else's approval. The goalposts are external and therefore permanently moveable."
+    ]
+  },
+  LI: {
+    name: "Lifestyle Inflator", fam: "Experiencers",
+    hook: "You earned this. You're not going to pretend you didn't.",
+    identity: [
+      "You're not irresponsible with money. You're income-indexed. Every time you level up professionally, the lifestyle follows. Not out of recklessness — out of a genuine belief that you've earned the upgrade.",
+      "Quality matters to you. You're not paying for brands. You're paying for the experience of living at a standard that reflects where you actually are, not where you used to be.",
+      "The upgrades feel earned because they were. The problem isn't the spending. The problem is that income growth, lifestyle growth, and wealth accumulation rarely happen simultaneously."
+    ],
+    stress: [
+      "When income drops or stalls, the lifestyle doesn't always compress at the same rate. There's a structural inertia — the restaurant you go to now, the apartment you signed, the standard you've established with your peer group — that makes downgrading feel like failure.",
+      "Stress spikes when the gap between lifestyle cost and income becomes undeniable. Usually triggered by a specific moment: a credit card statement, a savings balance, an unexpected expense."
+    ],
+    fear: "What if I kept upgrading the life but never actually built anything beneath it?",
+    tendencies: [
+      "Let spending rise proportionally when income rises",
+      "Struggle to maintain previous lifestyle frugality once you've crossed a threshold",
+      "Experience downgrades as regression, not adjustment",
+      "Spend on quality in categories where it genuinely matters to you",
+      "Have a quiet pride in being able to afford things you couldn't before",
+      "Find it emotionally difficult to consciously compress lifestyle under stress",
+      "Rarely track the gap between income growth and savings rate"
+    ],
+    blindspot: "Lifestyle inflation is gradual, nearly invisible, and structurally self-reinforcing. Once each level is locked in, the next income jump gets absorbed before it ever compounds. Wealth doesn't accumulate from income. It accumulates from the gap between income and spending — and that gap closes with every upgrade.",
+    shadow: [
+      "Lifestyle trap. Income growth is consumed immediately. No compounding occurs.",
+      "The real cost isn't the spending. It's the decade of near-identical net worth despite significant income growth. The best earnings years get absorbed into the best lifestyle years, and at 40 you realise they were the same years."
+    ]
+  },
+  LR: {
+    name: "Lifestyle Romantic", fam: "Experiencers",
+    hook: "You're not bad with money. You're just fully present.",
+    identity: [
+      "You spend on experiences, mood, and moments — not plans. The vacation that wasn't budgeted for. The dinner that became a memory. The thing you bought because it felt right and life is short and the money will come back.",
+      "You genuinely believe money is for living. Not in a rationalisation way — in a philosophical way. You find people who save everything slightly sad, in the way someone would find it sad to marinate in potential and never actually show up.",
+      "You're not reckless. You're present-moment oriented, and the future feels slightly abstract compared to what's happening right now."
+    ],
+    stress: [
+      "Financial stress for you doesn't usually arrive gradually. It arrives suddenly. Because the spending was mood-indexed, it often stayed high through periods when it should have compressed — and the reckoning is typically a specific moment rather than a slow accumulation.",
+      "Under stress, you sometimes spend more rather than less. The emotional state that triggers stress is exactly the state that your relationship with money was built to resolve."
+    ],
+    fear: "What if I prioritised the moments and arrived somewhere with no foundation beneath them?",
+    tendencies: [
+      "Make financially significant decisions quickly when the emotional state is positive",
+      "Have a higher tendency to spend during celebration, grief, excitement, or boredom",
+      "Find budgeting emotionally constraining rather than helpful",
+      "Often genuinely not know how much was spent in a given month until looking back",
+      "Experience real joy in spending — this is a value orientation, not a dysfunction",
+      "Find yourself recalibrating after spending periods with mild, passing guilt",
+      "Prioritise experiences and relationships over accumulation"
+    ],
+    blindspot: "Savings are always the first casualty of a good mood. The present-moment orientation that makes life feel rich is the same pattern that makes it hard to build anything that compounds. Time and compounding don't care about the quality of the moments they missed.",
+    shadow: [
+      "Savings are always the first casualty of a good mood.",
+      "The compounding damage is invisible from inside the moment. It only becomes visible at the aggregate level — and by then, the best compounding years have passed."
+    ]
+  },
+  SG: {
+    name: "Steady Guardian", fam: "Guardians",
+    hook: "You don't stress about money. That's not luck. That's a system you built.",
+    identity: [
+      "Security for you is not a fear response. It's a design choice. You made deliberate decisions early to ensure that your financial foundation is solid enough that disruption doesn't devastate you. And it worked.",
+      "You track things. Not obsessively — but consistently. You know your numbers. You have buffers. You're probably the person in your friend group who doesn't panic when the market drops because you already priced in volatility.",
+      "The confidence isn't bravado. It comes from having built something that genuinely holds."
+    ],
+    stress: [
+      "When the system is tested — a job loss, a major unexpected expense, a family emergency — you respond with calm methodology rather than panic. You have protocols. They were built for exactly this.",
+      "The stress that does get to you is usually external: watching people you care about be financially fragile, feeling responsible for protection without being asked."
+    ],
+    fear: "What if I protected everything so carefully that I never took the risk that could have changed everything?",
+    tendencies: [
+      "Maintain emergency funds, insurance, and diversification as non-negotiables",
+      "Get quietly uncomfortable watching people take risks you consider irresponsible",
+      "Find it difficult to justify growth-oriented risks that exceed your comfort with uncertainty",
+      "Feel genuine satisfaction from checking and confirming the system is working",
+      "Struggle to fully celebrate financial wins — there's always a next horizon to protect",
+      "Sometimes pass on opportunities because the downside feels more real than the upside",
+      "Feel a quiet responsibility for the financial wellbeing of people around you"
+    ],
+    blindspot: "Protection at the cost of growth is a trade-off, not a virtue. Too precious about stability means never taking the risks that change trajectory. At some point, optimised safety is a ceiling, not a floor.",
+    shadow: [
+      "Growth sacrificed. Too precious about stability to take the risk that changes trajectory.",
+      "The steady guardian who never makes a move ends up very secure and exactly where they started. Not because the system failed — because the system worked so well they never needed to upgrade it."
+    ]
+  },
+  AX: {
+    name: "Anxious Achiever", fam: "Guardians",
+    hook: "You're doing everything right. So why does it never feel like enough?",
+    identity: [
+      "Fear is the engine. Not laziness, not recklessness — fear. You do more than most people because you need the buffer to be thicker, the safety to be surer, the certainty to be certain enough. Which it never quite is.",
+      "From the outside, you look like the Steady Guardian. Good habits, clear awareness, consistent action. From the inside, it doesn't feel like that. It feels like permanent vigilance.",
+      "The anxiety isn't irrational — at some level, it built the very security you have. The problem is that security doesn't resolve the anxiety. The goalpost moves."
+    ],
+    stress: [
+      "Under financial stress, the anxiety amplifies rather than translating to action. The gap between what you know to do and your emotional state widens. You can have a plan and still feel like it won't be enough.",
+      "Checking behaviours intensify. You might monitor accounts more frequently, run more scenarios, seek more reassurance. It provides temporary relief, not resolution."
+    ],
+    fear: "What if there is no amount — no number, no buffer, no plan — that actually makes me feel safe?",
+    tendencies: [
+      "Check financial accounts more frequently than is necessary",
+      "Run worst-case scenarios mentally even when things are going well",
+      "Have difficulty feeling financially secure regardless of actual position",
+      "Seek external validation about your financial decisions",
+      "Experience brief relief followed by a quick return of anxiety when things check out",
+      "Avoid financial risks even when the analysis supports taking them",
+      "Feel quietly envious of people who seem genuinely relaxed about money"
+    ],
+    blindspot: "The goalpost moves permanently. More savings doesn't produce proportionally more security. The anxiety is not a financial problem — it's an emotional relationship with uncertainty. That relationship needs to be addressed, not fed.",
+    shadow: [
+      "No amount of safety ever resolves the anxiety. The goalpost moves perpetually.",
+      "The deepest cost is not financial — it's years of vigilance without rest, building a fortress and never fully living inside it."
+    ]
+  },
+  EE: {
+    name: "Emotional Escapist", fam: "Avoiders",
+    hook: "You know exactly what you're avoiding. That's the part you can't escape.",
+    identity: [
+      "You're not unaware. That would almost be easier. You know the situation isn't great. You know you should open the statement. You know the conversation you're avoiding. And you also know you won't have it today.",
+      "The avoidance isn't laziness. There's something underneath it — shame, overwhelm, a sense that once you look at the full picture you'll have to feel the weight of it all at once. So the tab stays closed.",
+      "Part of you is waiting for a moment when you feel ready. That moment keeps not arriving."
+    ],
+    stress: [
+      "Stress intensifies avoidance rather than forcing a reckoning. Under financial pressure, you're more likely to stop checking, not more likely to start. The emotional cost of knowing feels higher than the cost of not knowing.",
+      "Spending sometimes increases under stress as a regulation mechanism. The anxiety gets managed with a purchase, which creates a brief gap before the anxiety reasserts itself."
+    ],
+    fear: "What if I open everything up and the damage from years of looking away is already too big to fix?",
+    tendencies: [
+      "Leave financial statements, emails, and notifications unread longer than you should",
+      "Experience physical discomfort when the topic of money comes up directly",
+      "Know roughly how bad things are but not the precise numbers",
+      "Have started to sort things out multiple times without completing it",
+      "Spend on immediate relief when the anxiety spikes",
+      "Feel genuine shame about the gap between what you know you should do and what you do",
+      "Believe that when you finally face it you'll handle it quickly — and so keep postponing it"
+    ],
+    blindspot: "The compound damage from avoidance is real — fees accumulate, opportunities close, problems grow. But the deeper cost is that the gap between your financial self-knowledge and your actual situation produces a low-grade chronic stress that never lifts, precisely because the threat remains undefined.",
+    shadow: [
+      "Compound damage from inaction. The avoidance compounds silently for years.",
+      "The cruelest part of the Emotional Escapist pattern is that the anticipated pain of facing it is usually worse than the actual pain. The thing being avoided is almost never as bad, in aggregate, as the experience of avoiding it."
+    ]
+  },
+  WN: {
+    name: "The Free Spirit", fam: "Avoiders",
+    hook: "It's not that you don't care about money. You just haven't started yet.",
+    identity: [
+      "There's no strong feeling here. Not anxiety, not ambition, not avoidance in the active sense. Money is just... not a thing yet. You engage with it when you have to and don't think about it much otherwise.",
+      "You're not in denial. You're not hiding from something. You simply haven't built a relationship with your finances, and nothing has become urgent enough to make that feel necessary.",
+      "Life is good enough that the absence of a plan doesn't yet feel like a gap. That might be the problem."
+    ],
+    stress: [
+      "When financial stress arrives, it tends to arrive as a surprise — a specific moment where the absence of a plan becomes visible. You respond to the immediate problem without necessarily building the system to prevent the next one.",
+      "The response to stress is usually temporary engagement. Things get slightly more organised for a while. Then life returns to normal and the engagement fades."
+    ],
+    fear: "What if by the time I decide to take this seriously, the compounding years have already passed?",
+    tendencies: [
+      "Have no consistent financial tracking practice",
+      "Make financial decisions by feel rather than by framework",
+      "Not have strong opinions about money and not feel anxious about not having them",
+      "Spend money when it's available without a strong sense of allocation",
+      "Have moments of genuine intention to sort things out that don't convert into action",
+      "Find financial content simultaneously interesting and non-urgent",
+      "Feel slightly disconnected from your own financial situation even when things are fine"
+    ],
+    blindspot: "The drift is invisible from inside it. It doesn't feel like damage — it feels like nothing. That's the danger. The compounding cost of not building a relationship with money isn't a single bad decision. It's the absence of a thousand small good ones, which eventually becomes a decade of lost ground.",
+    shadow: [
+      "Invisible drift. The damage only becomes apparent much later.",
+      "The Free Spirit who never starts is not making a choice to live differently. They're making a choice by default — and default tends not to be in their favour."
+    ]
+  }
 };
 
 const FAM = {
@@ -577,9 +886,39 @@ function rResult() {
       '<div class="result-family">'+escHtml(a.fam)+'</div>'+
       '<div class="result-name">'+escHtml(a.name)+'</div>'+
       '<div class="result-monieid">Your Monie ID</div>'+
-      '<div class="sec-label">Identity</div><div class="sec-body">'+escHtml(a.identity)+'</div>'+
-      '<div class="sec-label">Shadow</div><div class="sec-body" style="margin-bottom:0">'+escHtml(a.shadow)+'</div>'+
-      (S.flags.length ? S.flags.map(f=>'<div class="flag">⚑ '+escHtml(f)+'</div>').join('') : '')+
+      '<div class="hook">'+escHtml(a.hook)+'</div>'+
+
+      '<div class="res-section">'+
+        '<div class="sec-label" style="margin-bottom:8px">Core Pattern</div>'+
+        a.identity.map(function(p){ return '<div class="res-p">'+escHtml(p)+'</div>'; }).join('')+
+      '</div>'+
+
+      '<div class="res-section">'+
+        '<div class="sec-label" style="margin-bottom:8px">Under Stress</div>'+
+        a.stress.map(function(p){ return '<div class="res-p">'+escHtml(p)+'</div>'; }).join('')+
+      '</div>'+
+
+      '<div class="sec-label" style="margin-bottom:8px">Secret Fear</div>'+
+      '<div class="fear-box"><div class="fear-text">'+escHtml(a.fear)+'</div></div>'+
+
+      '<div class="res-section">'+
+        '<div class="sec-label" style="margin-bottom:8px">You Tend To</div>'+
+        '<ul class="tend-list">'+
+          a.tendencies.map(function(t){ return '<li>'+escHtml(t)+'</li>'; }).join('')+
+        '</ul>'+
+      '</div>'+
+
+      '<div class="res-section">'+
+        '<div class="sec-label" style="margin-bottom:8px">Blind Spot</div>'+
+        '<div class="res-p">'+escHtml(a.blindspot)+'</div>'+
+      '</div>'+
+
+      '<div class="res-section" style="margin-bottom:0">'+
+        '<div class="sec-label" style="margin-bottom:8px">Shadow</div>'+
+        a.shadow.map(function(p){ return '<div class="shadow-text">'+escHtml(p)+'</div>'; }).join('')+
+      '</div>'+
+
+      (S.flags.length ? '<div style="margin-top:18px">'+S.flags.map(f=>'<div class="flag">⚑ '+escHtml(f)+'</div>').join('')+'</div>' : '')+
     '</div>'+
     '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
       '<div class="scores-section">'+
@@ -614,12 +953,12 @@ function rBridge() {
         '<div class="bridge-half">'+
           '<div class="bridge-half-name">'+escHtml(ARC[a].name)+'</div>'+
           '<div class="bridge-half-fam">'+escHtml(ARC[a].fam)+'</div>'+
-          '<div class="bridge-half-body">'+escHtml(ARC[a].identity)+'</div>'+
+          '<div class="bridge-half-body">'+escHtml(ARC[a].identity[0])+'</div>'+
         '</div>'+
         '<div class="bridge-half">'+
           '<div class="bridge-half-name">'+escHtml(ARC[b].name)+'</div>'+
           '<div class="bridge-half-fam">'+escHtml(ARC[b].fam)+'</div>'+
-          '<div class="bridge-half-body">'+escHtml(ARC[b].identity)+'</div>'+
+          '<div class="bridge-half-body">'+escHtml(ARC[b].identity[0])+'</div>'+
         '</div>'+
       '</div>'+
     '</div>'+
