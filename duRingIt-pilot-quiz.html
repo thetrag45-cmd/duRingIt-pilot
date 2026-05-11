@@ -69,6 +69,17 @@ body {
 }
 .btn-primary:hover { background: #FFD700; }
 .btn-primary:disabled { background: #2A2A2A; color: #555; cursor: not-allowed; }
+.btn-blog {
+  display: block; width: 100%;
+  background: transparent; color: #F5C842;
+  font-size: 15px; font-weight: 600;
+  padding: 14px; border-radius: 12px;
+  border: 1.5px solid #3A3000; cursor: pointer;
+  font-family: inherit; margin-bottom: 12px;
+  text-decoration: none; text-align: center;
+  transition: background 0.12s, border-color 0.12s;
+}
+.btn-blog:hover { background: #1A1400; border-color: #F5C842; }
 .welcome-title { font-size: 40px; font-weight: 900; line-height: 1.1; margin-bottom: 10px; }
 .welcome-sub { font-size: 15px; color: #777; line-height: 1.6; margin-bottom: 24px; }
 .stats { display: flex; gap: 10px; margin-bottom: 24px; }
@@ -480,6 +491,13 @@ const FAM = {
   Experiencers: ["SS","LI","LR"],
   Guardians:    ["SG","AX"],
   Avoiders:     ["EE","WN"]
+};
+
+const SLUGS = {
+  AB: "aggressive-builder",  FC: "freedom-chaser",     WA: "wealth-architect",
+  ST: "calculated-optimizer",SS: "status-strategist",  LI: "lifestyle-inflator",
+  LR: "lifestyle-romantic",  SG: "silent-accumulator", AX: "anxious-achiever",
+  EE: "emotional-escapist",  WN: "financial-drifter"
 };
 
 const MAIN_QS = [
@@ -920,6 +938,7 @@ function rResult() {
 
       (S.flags.length ? '<div style="margin-top:18px">'+S.flags.map(f=>'<div class="flag">⚑ '+escHtml(f)+'</div>').join('')+'</div>' : '')+
     '</div>'+
+    '<a class="btn-blog" href="./archetypes/'+SLUGS[code]+'.html" target="_blank">Read the full '+escHtml(a.name)+' profile →</a>'+
     '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
       '<div class="scores-section">'+
         sorted.map(function(e){
@@ -960,6 +979,10 @@ function rBridge() {
           '<div class="bridge-half-fam">'+escHtml(ARC[b].fam)+'</div>'+
           '<div class="bridge-half-body">'+escHtml(ARC[b].identity[0])+'</div>'+
         '</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:10px;margin-top:16px">'+
+        '<a class="btn-blog" href="./archetypes/'+SLUGS[a]+'.html" target="_blank" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[a].name)+' profile →</a>'+
+        '<a class="btn-blog" href="./archetypes/'+SLUGS[b]+'.html" target="_blank" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[b].name)+' profile →</a>'+
       '</div>'+
     '</div>'+
     '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
