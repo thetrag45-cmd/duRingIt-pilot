@@ -80,6 +80,34 @@ body {
   transition: background 0.12s, border-color 0.12s;
 }
 .btn-blog:hover { background: #1A1400; border-color: #F5C842; }
+.btn-whatsapp {
+  display: block; width: 100%;
+  background: #25D366; color: #FFF;
+  font-size: 15px; font-weight: 700;
+  padding: 14px; border-radius: 12px;
+  border: none; cursor: pointer;
+  font-family: inherit; margin-bottom: 12px;
+  text-decoration: none; text-align: center;
+  transition: background 0.12s;
+}
+.btn-whatsapp:hover { background: #1EBE5A; }
+.btn-tally-wrap {
+  background: #1A1A1A; border: 1px solid #2A2A2A;
+  border-radius: 16px; padding: 24px;
+  margin-bottom: 16px; text-align: center;
+}
+.btn-tally-title { font-size: 16px; font-weight: 700; color: #FFF; margin-bottom: 6px; }
+.btn-tally-sub { font-size: 13px; color: #777; margin-bottom: 16px; line-height: 1.5; }
+.btn-tally {
+  display: inline-block;
+  background: #F5C842; color: #000;
+  font-size: 15px; font-weight: 700;
+  padding: 13px 28px; border-radius: 12px;
+  border: none; cursor: pointer;
+  font-family: inherit; text-decoration: none;
+  transition: background 0.12s;
+}
+.btn-tally:hover { background: #FFD700; }
 .welcome-title { font-size: 40px; font-weight: 900; line-height: 1.1; margin-bottom: 10px; }
 .welcome-sub { font-size: 15px; color: #777; line-height: 1.6; margin-bottom: 24px; }
 .stats { display: flex; gap: 10px; margin-bottom: 24px; }
@@ -893,6 +921,34 @@ function rTB() {
     '</div>';
 }
 
+var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
+var COMPAT_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/compatibility.html";
+
+var BEGA = {};
+(function(){
+  var m = { Builders:["AB","FC","WA","ST"], Experiencers:["SS","LI","LR"], Guardians:["SG","AX"], Avoiders:["EE","WN"] };
+  Object.keys(m).forEach(function(cat){ m[cat].forEach(function(c){ BEGA[c]=cat; }); });
+})();
+
+function shareWhatsApp(code, bridgePair) {
+  var text;
+  if (bridgePair) {
+    var n1 = ARC[bridgePair[0]].name, n2 = ARC[bridgePair[1]].name;
+    text = "I just did the duRingIt Monie ID quiz and I'm a Bridge between "+n1+" and "+n2+" 🔀\n\nWhat’s your money type? I bet I can guess yours 👀\n\nTake it here: "+QUIZ_URL;
+  } else {
+    var a = ARC[code];
+    var cat = BEGA[code];
+    text = "I just found out I’m a "+a.name+" — the "+cat.slice(0,-1)+" type on the duRingIt Monie ID quiz 💡\n\n“"+a.hook+"”\n\nWhat’s your money type? Challenge me 👀\n\nTake the quiz: "+QUIZ_URL;
+  }
+  window.open("https://wa.me/?text="+encodeURIComponent(text), "_blank");
+}
+
+function viewCompat(code, bridgePair) {
+  var c1 = bridgePair ? bridgePair[0] : code;
+  var url = COMPAT_URL + "?a=" + c1 + (bridgePair ? "&b="+bridgePair[1] : "");
+  window.open(url, "_blank");
+}
+
 function rResult() {
   if (S.result === "BRIDGE") return rBridge();
   var code = S.result;
@@ -939,6 +995,13 @@ function rResult() {
       (S.flags.length ? '<div style="margin-top:18px">'+S.flags.map(f=>'<div class="flag">⚑ '+escHtml(f)+'</div>').join('')+'</div>' : '')+
     '</div>'+
     '<a class="btn-blog" href="./archetypes/'+SLUGS[code]+'.html" target="_blank">Read the full '+escHtml(a.name)+' profile →</a>'+
+    '<button class="btn-whatsapp" onclick="shareWhatsApp(\''+code+'\')">💬 Challenge a friend on WhatsApp</button>'+
+    '<a class="btn-blog" href="'+COMPAT_URL+'?a='+code+'" target="_blank" style="margin-bottom:12px">🔁 See your compatibility with other types →</a>'+
+    '<div class="btn-tally-wrap">'+
+      '<div class="btn-tally-title">Want your personalised money report?</div>'+
+      '<div class="btn-tally-sub">Get a deeper breakdown of your '+escHtml(a.name)+' profile delivered to your inbox.</div>'+
+      '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>'+
+    '</div>'+
     '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
       '<div class="scores-section">'+
         sorted.map(function(e){
@@ -984,6 +1047,13 @@ function rBridge() {
         '<a class="btn-blog" href="./archetypes/'+SLUGS[a]+'.html" target="_blank" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[a].name)+' profile →</a>'+
         '<a class="btn-blog" href="./archetypes/'+SLUGS[b]+'.html" target="_blank" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[b].name)+' profile →</a>'+
       '</div>'+
+    '</div>'+
+    '<button class="btn-whatsapp" onclick="shareWhatsApp(null,[\''+a+'\',\''+b+'\'])">💬 Challenge a friend on WhatsApp</button>'+
+    '<a class="btn-blog" href="'+COMPAT_URL+'?a='+a+'&b='+b+'" target="_blank" style="margin-bottom:12px">🔁 See your compatibility →</a>'+
+    '<div class="btn-tally-wrap">'+
+      '<div class="btn-tally-title">Want your personalised money report?</div>'+
+      '<div class="btn-tally-sub">Get a deeper breakdown of your Bridge identity delivered to your inbox.</div>'+
+      '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>'+
     '</div>'+
     '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
       '<div class="scores-section">'+

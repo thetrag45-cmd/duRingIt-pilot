@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>duRingIt — Monie Compatibility</title>
+<meta name="description" content="Find out how two money types click — or clash. duRingIt Monie Compatibility.">
+<meta property="og:title" content="duRingIt — Monie Compatibility">
+<meta property="og:description" content="How do your money types mix? Find out.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0D0D0D;
+  color: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+#app {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 28px; }
+.brand span { color: #F5C842; }
+.page-title { font-size: 28px; font-weight: 900; margin-bottom: 6px; }
+.page-sub { font-size: 14px; color: #666; margin-bottom: 28px; line-height: 1.5; }
+.select-wrap { margin-bottom: 16px; }
+.select-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #F5C842; margin-bottom: 8px; }
+select {
+  width: 100%;
+  background: #1A1A1A; border: 1.5px solid #2A2A2A;
+  color: #FFF; font-size: 15px; font-family: inherit;
+  padding: 14px 16px; border-radius: 12px; cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+select:focus { outline: none; border-color: #F5C842; }
+.btn-check {
+  display: block; width: 100%;
+  background: #F5C842; color: #000;
+  font-size: 16px; font-weight: 700;
+  padding: 16px; border-radius: 12px;
+  border: none; cursor: pointer;
+  font-family: inherit; margin-top: 8px;
+  transition: background 0.12s;
+}
+.btn-check:hover { background: #FFD700; }
+.result-card {
+  background: #1A1A1A; border: 1px solid #2A2A2A;
+  border-radius: 16px; padding: 24px; margin-top: 24px;
+}
+.compat-pair {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px;
+}
+.compat-blob {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 900; color: #000; flex-shrink: 0;
+}
+.compat-name { font-size: 13px; font-weight: 700; color: #FFF; line-height: 1.2; }
+.compat-cat { font-size: 11px; color: #888; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.compat-x { font-size: 22px; color: #444; flex-shrink: 0; }
+.score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.score-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+.compat-meter-wrap { flex: 1; }
+.compat-meter-bg { height: 8px; background: #2A2A2A; border-radius: 4px; overflow: hidden; }
+.compat-meter-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.compat-score-num { font-size: 22px; font-weight: 900; color: #F5C842; margin-top: 4px; }
+.compat-verdict {
+  font-size: 20px; font-weight: 800; margin-bottom: 10px; color: #FFF;
+}
+.compat-summary {
+  font-size: 14px; color: #AAA; line-height: 1.65; margin-bottom: 20px;
+}
+.tension-section { margin-top: 20px; }
+.tension-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
+.tension-item {
+  background: #222; border-radius: 10px; padding: 12px 14px;
+  font-size: 13px; color: #CCC; line-height: 1.5; margin-bottom: 8px;
+}
+.strength-item {
+  background: #0D1F0D; border: 1px solid #1A3A1A; border-radius: 10px;
+  padding: 12px 14px; font-size: 13px; color: #8FCC8F;
+  line-height: 1.5; margin-bottom: 8px;
+}
+.btn-whatsapp {
+  display: block; width: 100%;
+  background: #25D366; color: #FFF;
+  font-size: 15px; font-weight: 700;
+  padding: 14px; border-radius: 12px;
+  border: none; cursor: pointer;
+  font-family: inherit; margin-top: 16px;
+  text-decoration: none; text-align: center;
+  transition: background 0.12s;
+}
+.btn-whatsapp:hover { background: #1EBE5A; }
+.btn-retake {
+  display: block; width: 100%;
+  background: transparent; color: #F5C842;
+  font-size: 15px; font-weight: 600;
+  padding: 14px; border-radius: 12px;
+  border: 1.5px solid #3A3000; cursor: pointer;
+  font-family: inherit; margin-top: 10px;
+  text-decoration: none; text-align: center;
+  transition: background 0.12s, border-color 0.12s;
+}
+.btn-retake:hover { background: #1A1400; border-color: #F5C842; }
+.same-card {
+  background: #1A1400; border: 1px solid #3A2E00;
+  border-radius: 16px; padding: 24px; margin-top: 24px;
+  text-align: center;
+}
+.same-emoji { font-size: 40px; margin-bottom: 12px; }
+.same-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+.same-body { font-size: 14px; color: #AAA; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="brand">du<span>Ring</span>It — Monie ID</div>
+  <div class="page-title">Monie Compatibility</div>
+  <div class="page-sub">Pick two money types to see how they click — or clash.</div>
+
+  <div class="select-wrap">
+    <div class="select-label">Your type</div>
+    <select id="selA"></select>
+  </div>
+  <div class="select-wrap">
+    <div class="select-label">Their type</div>
+    <select id="selB"></select>
+  </div>
+  <button class="btn-check" onclick="checkCompat()">Check compatibility →</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
+var COMPAT_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/compatibility.html";
+
+var NAMES = {
+  AB: "Aggressive Builder",  FC: "Freedom Chaser",     WA: "Wealth Architect",
+  ST: "The Optimizer",       SS: "Status Strategist",  LI: "Lifestyle Inflator",
+  LR: "Lifestyle Romantic",  SG: "Steady Guardian",    AX: "Anxious Achiever",
+  EE: "Emotional Escapist",  WN: "The Free Spirit"
+};
+
+var COLORS = {
+  AB: "#FF6B81", FC: "#F5A623", WA: "#7CB87C",
+  ST: "#9B7ED9", SS: "#C9A84C", LI: "#E8A87C",
+  LR: "#E87C8C", SG: "#5BB8B8", AX: "#7CA8D9",
+  EE: "#B87CB8", WN: "#7CBFDD"
+};
+
+// B=Builders, E=Experiencers, G=Guardians, A=Avoiders
+var CAT = {
+  AB:"Builders", FC:"Builders", WA:"Builders", ST:"Builders",
+  SS:"Experiencers", LI:"Experiencers", LR:"Experiencers",
+  SG:"Guardians", AX:"Guardians",
+  EE:"Avoiders", WN:"Avoiders"
+};
+
+// Compatibility data: key = sorted pair "XX-YY"
+// score: 0-100, verdict, summary, strengths[], tensions[]
+var COMPAT = {};
+
+function key(a, b) {
+  return [a, b].sort().join("-");
+}
+
+function addCompat(a, b, score, verdict, summary, strengths, tensions) {
+  COMPAT[key(a, b)] = { score: score, verdict: verdict, summary: summary, strengths: strengths, tensions: tensions };
+}
+
+// --- BUILDER × BUILDER ---
+addCompat("AB","WA", 72, "Grind meets plan", "You're both wired to grow — but on different timelines. The Aggressive Builder wants results now; the Wealth Architect wants results that last. This can be electric when you're aligned, and exhausting when one thinks the other is either reckless or too slow.",
+  ["Shared ambition makes execution conversations easy", "The Architect's patience gives the Builder a longer runway"],
+  ["Builder pushes for speed; Architect brakes for risk", "Neither of you is great at celebrating progress — you just move the goalpost"]);
+
+addCompat("AB","FC", 65, "Grind meets escape", "Both want to stop answering to people — but differently. The Builder wants to dominate; the Freedom Chaser wants to disappear. Together you can build something real, as long as the Chaser doesn't bolt the moment it gets institutional.",
+  ["Shared rejection of mediocrity", "Builder drives output; Chaser keeps the mission honest"],
+  ["Builder needs loyalty; Chaser needs exit options", "Different endgames: empire vs. autonomy"]);
+
+addCompat("AB","ST", 78, "Output meets system", "High-functioning pair. The Aggressive Builder generates momentum, The Optimizer builds the infrastructure around it. You'll move fast and not break things — if the Optimizer gets enough say in how the machine runs.",
+  ["Builder moves fast; Optimizer catches the holes", "Both hate inefficiency — different definitions of it", "Shared data-orientation makes decisions easier"],
+  ["Optimizer slows down decisions; Builder hates that", "Builder may override systems that haven't proven themselves yet"]);
+
+addCompat("WA","FC", 58, "Blueprint meets freedom", "Wealth Architect has a destination; Freedom Chaser has an escape plan. You can coexist — but the Architect's long horizon may feel like a trap to the Chaser, and the Chaser's fluid plans may feel like noise to the Architect.",
+  ["Both are self-directed and don't need external validation", "Architect funds the Chaser's exit timeline"],
+  ["Chaser may resist long-term commitments the Architect depends on", "Architect reads drifting as failure; Chaser reads structure as captivity"]);
+
+addCompat("WA","ST", 85, "Blueprint meets algorithm", "Best Builder pairing. Both are analytical, long-term, and low-drama. Wealth Architect holds the destination; The Optimizer holds the system. You argue about method, not direction. Strong.",
+  ["Near-identical time preference — both play long", "Low ego friction; decisions are data-driven", "Together you cover goals AND efficiency"],
+  ["Neither pushes the other to take risk when risk is appropriate", "Can over-optimize at the expense of bold moves"]);
+
+addCompat("FC","ST", 60, "Flight meets framework", "Freedom Chaser wants to operate without friction; The Optimizer wants everything optimised. Decent pairing when roles are clear — Optimizer runs the system, Chaser runs the mission. Breaks down when the Chaser goes off-system.",
+  ["Optimizer gives Chaser a foundation to operate from", "Chaser stops Optimizer from optimising things that don't matter"],
+  ["Chaser resists the reporting structures Optimizer creates", "Optimizer finds Chaser's spontaneity inefficient"]);
+
+// --- EXPERIENCER × EXPERIENCER ---
+addCompat("LR","LI", 60, "Romance meets reward", "Both love the feeling of a beautiful life — but for different reasons. Lifestyle Romantic wants meaning in the moment; Lifestyle Inflator wants to feel deserved. Together you'll have amazing experiences and absolutely no savings without external structure.",
+  ["Deep understanding of spending as emotional language", "Neither judges the other for enjoying life"],
+  ["No natural financial anchor between you", "Joint spending can spiral fast without a third-party check"]);
+
+addCompat("LR","SS", 68, "Feeling meets signal", "Lifestyle Romantic spends for beauty; Status Strategist spends for position. You can create genuinely impressive environments together — but the Romantic may feel the Strategist is too calculated, and the Strategist may find the Romantic naive.",
+  ["Shared aesthetic sensibility makes decisions feel aligned", "Status Strategist gives direction; Romantic gives warmth"],
+  ["Romantic wants authentic connection; Strategist is always performing", "Different relationship with money's purpose"]);
+
+addCompat("LI","SS", 55, "Reward meets positioning", "Both are experiencer-types, but your spending logic differs. The Inflator rewards effort with comfort; the Strategist invests in image. The Strategist may privately judge the Inflator's purchases as tactically weak, and the Inflator may find the Strategist exhausting.",
+  ["Both comfortable with visible spending", "Shared appreciation for quality over frugality"],
+  ["Strategist is calculating; Inflator is emotional — different decision engines", "Neither will push the other toward financial planning"]);
+
+// --- GUARDIAN × GUARDIAN ---
+addCompat("SG","AX", 70, "Shield meets sensor", "Strong protective instincts on both sides. Steady Guardian builds the structure; Anxious Achiever monitors the gaps. Together you'll have the most prepared household of anyone you know — just make sure you don't spend all your energy protecting yourselves from futures that never come.",
+  ["Both prioritise safety — no arguments about emergency funds", "Guardian calms Achiever; Achiever spots risks Guardian missed"],
+  ["Combined anxiety can cause over-caution and under-investment", "Neither will push the other to take the risks needed to grow"]);
+
+// --- AVOIDER × AVOIDER ---
+addCompat("EE","WN", 48, "Escape meets drift", "Two Avoiders together means money never gets discussed — until it has to. The Emotional Escapist avoids through emotional overwhelm; the Free Spirit avoids through perpetual movement. You'll have a wonderful time until reality lands.",
+  ["Deep mutual understanding — no one is judging anyone", "Low-conflict: neither is confrontational by nature"],
+  ["Money topics stay unaddressed for very long periods", "Neither naturally triggers the other to face financial reality", "Shared avoidance compounds over time"]);
+
+// --- CROSS-CATEGORY ---
+// Builder × Experiencer
+addCompat("AB","SS", 52, "Grind meets image", "The Aggressive Builder earns; the Status Strategist curates the signal of earning. Short-term very attractive — but the Builder may resent funding aesthetics that don't compound, and the Strategist may feel the Builder is too rough around the edges.",
+  ["Builder produces the wins Strategist knows how to amplify", "Strategist helps Builder's ambition look credible externally"],
+  ["Builder sees Strategist spending as waste; Strategist sees Builder's style as unrefined", "Different definition of what success looks like"]);
+
+addCompat("AB","LI", 45, "Grind meets reward", "Aggressive Builder delays gratification to build; Lifestyle Inflator rewards every milestone with upgrades. The Builder will feel like they're filling a bucket with a hole in it. The Inflator will feel chronically under-appreciated.",
+  ["Inflator's enjoyment can remind Builder why they're building", "Builder creates the income Inflator enjoys spending"],
+  ["Fundamental mismatch in spending philosophy", "Builder will eventually try to restructure Inflator's habits — badly", "Inflator may feel judged and controlled"]);
+
+addCompat("AB","LR", 50, "Grind meets beauty", "Aggressive Builder wants to win; Lifestyle Romantic wants to feel alive. The friction is real — but it's also the most complementary tension. Builder needs someone to remind them why the goal matters; Romantic needs someone to fund the dream.",
+  ["Romantic brings emotional richness the Builder forgets to pursue", "Builder provides the security Romantic's lifestyle needs"],
+  ["Builder may see Romantic spending as irresponsible", "Romantic may feel the Builder never stops to enjoy anything"]);
+
+addCompat("WA","SS", 58, "Blueprint meets brand", "Wealth Architect has a plan; Status Strategist has an image to maintain. Can work if the Architect's plan includes the Strategist's positioning budget. Breaks down when image costs start eating into compounding.",
+  ["Architect gives Strategist a financial foundation to signal from", "Strategist helps Architect's plan look intentional publicly"],
+  ["Strategist spending is often not in Architect's model", "Architect may find Strategist's social calculus exhausting"]);
+
+addCompat("WA","LR", 55, "Blueprint meets feeling", "Wealth Architect is building to a destination; Lifestyle Romantic is building a feeling. You can coexist — and the Architect's financial groundwork genuinely enables the Romantic's beautiful life. The conflict comes when feeling and forecast diverge.",
+  ["Architect provides stability; Romantic provides warmth and meaning", "Architect's plan can fund everything the Romantic wants — eventually"],
+  ["Romantic's timeline is now; Architect's timeline is a decade out", "Architect may feel their plan is being emotionally overridden"]);
+
+addCompat("WA","LI", 48, "Blueprint meets indulgence", "Low compatibility on spending philosophy. Wealth Architect compounds deliberately; Lifestyle Inflator spends deliberately. Every inflator purchase is a deviation from the Architect's model. Will require very explicit money agreements to survive.",
+  ["Inflator's enjoyment can help Architect loosen up on small wins", "Architect can help Inflator see the long-term cost of comfort creep"],
+  ["Spending friction is frequent and structural, not one-time", "Architect will try to educate; Inflator will feel lectured"]);
+
+addCompat("FC","SS", 42, "Exit meets entrance", "Freedom Chaser wants out of everything; Status Strategist wants into the right rooms. Fundamentally different social and financial orientations. The Chaser finds the Strategist's networking exhausting; the Strategist finds the Chaser's detachment embarrassing.",
+  ["Both are highly self-directed — no codependency", "Chaser keeps Strategist from getting trapped by image maintenance"],
+  ["Deeply different views on what financial success is for", "Strategist needs visibility; Chaser needs invisibility"]);
+
+addCompat("FC","LI", 50, "Exit meets comfort", "Freedom Chaser wants to reduce dependency; Lifestyle Inflator wants to increase comfort. As long as income supports both, this is fine. When income contracts, priorities collide hard.",
+  ["Inflator's comfort-seeking can make the Chaser's life more enjoyable day-to-day", "Chaser's self-sufficiency means Inflator isn't funding two people's lifestyles"],
+  ["Chaser will cut lifestyle aggressively when threatened; Inflator will resist that", "Different risk tolerance to income volatility"]);
+
+addCompat("FC","LR", 62, "Exit meets experience", "Surprisingly compatible. Both value freedom and presence over accumulation. Freedom Chaser wants the autonomy to leave; Lifestyle Romantic wants the richness to stay. Together you travel well, spend on experiences, and don't obsess over careers.",
+  ["Shared anti-conventionalism — neither wants the default life", "Both prioritise experiences over status symbols"],
+  ["Neither will naturally build long-term financial structure", "Romantic wants to stay; Chaser wants the option to go"]);
+
+addCompat("ST","SS", 65, "Algorithm meets strategy", "Both analytical and status-aware — but The Optimizer optimises efficiency; the Status Strategist optimises image. Good alignment when goals overlap. Tension when the Optimizer's data contradicts the Strategist's spend.",
+  ["Both think strategically — decisions feel mutual, not impulsive", "Optimizer can model the ROI of Strategist's positioning spend"],
+  ["Optimizer may flag Strategist's luxury spend as irrational", "Strategist may find Optimizer's framing cold and unimaginative"]);
+
+addCompat("ST","LR", 45, "Algorithm meets feeling", "Low natural compatibility. The Optimizer runs on data; the Lifestyle Romantic runs on feeling. The Optimizer will try to model the Romantic's spending patterns and the Romantic will find this offensive.",
+  ["Optimizer's structure can free up money for Romantic's experiences", "Romantic can help Optimizer see that not everything is optimisable"],
+  ["Fundamentally different languages for making decisions", "Optimizer sees emotion-spending as a variable to control; Romantic sees it as the point"]);
+
+addCompat("ST","LI", 48, "Algorithm meets appetite", "The Optimizer tracks everything; the Lifestyle Inflator upgrades everything. Will create friction regularly. The Optimizer can show the Inflator exactly what comfort is costing — which may help or enrage, depending on the Inflator's self-awareness.",
+  ["Optimizer's systems can catch Inflator's spend before it becomes structural", "Inflator can remind Optimizer that optimising lifestyle is also a valid goal"],
+  ["Inflator's spending disrupts Optimizer's models constantly", "Optimizer will feel like they're fighting a tide"]);
+
+// Builder × Guardian
+addCompat("AB","SG", 75, "Grind meets shield", "High-function pairing. Aggressive Builder takes the shots; Steady Guardian protects the downside. Builder wins big and occasionally loses big — Guardian is there to make sure the losses don't wipe out the gains. Natural risk partnership.",
+  ["Guardian's stability gives Builder the safety net to take bigger risks", "Builder's drive gives Guardian something worth protecting", "Both are action-oriented — low drama"],
+  ["Builder may feel Guardian's caution is holding them back", "Guardian may find Builder's risk appetite genuinely stressful"]);
+
+addCompat("AB","AX", 60, "Grind meets worry", "The Builder moves fast; the Anxious Achiever checks everything twice. Can work — the Achiever's vigilance catches risks the Builder ignores. Breaks down if the Builder interprets the Achiever's worry as weakness.",
+  ["Achiever's risk-monitoring prevents Builder from self-destructing", "Builder's momentum pulls Achiever forward when anxiety would stall them"],
+  ["Builder finds Achiever's caution frustrating under pressure", "Achiever finds Builder's aggression genuinely alarming"]);
+
+addCompat("WA","SG", 80, "Blueprint meets shield", "Excellent pairing. Both are deliberate, long-horizon, and low-drama. Wealth Architect has the destination; Steady Guardian protects the journey. You'll make decisions slowly and correctly and build something very stable.",
+  ["Near-identical time preference — both play the long game", "Guardian's protection instinct aligns with Architect's accumulation logic", "Very low financial conflict — both value security differently but compatibly"],
+  ["Neither will push the other toward bold opportunity", "Risk appetite combined is near-zero — can under-invest for growth"]);
+
+addCompat("WA","AX", 68, "Blueprint meets worry", "Wealth Architect provides the plan; Anxious Achiever monitors its execution nervously. Works when the Architect's plan is robust enough to absorb the Achiever's scenario planning. Breaks down when the Achiever's anxiety starts re-writing the plan.",
+  ["Achiever's vigilance catches plan deviations early", "Architect's calmness is genuinely soothing for Achiever anxiety"],
+  ["Achiever may add unnecessary complexity to an already good plan", "Architect may dismiss Achiever concerns that were actually valid"]);
+
+addCompat("FC","SG", 50, "Exit meets anchor", "Freedom Chaser wants to reduce anchors; Steady Guardian wants to build them. Genuine philosophical tension. Can work if the Guardian accepts the Chaser needs to feel unconstrained, and the Chaser accepts the Guardian's need for stability.",
+  ["Guardian provides the safety infrastructure that lets Chaser actually leave", "Chaser prevents Guardian from over-investing in protective structures"],
+  ["Guardian's financial commitments feel like chains to Chaser", "Chaser's desire to stay light feels reckless to Guardian"]);
+
+addCompat("FC","AX", 44, "Exit meets alert", "Both uncomfortable — the Anxious Achiever's worst fear is instability, and the Freedom Chaser embodies it. Deep friction unless the Chaser's financial independence is genuinely demonstrated to the Achiever.",
+  ["Chaser's self-sufficiency means they're not a financial burden on Achiever", "Achiever's preparation can catch risks the Chaser ignores"],
+  ["Achiever's anxiety is triggered by everything the Chaser does", "Chaser finds Achiever's monitoring suffocating"]);
+
+addCompat("ST","SG", 72, "Algorithm meets shield", "Solid pairing. The Optimizer runs the system efficiently; the Steady Guardian keeps it safe. You'll have a very well-run financial life with strong downside protection. May lack aggression on the upside.",
+  ["Both systematic — financial life runs smoothly", "Optimizer's efficiency + Guardian's protection = strong compound base", "Low conflict on financial decisions"],
+  ["Neither pushes the other toward wealth creation, only preservation", "Combined conservatism can mean missed growth windows"]);
+
+addCompat("ST","AX", 62, "Algorithm meets alarm", "The Optimizer has systems for everything, which genuinely calms the Anxious Achiever — right up until the system finds a gap the Achiever hadn't thought of. The Optimizer must earn trust gradually; the Achiever must let the system run.",
+  ["Optimizer's data gives Achiever's anxiety something concrete to work with", "Achiever's monitoring instinct improves Optimizer's system inputs"],
+  ["Achiever may override Optimizer's systems with emotional decisions during downturns", "Optimizer may underestimate how much emotional reassurance the Achiever needs"]);
+
+// Experiencer × Guardian
+addCompat("LR","SG", 58, "Romance meets anchor", "Lifestyle Romantic wants to feel alive; Steady Guardian wants to keep everything safe. The Guardian enables the Romantic's experiences by maintaining the floor. Works when roles are accepted — breaks when the Romantic sees the Guardian's structure as a ceiling.",
+  ["Guardian creates the stability that lets Romantic enjoy without worry", "Romantic brings warmth and meaning to Guardian's otherwise utilitarian world"],
+  ["Romantic's discretionary spending is a recurring point of friction", "Guardian may feel they're working hard so the Romantic can spend freely"]);
+
+addCompat("LR","AX", 52, "Romance meets anxiety", "The Romantic spends for feeling; the Achiever is anxious about spending. Every discretionary purchase is a small conflict. Can work if both genuinely value what the other brings — warmth vs. security — and have separate money autonomy.",
+  ["Achiever's vigilance creates a floor the Romantic can trust", "Romantic's lightness can temporarily lift the Achiever's chronic stress"],
+  ["Achiever's anxiety around Romantic's spending triggers regular conflict", "Romantic may feel permanently judged for how they use money"]);
+
+addCompat("LI","SG", 42, "Appetite meets shield", "High friction. Lifestyle Inflator's comfort spending conflicts directly with Steady Guardian's protection logic. The Guardian will feel like they're bailing out a boat while the Inflator makes holes. Requires hard money agreements to function.",
+  ["Guardian's structure prevents Inflator's spending from becoming structural debt", "Inflator's quality-of-life focus can soften Guardian's hyper-frugal tendencies"],
+  ["Guardian sees Inflator's spending as threat to security — regularly", "Inflator feels monitored and controlled in this pairing"]);
+
+addCompat("LI","AX", 38, "Appetite meets alarm", "Difficult pairing. Lifestyle Inflator increases comfort-spending naturally; Anxious Achiever is triggered by comfort-spending. The Achiever will spend significant energy trying to manage what the Inflator considers normal. High conflict, low resolution without professional help.",
+  ["Inflator's enjoyment can be a reminder to Achiever that life should also be lived", "Achiever catches Inflator before lifestyle creep becomes structural"],
+  ["Achiever finds Inflator's spending pattern genuinely anxiety-inducing", "Inflator feels permanently wrong in this pairing", "Difficult to find a shared spending framework"]);
+
+addCompat("SS","SG", 55, "Signal meets shield", "Status Strategist invests in image; Steady Guardian invests in protection. The Guardian will tolerate the Strategist's positioning spend only if the emergency fund is fully loaded and the insurance is paid. Surface alignment on financial seriousness, deep divergence on what to do with it.",
+  ["Guardian's groundwork lets Strategist's positioning look credible long-term", "Strategist's social capital can create opportunities Guardian's conservatism wouldn't"],
+  ["Guardian views status-spending as non-essential; Strategist views it as ROI", "Guardian's frugal instincts feel like a ceiling on Strategist's ambition"]);
+
+addCompat("SS","AX", 50, "Signal meets scanner", "Status Strategist projects calm confidence; Anxious Achiever scans for threats. Interesting tension. The Achiever's vigilance makes the Strategist's positioning safer; the Strategist's composure can quiet the Achiever's alarm. But the Strategist's spending may be the Achiever's biggest trigger.",
+  ["Achiever's monitoring gives Strategist's ambition a risk-check", "Strategist's external success helps Achiever feel more secure"],
+  ["Achiever's anxiety about status-spending creates regular friction", "Strategist finds Achiever's conservatism limiting"]);
+
+// Experiencer × Avoider
+addCompat("LR","EE", 55, "Romance meets refuge", "Both emotionally-driven and avoidant of financial reality — but for different reasons. The Romantic wants beauty; the Escapist wants relief. You'll create a warm, feeling-first environment together. Financial structure will need to come from somewhere external to both of you.",
+  ["Deep mutual emotional attunement — very low conflict", "Both prioritise how life feels over how it looks on paper"],
+  ["Neither will naturally initiate financial conversations", "Shared avoidance creates a comfortable but financially fragile home"]);
+
+addCompat("LR","WN", 62, "Romance meets wandering", "Surprisingly compatible. Both live in the present, prioritise experience, and don't fetishise accumulation. The Romantic wants depth in the moment; the Free Spirit wants breadth across moments. You'll have a rich, interesting life together and a complicated tax return.",
+  ["Shared anti-accumulation philosophy — very low spending friction", "Both value experience over status or security"],
+  ["Neither will build long-term financial structure without external help", "May avoid 'adult money conversations' indefinitely"]);
+
+addCompat("LI","EE", 48, "Reward meets escape", "Both spend for emotional reasons — the Inflator for reward, the Escapist for relief. Together you'll justify each other's purchases without realising it. No natural anchor against comfort spending.",
+  ["Deep mutual understanding of emotional spending — no judgment", "Neither will make the other feel guilty for necessary self-care spending"],
+  ["No financial guardian between you — spending can spiral in harmony", "Neither is naturally equipped to start hard money conversations"]);
+
+addCompat("LI","WN", 52, "Appetite meets drift", "Lifestyle Inflator rewards deliberately; Free Spirit drifts without noticing. The Inflator at least tracks what they're buying. The Free Spirit may not. Together you'll spend comfortably and plan rarely.",
+  ["Inflator's enjoyment focus aligns with Free Spirit's experiential values", "Neither will judge the other for spending on life"],
+  ["Combined avoidance of financial planning creates long-term exposure", "When income drops, neither has built the reserves to weather it"]);
+
+addCompat("SS","EE", 42, "Signal meets shadow", "Status Strategist is hyper-visible; Emotional Escapist goes invisible when stressed. Very different relationships with image and money. The Strategist may find the Escapist's avoidance embarrassing; the Escapist will feel the Strategist is performing constantly.",
+  ["Strategist can create external structure the Escapist benefits from", "Escapist's sensitivity can humanise the Strategist's calculated approach"],
+  ["Strategist finds Escapist's financial chaos a liability to their image", "Escapist feels judged and performed at simultaneously"]);
+
+addCompat("SS","WN", 40, "Signal meets drift", "Difficult. Status Strategist is building toward a specific image of success; Free Spirit is wandering away from all images of success. Fundamentally incompatible orientations to money, status, and ambition.",
+  ["Free Spirit's detachment from status games can occasionally free the Strategist up", "Strategist can help Free Spirit build enough foundation to actually wander freely"],
+  ["Strategist finds Free Spirit's lack of direction genuinely frustrating", "Free Spirit finds Strategist's positioning exhausting and artificial", "Very different endgames"]);
+
+// Guardian × Avoider
+addCompat("SG","EE", 55, "Shield meets shadow", "Steady Guardian builds the fortress; Emotional Escapist hides inside it. The Guardian will carry the financial weight of this pairing — which they can handle, until they feel alone in it. The Escapist needs to meet the Guardian halfway.",
+  ["Guardian's protection structure genuinely reduces Escapist's anxiety triggers", "Escapist's emotional depth can help Guardian develop their softer side"],
+  ["Guardian does all the financial heavy lifting — burnout risk", "Escapist may feel permanently financially infantilised"]);
+
+addCompat("SG","WN", 50, "Shield meets wandering", "Steady Guardian wants to anchor; Free Spirit wants to float. The Guardian can provide the base the Free Spirit actually needs — but only if the Spirit accepts some structure. If the Spirit keeps drifting, the Guardian will eventually stop building.",
+  ["Guardian's stability creates a home base the Free Spirit genuinely benefits from", "Free Spirit reminds Guardian that not everything needs to be locked down"],
+  ["Guardian may resent building a structure the Free Spirit doesn't inhabit", "Free Spirit finds Guardian's anchors feel like chains"]);
+
+addCompat("AX","EE", 45, "Alert meets escape", "Anxious Achiever monitors everything; Emotional Escapist avoids everything. Your coping mechanisms are opposite. The Achiever's monitoring will feel suffocating to the Escapist; the Escapist's avoidance will escalate the Achiever's anxiety.",
+  ["Achiever ensures nothing falls through the cracks", "Escapist's need for breathing room can force Achiever to step back occasionally"],
+  ["Achiever's anxiety is amplified by Escapist's avoidance", "Escapist's coping strategy is the exact opposite of what Achiever needs to feel safe", "High conflict, high anxiety household"]);
+
+addCompat("AX","WN", 48, "Alert meets drift", "Anxious Achiever needs to know the plan; Free Spirit resists having one. The Achiever's need for certainty meets the Spirit's need for openness. Can work if the Spirit accepts some planning structure; fails if the Achiever tries to control the Spirit's entire financial life.",
+  ["Achiever creates the safety net that lets Free Spirit move freely", "Free Spirit can help Achiever notice when their vigilance is excessive"],
+  ["Achiever's need for certainty conflicts fundamentally with Spirit's orientation", "Free Spirit's financial looseness is Achiever's core anxiety"]);
+
+// Builder × Avoider
+addCompat("AB","EE", 42, "Grind meets escape", "High friction. Aggressive Builder creates intensity; Emotional Escapist retreats from it. The Builder will interpret the Escapist's avoidance as sabotage. The Escapist will find the Builder's pressure overwhelming. Hard pairing without significant self-awareness on both sides.",
+  ["Builder creates financial results that reduce Escapist's underlying anxiety", "Escapist's sensitivity can surface emotional realities the Builder ignores"],
+  ["Builder's intensity is Escapist's trigger — chronic misread of each other", "Escapist's avoidance looks like passivity to the Builder", "Neither naturally meets the other halfway"]);
+
+addCompat("AB","WN", 48, "Grind meets drift", "Aggressive Builder is charging forward; Free Spirit is drifting sideways. The Builder will find the Spirit's lack of direction deeply frustrating. The Spirit will find the Builder's intensity suffocating. Can work only if their domains are clearly separated.",
+  ["Builder's drive can pull Free Spirit forward when they're willing", "Free Spirit can occasionally remind Builder that not every moment needs to be productive"],
+  ["Builder may try to fix the Free Spirit's financial life — badly", "Free Spirit will resist every structure the Builder imposes"]);
+
+addCompat("WA","EE", 52, "Blueprint meets escape", "Wealth Architect has a 10-year plan; Emotional Escapist has a 10-minute attention span for finances. The Architect can carry the financial structure for both — but needs the Escapist to engage occasionally. More manageable than Builder × Avoider; lower pressure environment.",
+  ["Architect's calm delivery of financial information is less triggering for Escapist", "Escapist's avoidance is a data point the Architect can plan around"],
+  ["Escapist may resist Architect's plan without fully understanding it", "Architect may feel they're planning in a vacuum"]);
+
+addCompat("WA","WN", 55, "Blueprint meets freedom", "Wealth Architect builds toward a specific future; Free Spirit builds toward no particular future. Architect can tolerate this if the Spirit doesn't actively disrupt the plan. Spirit can tolerate this if the Architect doesn't try to enlist them in execution.",
+  ["Architect's plan creates a foundation the Free Spirit benefits from without noticing", "Free Spirit's lightness keeps the Architect from becoming too rigid"],
+  ["Spirit's financial looseness may periodically disrupt Architect's model", "Architect will eventually try to bring the Spirit into the plan — which will fail"]);
+
+addCompat("FC","EE", 58, "Exit meets escape", "Freedom Chaser wants out; Emotional Escapist already checked out. Oddly compatible — neither needs the other to be ambitious, neither judges the other's disengagement. The risk is that both might drift in the same direction at the same time.",
+  ["Mutual acceptance of non-conventional financial attitudes", "Low-pressure dynamic — neither pushes the other toward mainstream metrics"],
+  ["Neither will build financial structure proactively", "Joint crises may land without warning because neither was monitoring"]);
+
+addCompat("FC","WN", 65, "Exit meets wander", "Highest Avoider-Builder compatibility. Both value freedom over accumulation, mobility over roots. Freedom Chaser is deliberate about independence; Free Spirit is casual about it. You'll live lightly and move freely. Just make sure one of you is watching the numbers.",
+  ["Shared rejection of conventional success metrics — very low conflict", "Both comfortable with uncertainty and change", "Good travel and life-design companions"],
+  ["Neither will build long-term financial infrastructure without prompting", "Freedom Chaser's self-sufficiency doesn't guarantee Spirit's financial safety"]);
+
+addCompat("ST","EE", 50, "Algorithm meets avoidance", "The Optimizer wants to systematise everything; the Emotional Escapist avoids everything. The Optimizer's systems can actually help the Escapist — if presented calmly and not as corrections. Breaks down when the Optimizer treats the Escapist's avoidance as an optimisation problem.",
+  ["Optimizer's automation removes Escapist's most triggering financial tasks", "Escapist can improve when handed a system, not a lesson"],
+  ["Optimizer's data-first approach feels cold and overwhelming to Escapist", "Optimizer may run out of patience for Escapist's disengagement"]);
+
+addCompat("ST","WN", 45, "Algorithm meets wandering", "The Optimizer builds precise systems; the Free Spirit wanders through them. The Optimizer will find the Spirit's financial looseness irrational. The Spirit will find the Optimizer's precision oppressive. Needs very clear financial separation to function.",
+  ["Optimizer can build systems that protect the Free Spirit without their input", "Free Spirit occasionally asks naive questions that reveal genuine gaps in Optimizer's models"],
+  ["Free Spirit will not engage with or maintain Optimizer's systems", "Optimizer reads Spirit's disorganisation as a character flaw — it's not"]);
+
+// Same-category same-archetype (handled separately in UI)
+// These are added for completeness if needed
+addCompat("AB","AB", 70, "Mirror match", "", [], []);
+addCompat("FC","FC", 68, "Mirror match", "", [], []);
+addCompat("WA","WA", 82, "Mirror match", "", [], []);
+addCompat("ST","ST", 75, "Mirror match", "", [], []);
+addCompat("SS","SS", 60, "Mirror match", "", [], []);
+addCompat("LI","LI", 55, "Mirror match", "", [], []);
+addCompat("LR","LR", 70, "Mirror match", "", [], []);
+addCompat("SG","SG", 85, "Mirror match", "", [], []);
+addCompat("AX","AX", 50, "Mirror match", "", [], []);
+addCompat("EE","EE", 52, "Mirror match", "", [], []);
+addCompat("WN","WN", 62, "Mirror match", "", [], []);
+
+var ORDER = ["WA","AB","ST","FC","LR","LI","SS","SG","AX","EE","WN"];
+
+function populate() {
+  var sA = document.getElementById("selA");
+  var sB = document.getElementById("selB");
+  ORDER.forEach(function(code) {
+    var opt1 = document.createElement("option");
+    opt1.value = code;
+    opt1.textContent = NAMES[code] + " (" + CAT[code] + ")";
+    var opt2 = document.createElement("option");
+    opt2.value = code;
+    opt2.textContent = NAMES[code] + " (" + CAT[code] + ")";
+    sA.appendChild(opt1);
+    sB.appendChild(opt2);
+  });
+  // Read URL params
+  var params = new URLSearchParams(window.location.search);
+  var pa = params.get("a"), pb = params.get("b");
+  if (pa && NAMES[pa]) sA.value = pa;
+  if (pb && NAMES[pb]) sB.value = pb;
+  else {
+    // Default B to something different from A
+    var codes = ORDER.filter(function(c){ return c !== (pa || ORDER[0]); });
+    sB.value = codes[0];
+  }
+  if (pa) checkCompat();
+}
+
+function meterColor(score) {
+  if (score >= 75) return "#4CAF50";
+  if (score >= 60) return "#F5C842";
+  if (score >= 45) return "#FF9800";
+  return "#F44336";
+}
+
+function verdictEmoji(score) {
+  if (score >= 80) return "🔥";
+  if (score >= 65) return "⚡";
+  if (score >= 50) return "⚖️";
+  if (score >= 38) return "⚠️";
+  return "💥";
+}
+
+function checkCompat() {
+  var a = document.getElementById("selA").value;
+  var b = document.getElementById("selB").value;
+  var k = key(a, b);
+  var c = COMPAT[k];
+  var out = document.getElementById("result");
+
+  if (a === b) {
+    out.innerHTML = '<div class="same-card">'+
+      '<div class="same-emoji">🪞</div>'+
+      '<div class="same-title">Same type — mirror match</div>'+
+      '<div class="same-body">Two '+NAMES[a]+'s together. You\'ll understand each other intuitively — but you\'ll also share the same blind spots. Your strengths will compound. So will your weaknesses.</div>'+
+      shareSection(a, a)+
+    '</div>';
+    return;
+  }
+
+  if (!c) {
+    out.innerHTML = '<div class="result-card"><p style="color:#666">Compatibility data for this pair is coming soon.</p></div>';
+    return;
+  }
+
+  var fillColor = meterColor(c.score);
+  var emoji = verdictEmoji(c.score);
+
+  var strengthsHtml = c.strengths.map(function(s){ return '<div class="strength-item">✓ '+s+'</div>'; }).join('');
+  var tensionsHtml = c.tensions.map(function(t){ return '<div class="tension-item">↯ '+t+'</div>'; }).join('');
+
+  out.innerHTML = '<div class="result-card">'+
+    '<div class="compat-pair">'+
+      '<div>'+
+        '<div class="compat-blob" style="background:'+COLORS[a]+'">'+NAMES[a].charAt(0)+'</div>'+
+        '<div class="compat-name">'+NAMES[a]+'</div>'+
+        '<div class="compat-cat">'+CAT[a]+'</div>'+
+      '</div>'+
+      '<div class="compat-x">×</div>'+
+      '<div>'+
+        '<div class="compat-blob" style="background:'+COLORS[b]+'">'+NAMES[b].charAt(0)+'</div>'+
+        '<div class="compat-name">'+NAMES[b]+'</div>'+
+        '<div class="compat-cat">'+CAT[b]+'</div>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="score-label">Compatibility score</div>'+
+    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">'+
+      '<div class="compat-meter-wrap">'+
+        '<div class="compat-meter-bg"><div class="compat-meter-fill" style="width:'+c.score+'%;background:'+fillColor+'"></div></div>'+
+      '</div>'+
+      '<div class="compat-score-num">'+c.score+'</div>'+
+    '</div>'+
+
+    '<div class="compat-verdict">'+emoji+' '+c.verdict+'</div>'+
+    '<div class="compat-summary">'+c.summary+'</div>'+
+
+    (strengthsHtml ? '<div class="tension-section"><div class="tension-label">What works</div>'+strengthsHtml+'</div>' : '')+
+    (tensionsHtml ? '<div class="tension-section"><div class="tension-label">Where it gets hard</div>'+tensionsHtml+'</div>' : '')+
+    shareSection(a, b)+
+  '</div>';
+
+  // Update URL without reload
+  var newUrl = COMPAT_URL + '?a=' + a + '&b=' + b;
+  window.history.replaceState({}, '', window.location.pathname + '?a='+a+'&b='+b);
+}
+
+function shareSection(a, b) {
+  var text = "I checked the duRingIt Monie Compatibility between "+NAMES[a]+" and "+NAMES[b]+" 👀\n\nCheck yours: "+COMPAT_URL+"?a="+a+"&b="+b;
+  var waHref = "https://wa.me/?text="+encodeURIComponent(text);
+  return '<button class="btn-whatsapp" onclick="window.open(\''+waHref+'\',\'_blank\')">💬 Share this result on WhatsApp</button>'+
+    '<a class="btn-retake" href="'+QUIZ_URL+'">Don\'t know your type? Take the quiz →</a>';
+}
+
+populate();
+</script>
+</body>
+</html>
