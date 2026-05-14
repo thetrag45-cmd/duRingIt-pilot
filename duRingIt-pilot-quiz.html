@@ -994,9 +994,9 @@ function rResult() {
 
       (S.flags.length ? '<div style="margin-top:18px">'+S.flags.map(f=>'<div class="flag">⚑ '+escHtml(f)+'</div>').join('')+'</div>' : '')+
     '</div>'+
-    '<a class="btn-blog" href="./archetypes/'+SLUGS[code]+'.html" target="_blank">Read the full '+escHtml(a.name)+' profile →</a>'+
+    '<button class="btn-blog" onclick="navigateAway(\'./archetypes/'+SLUGS[code]+'.html\')">Read the full '+escHtml(a.name)+' profile →</button>'+
     '<button class="btn-whatsapp" onclick="shareWhatsApp(\''+code+'\')">💬 Challenge a friend on WhatsApp</button>'+
-    '<a class="btn-blog" href="'+COMPAT_URL+'?a='+code+'" target="_blank" style="margin-bottom:12px">🔁 See your compatibility with other types →</a>'+
+    '<button class="btn-blog" onclick="navigateAway(\''+COMPAT_URL+'?a='+code+'\')" style="margin-bottom:12px">🔁 See your compatibility with other types →</button>'+
     '<div class="btn-tally-wrap">'+
       '<div class="btn-tally-title">Want your personalised money report?</div>'+
       '<div class="btn-tally-sub">Get a deeper breakdown of your '+escHtml(a.name)+' profile delivered to your inbox.</div>'+
@@ -1044,12 +1044,12 @@ function rBridge() {
         '</div>'+
       '</div>'+
       '<div style="display:flex;gap:10px;margin-top:16px">'+
-        '<a class="btn-blog" href="./archetypes/'+SLUGS[a]+'.html" target="_blank" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[a].name)+' profile →</a>'+
-        '<a class="btn-blog" href="./archetypes/'+SLUGS[b]+'.html" target="_blank" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[b].name)+' profile →</a>'+
+        '<button class="btn-blog" onclick="navigateAway(\'./archetypes/'+SLUGS[a]+'.html\')" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[a].name)+' profile →</button>'+
+        '<button class="btn-blog" onclick="navigateAway(\'./archetypes/'+SLUGS[b]+'.html\')" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[b].name)+' profile →</button>'+
       '</div>'+
     '</div>'+
     '<button class="btn-whatsapp" onclick="shareWhatsApp(null,[\''+a+'\',\''+b+'\'])">💬 Challenge a friend on WhatsApp</button>'+
-    '<a class="btn-blog" href="'+COMPAT_URL+'?a='+a+'&b='+b+'" target="_blank" style="margin-bottom:12px">🔁 See your compatibility →</a>'+
+    '<button class="btn-blog" onclick="navigateAway(\''+COMPAT_URL+'?a='+a+'&b='+b+'\')" style="margin-bottom:12px">🔁 See your compatibility →</button>'+
     '<div class="btn-tally-wrap">'+
       '<div class="btn-tally-title">Want your personalised money report?</div>'+
       '<div class="btn-tally-sub">Get a deeper breakdown of your Bridge identity delivered to your inbox.</div>'+
@@ -1244,7 +1244,33 @@ function escHtml(s) {
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
 }
 
-// Boot
+// ── State persistence: save result so browser back-button restores it ──────
+function navigateAway(url) {
+  try { sessionStorage.setItem('_quizState', JSON.stringify(S)); } catch(e) {}
+  window.location.href = url;
+}
+
+// Boot: restore state if user navigated away from result/validate and came back
+(function() {
+  try {
+    var saved = sessionStorage.getItem('_quizState');
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      sessionStorage.removeItem('_quizState');
+      if (parsed && (parsed.screen === 'result' || parsed.screen === 'validate')) {
+        S = parsed;
+        // Re-initialise any missing fields that aren't serialisable
+        if (!S.scores)    S.scores    = {};
+        if (!S.flags)     S.flags     = [];
+        if (!S.tbAns)     S.tbAns     = [];
+        if (!S.tbQs)      S.tbQs      = [];
+        if (!S.scaleAns)  S.scaleAns  = {};
+        if (!S.val)       S.val       = {};
+      }
+    }
+  } catch(e) {}
+})();
+
 render();
 </script>
 </body>
