@@ -69,6 +69,16 @@ body {
 }
 .btn-primary:hover { background: #FFD700; }
 .btn-primary:disabled { background: #2A2A2A; color: #555; cursor: not-allowed; }
+.btn-back {
+  display: block; width: 100%;
+  background: transparent; color: #555;
+  font-size: 14px; font-weight: 500;
+  padding: 12px; border-radius: 12px;
+  border: 1.5px solid #222; cursor: pointer;
+  font-family: inherit; margin-top: 8px;
+  text-align: center; transition: border-color 0.12s, color 0.12s;
+}
+.btn-back:hover { border-color: #444; color: #AAA; }
 .btn-blog {
   display: block; width: 100%;
   background: transparent; color: #F5C842;
@@ -773,6 +783,7 @@ var S = {
   name: "",
   scores: {},
   scaleAns: {},
+  mainAns: [],
   tbPair: null,
   tbQs: [],
   tbAns: [],
@@ -784,7 +795,7 @@ var S = {
 };
 
 function resetState() {
-  S = { screen:"welcome", name:S.name, scores:{}, scaleAns:{}, tbPair:null, tbQs:[], tbAns:[], result:null, bridge:null, flags:[], qi:0, val:{} };
+  S = { screen:"welcome", name:S.name, scores:{}, scaleAns:{}, mainAns:[], tbPair:null, tbQs:[], tbAns:[], result:null, bridge:null, flags:[], qi:0, val:{} };
   Object.keys(ARC).forEach(k => S.scores[k] = 0);
 }
 resetState();
@@ -797,6 +808,12 @@ function scoreChoice(primary) {
   S.scores[primary] += 2.0;
   const fam = ARC[primary].fam;
   FAM[fam].forEach(c => { if (c !== primary) S.scores[c] += 0.5; });
+}
+
+function unscoreChoice(primary) {
+  S.scores[primary] -= 2.0;
+  const fam = ARC[primary].fam;
+  FAM[fam].forEach(c => { if (c !== primary) S.scores[c] -= 0.5; });
 }
 
 function topTwo() {
@@ -887,7 +904,8 @@ function rMain() {
       '<div class="q-label">'+q.id+'</div>'+
       '<div class="q-text">'+escHtml(q.text)+'</div>'+
       q.ans.map((a,i) => '<button class="ans-btn" id="ans'+i+'" onclick="pickMain('+i+')">'+escHtml(a.t)+'</button>').join('')+
-    '</div>';
+    '</div>'+
+    '<button class="btn-back" onclick="goBack()">← Back</button>';
 }
 
 function rScale() {
@@ -906,7 +924,8 @@ function rScale() {
     '</div>'+
     '<button class="btn-primary" onclick="nextScale()" '+(sel===0?'disabled':'')+'>'+
       (S.qi < 3 ? 'Next →' : 'See My Result →')+
-    '</button>';
+    '</button>'+
+    '<button class="btn-back" onclick="goBack()">← Back</button>';
 }
 
 function rTB() {
@@ -918,7 +937,8 @@ function rTB() {
       '<div class="q-text">'+escHtml(q.text)+'</div>'+
       '<button class="ans-btn" onclick="pickTB(\''+q.a.c+'\')">'+escHtml(q.a.t)+'</button>'+
       '<button class="ans-btn" onclick="pickTB(\''+q.b.c+'\')">'+escHtml(q.b.t)+'</button>'+
-    '</div>';
+    '</div>'+
+    '<button class="btn-back" onclick="goBack()">← Back</button>';
 }
 
 var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
@@ -1102,6 +1122,7 @@ function rValidate() {
     '</div>'+
     '<button class="btn-primary" onclick="submitVal()" '+(canSub?'':'disabled')+'>Export My Data →</button>'+
     (v.exported ? renderExport() : '')+
+    '<button class="btn-back" onclick="goBack()">← Back to result</button>'+
     '<button class="btn-restart" onclick="restart()">↺ Start over</button>';
 }
 
@@ -1144,6 +1165,53 @@ function buildExport() {
 // HANDLERS
 // ─────────────────────────────────────────────
 
+function goBack() {
+  if (S.screen === 'validate') {
+    S.screen = 'result'; render(); scrollTo(0,0); return;
+  }
+  if (S.screen === 'tb') {
+    if (S.qi === 0) {
+      // Back to last scale question
+      S.tbAns = []; S.tbQs = []; S.tbPair = null;
+      S.screen = 'scale'; S.qi = SCALE_QS.length - 1;
+    } else {
+      S.qi--;
+      S.tbAns.pop();
+    }
+    render(); scrollTo(0,0); return;
+  }
+  if (S.screen === 'scale') {
+    if (S.qi === 0) {
+      // Back to last main question — unscore it so user can re-pick
+      var lastIdx = MAIN_QS.length - 1;
+      var prevAns = S.mainAns[lastIdx];
+      if (prevAns !== undefined) {
+        unscoreChoice(MAIN_QS[lastIdx].ans[prevAns].p);
+        S.mainAns.splice(lastIdx, 1);
+      }
+      S.screen = 'main'; S.qi = lastIdx;
+    } else {
+      S.qi--;
+    }
+    render(); scrollTo(0,0); return;
+  }
+  if (S.screen === 'main') {
+    if (S.qi === 0) {
+      S.screen = 'welcome';
+    } else {
+      // Unscore the question we're going back to
+      var prevQi = S.qi - 1;
+      var prevAns = S.mainAns[prevQi];
+      if (prevAns !== undefined) {
+        unscoreChoice(MAIN_QS[prevQi].ans[prevAns].p);
+        S.mainAns.splice(prevQi, 1);
+      }
+      S.qi--;
+    }
+    render(); scrollTo(0,0); return;
+  }
+}
+
 function startQuiz() {
   var el = document.getElementById("nameIn");
   S.name = el ? el.value.trim() : "";
@@ -1159,6 +1227,7 @@ function pickMain(idx) {
   // Flash selected
   var btns = document.querySelectorAll(".ans-btn");
   if (btns[idx]) btns[idx].classList.add("chosen");
+  S.mainAns[S.qi] = idx;  // record for back-navigation
   scoreChoice(primary);
   setTimeout(function(){
     S.qi++;
@@ -1265,6 +1334,7 @@ function navigateAway(url) {
         if (!S.tbAns)     S.tbAns     = [];
         if (!S.tbQs)      S.tbQs      = [];
         if (!S.scaleAns)  S.scaleAns  = {};
+        if (!S.mainAns)   S.mainAns   = [];
         if (!S.val)       S.val       = {};
       }
     }
