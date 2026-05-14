@@ -1035,7 +1035,8 @@ function rResult() {
         }).join('')+
       '</div>'+
     '</div>'+
-    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>';
+    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>'+
+    '<button class="btn-back" onclick="goBack()">← Back to Q16</button>';
 }
 
 function rBridge() {
@@ -1089,7 +1090,8 @@ function rBridge() {
         }).join('')+
       '</div>'+
     '</div>'+
-    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>';
+    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>'+
+    '<button class="btn-back" onclick="goBack()">← Back to Q16</button>';
 }
 
 function rValidate() {
@@ -1168,6 +1170,13 @@ function buildExport() {
 function goBack() {
   if (S.screen === 'validate') {
     S.screen = 'result'; render(); scrollTo(0,0); return;
+  }
+  if (S.screen === 'result') {
+    // Clear result state; go back to Q16 (last scale question)
+    S.result = null; S.bridge = null; S.flags = [];
+    S.tbAns = []; S.tbQs = []; S.tbPair = null;
+    S.screen = 'scale'; S.qi = SCALE_QS.length - 1;
+    render(); scrollTo(0,0); return;
   }
   if (S.screen === 'tb') {
     if (S.qi === 0) {
