@@ -1175,7 +1175,7 @@ function goBack() {
     // Clear result state; go back to Q16 (last scale question)
     S.result = null; S.bridge = null; S.flags = [];
     S.tbAns = []; S.tbQs = []; S.tbPair = null;
-    S.screen = 'scale'; S.qi = SCALE_QS.length - 1;
+    S.screen = 'scale'; S.qi = SCALE_QS.length - 1;  // always index 3 (Q16)
     render(); scrollTo(0,0); return;
   }
   if (S.screen === 'tb') {
