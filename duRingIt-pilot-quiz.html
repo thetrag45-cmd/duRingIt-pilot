@@ -1191,7 +1191,10 @@ function goBack() {
   }
   if (S.screen === 'scale') {
     if (S.qi === 0) {
-      // Back to last main question — unscore it so user can re-pick
+      // Back to last main question — remove all scale contributions first,
+      // then unscore the last main question so user can re-pick
+      removeScaleScores();
+      S.scaleAns = {};
       var lastIdx = MAIN_QS.length - 1;
       var prevAns = S.mainAns[lastIdx];
       if (prevAns !== undefined) {
@@ -1245,8 +1248,57 @@ function pickMain(idx) {
   }, 200);
 }
 
+// Apply lightweight score contributions from scale questions (Option B).
+// Scale is 1–5; we center at 3 so middle answer is neutral.
+// Weight 0.3/pt → max ±0.6 per question (vs 2.0 for main Qs).
+var SCALE_WEIGHTS = {
+  Q13: { WA:0.3, SG:0.3, ST:0.3, EE:-0.3 },        // high=checks finances under stress
+  Q14: { AX:0.3, ST:0.2, AB:-0.3 },                 // high=overthinks decisions
+  Q15: { LR:0.3, LI:0.3, EE:0.3, WA:-0.3, FC:-0.2 }, // high=spends for mood boost
+  Q16: { WA:0.3, SG:0.3, FC:0.25, LR:-0.3, EE:-0.3, WN:-0.25 } // high=sticks to plan
+};
+
+function applyScaleScores() {
+  Object.keys(SCALE_WEIGHTS).forEach(function(qid) {
+    var val = S.scaleAns[qid] || 0;
+    if (!val) return; // unanswered
+    var delta = val - 3; // -2..+2
+    var weights = SCALE_WEIGHTS[qid];
+    Object.keys(weights).forEach(function(arc) {
+      S.scores[arc] = (S.scores[arc] || 0) + delta * weights[arc];
+    });
+  });
+}
+
+function removeScaleScores() {
+  Object.keys(SCALE_WEIGHTS).forEach(function(qid) {
+    var val = S.scaleAns[qid] || 0;
+    if (!val) return;
+    var delta = val - 3;
+    var weights = SCALE_WEIGHTS[qid];
+    Object.keys(weights).forEach(function(arc) {
+      S.scores[arc] = (S.scores[arc] || 0) - delta * weights[arc];
+    });
+  });
+}
+
 function pickScale(qid, dot) {
+  // Remove old contribution for this question before updating
+  var oldVal = S.scaleAns[qid] || 0;
+  if (oldVal) {
+    var oldDelta = oldVal - 3;
+    var weights = SCALE_WEIGHTS[qid];
+    Object.keys(weights).forEach(function(arc) {
+      S.scores[arc] = (S.scores[arc] || 0) - oldDelta * weights[arc];
+    });
+  }
   S.scaleAns[qid] = dot;
+  // Apply new contribution immediately
+  var newDelta = dot - 3;
+  var weights = SCALE_WEIGHTS[qid];
+  Object.keys(weights).forEach(function(arc) {
+    S.scores[arc] = (S.scores[arc] || 0) + newDelta * weights[arc];
+  });
   render();
 }
 
