@@ -2,143 +2,798 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>duRingIt — Monie Compatibility</title>
-<meta name="description" content="Find out how two money types click — or clash. duRingIt Monie Compatibility.">
-<meta property="og:title" content="duRingIt — Monie Compatibility">
-<meta property="og:description" content="How do your money types mix? Find out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ═══════════════════════════════════════════════════════════
+   TOKENS — shared with the quiz visual system
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --bg-cream:    #FFF7EA;
+  --paper:       #FFF2D9;
+  --paper-light: #FFFBF3;
+  --paper-warm:  #FAE7C5;
+  --ink:         #2A170D;
+  --ink-soft:    #4A2E1A;
+  --brown:       #6B3F22;
+  --brown-soft:  #8A5A33;
+  --caramel:     #A66A2E;
+  --honey:       #F6B638;
+  --honey-light: #FFD56A;
+  --honey-deep:  #D89724;
+  --sage:        #7F8F5A;
+  --sage-light:  #E6EBD3;
+  --sage-deep:   #5E6E3E;
+  --border:      #D8B982;
+  --border-soft: #E8D4A4;
+  --tan:         #C9A36A;
+  --shadow:      rgba(91, 55, 20, 0.16);
+  --shadow-soft: rgba(91, 55, 20, 0.08);
+  --tape:        #F1E2BD;
+
+  /* Compatibility label palettes */
+  --es-bg:   #DDEBC8;  --es-bd:  #95B05E;  --es-ink: #4D5F2D;  /* Easy Sync */
+  --gb-bg:   #D9E4F2;  --gb-bd:  #93AECF;  --gb-ink: #2F4D74;  /* Good Balance */
+  --pt-bg:   #FFE4B8;  --pt-bd:  #E0A347;  --pt-ink: #8C5614;  /* Productive Tension */
+  --nc-bg:   #F8D7C2;  --nc-bd:  #DC9F7F;  --nc-ink: #8A4324;  /* Needs Care */
+  --hf-bg:   #F1C5C5;  --hf-bd:  #C57878;  --hf-ink: #803333;  /* High Friction */
+  --br-bg:   #ECDFEC;  --br-bd:  #C5A8CA;  --br-ink: #6A4275;  /* Bridge */
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --shadow-card: 0 2px 0 var(--border-soft), 0 8px 18px -6px var(--shadow);
+  --shadow-paper: 0 1px 0 #fff inset, 0 2px 0 var(--border-soft), 0 14px 24px -10px var(--shadow);
+  --shadow-press: 0 2px 6px -2px var(--shadow);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: #E8D8B8; }
+
 body {
-  background: #0D0D0D;
-  color: #FFFFFF;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink);
   min-height: 100vh;
+  line-height: 1.5;
+  font-size: 16px;
+  background: radial-gradient(circle at 20% 10%, #F0E0BE 0%, #E8D8B8 60%, #DCC89A 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-#app {
+
+/* ─── PHONE FRAME (same as quiz) ─── */
+.phone {
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
-  padding: 24px 16px 80px;
+  min-height: 100vh;
+  position: relative;
+  background:
+    repeating-linear-gradient(0deg, rgba(168,130,72,0.07) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, rgba(168,130,72,0.07) 0 1px, transparent 1px 22px),
+    radial-gradient(120% 80% at 50% 0%, #FFF9EC 0%, var(--bg-cream) 60%, #F8EAD0 100%);
+  overflow: hidden;
 }
-.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 28px; }
-.brand span { color: #F5C842; }
-.page-title { font-size: 28px; font-weight: 900; margin-bottom: 6px; }
-.page-sub { font-size: 14px; color: #666; margin-bottom: 28px; line-height: 1.5; }
-.select-wrap { margin-bottom: 16px; }
-.select-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #F5C842; margin-bottom: 8px; }
-select {
-  width: 100%;
-  background: #1A1A1A; border: 1.5px solid #2A2A2A;
-  color: #FFF; font-size: 15px; font-family: inherit;
-  padding: 14px 16px; border-radius: 12px; cursor: pointer;
-  appearance: none; -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
+@media (min-width: 540px) {
+  body { padding: 28px 16px; }
+  .phone {
+    margin: 0 auto;
+    min-height: calc(100vh - 56px);
+    max-height: 940px;
+    border-radius: 44px;
+    box-shadow:
+      0 0 0 10px #2A170D,
+      0 0 0 12px #4A2E1A,
+      0 30px 60px -20px rgba(0,0,0,0.45),
+      0 50px 100px -30px rgba(0,0,0,0.35);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--tan) transparent;
+  }
+  .phone::-webkit-scrollbar { width: 6px; }
+  .phone::-webkit-scrollbar-thumb { background: var(--tan); border-radius: 3px; }
 }
-select:focus { outline: none; border-color: #F5C842; }
-.btn-check {
-  display: block; width: 100%;
-  background: #F5C842; color: #000;
-  font-size: 16px; font-weight: 700;
-  padding: 16px; border-radius: 12px;
-  border: none; cursor: pointer;
-  font-family: inherit; margin-top: 8px;
-  transition: background 0.12s;
+
+#app { padding: 22px 18px 110px; position: relative; z-index: 1; }
+
+/* ─── TOP BAR ─── */
+.topbar {
+  display: flex; justify-content: center; align-items: center;
+  position: relative; padding: 36px 8px 14px;
+  z-index: 2;
 }
-.btn-check:hover { background: #FFD700; }
-.result-card {
-  background: #1A1A1A; border: 1px solid #2A2A2A;
-  border-radius: 16px; padding: 24px; margin-top: 24px;
+.brand-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
 }
-.compat-pair {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 20px;
-}
-.compat-blob {
-  width: 52px; height: 52px; border-radius: 50%;
+.brand-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown); flex: 0 0 auto; }
+.brand-pill .brand-name { white-space: nowrap; }
+.brand-pill .ring { color: var(--honey-deep); font-weight: 700; }
+
+.back-arrow {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(0);
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; font-weight: 900; color: #000; flex-shrink: 0;
+  cursor: pointer;
+  color: var(--brown);
+  font-size: 18px;
+  font-weight: 800;
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  transition: transform 0.12s;
 }
-.compat-name { font-size: 13px; font-weight: 700; color: #FFF; line-height: 1.2; }
-.compat-cat { font-size: 11px; color: #888; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
-.compat-x { font-size: 22px; color: #444; flex-shrink: 0; }
-.score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-.score-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #555; margin-bottom: 6px; }
-.compat-meter-wrap { flex: 1; }
-.compat-meter-bg { height: 8px; background: #2A2A2A; border-radius: 4px; overflow: hidden; }
-.compat-meter-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-.compat-score-num { font-size: 22px; font-weight: 900; color: #F5C842; margin-top: 4px; }
-.compat-verdict {
-  font-size: 20px; font-weight: 800; margin-bottom: 10px; color: #FFF;
+.back-arrow:hover { transform: translateY(-2px); }
+
+/* ─── AMBIENT DOODLES (reused) ─── */
+.doodle { position: absolute; pointer-events: none; opacity: 0.85; z-index: 0; }
+.doodle--clip { top: 6px; left: 8px; transform: rotate(-18deg); width: 44px; }
+.doodle--stamp { top: 14px; right: 12px; width: 70px; opacity: 0.75; }
+.doodle--coins { bottom: 100px; right: -8px; width: 86px; opacity: 0.7; }
+.doodle--receipt { bottom: 80px; left: -8px; width: 60px; opacity: 0.65; transform: rotate(-6deg); }
+.doodle--leaf { bottom: 20px; left: 10px; width: 40px; opacity: 0.7; }
+.doodle svg { display: block; width: 100%; }
+
+/* ─── PAGE TITLE ─── */
+.page-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brown-soft);
+  text-align: center;
+  margin-bottom: 6px;
+  position: relative; z-index: 2;
 }
-.compat-summary {
-  font-size: 14px; color: #AAA; line-height: 1.65; margin-bottom: 20px;
+.page-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 10px;
+  text-wrap: balance;
+  position: relative; z-index: 2;
 }
-.tension-section { margin-top: 20px; }
-.tension-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
-.tension-item {
-  background: #222; border-radius: 10px; padding: 12px 14px;
-  font-size: 13px; color: #CCC; line-height: 1.5; margin-bottom: 8px;
+.page-sub {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  text-align: center;
+  margin: 0 auto 22px;
+  max-width: 360px;
+  position: relative; z-index: 2;
 }
-.strength-item {
-  background: #0D1F0D; border: 1px solid #1A3A1A; border-radius: 10px;
-  padding: 12px 14px; font-size: 13px; color: #8FCC8F;
-  line-height: 1.5; margin-bottom: 8px;
+
+/* ─── BEGA CARD THUMBNAIL ─── */
+.card-thumb {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-card);
+  aspect-ratio: 948 / 1659;
 }
-.btn-whatsapp {
-  display: block; width: 100%;
-  background: #25D366; color: #FFF;
-  font-size: 15px; font-weight: 700;
-  padding: 14px; border-radius: 12px;
-  border: none; cursor: pointer;
-  font-family: inherit; margin-top: 16px;
-  text-decoration: none; text-align: center;
-  transition: background 0.12s;
+.card-thumb img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
 }
-.btn-whatsapp:hover { background: #1EBE5A; }
-.btn-retake {
-  display: block; width: 100%;
-  background: transparent; color: #F5C842;
-  font-size: 15px; font-weight: 600;
-  padding: 14px; border-radius: 12px;
-  border: 1.5px solid #3A3000; cursor: pointer;
-  font-family: inherit; margin-top: 10px;
-  text-decoration: none; text-align: center;
-  transition: background 0.12s, border-color 0.12s;
+/* "YOU" pinned tab */
+.card-thumb.you::before {
+  content: "YOU";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--sage);
+  color: #fff;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  padding: 4px 14px;
+  border-radius: 0 0 6px 6px;
+  border: 1.5px solid var(--sage-deep);
+  z-index: 2;
+  box-shadow: 0 2px 4px var(--shadow-soft);
 }
-.btn-retake:hover { background: #1A1400; border-color: #F5C842; }
-.same-card {
-  background: #1A1400; border: 1px solid #3A2E00;
-  border-radius: 16px; padding: 24px; margin-top: 24px;
+.card-thumb.them::before {
+  content: "THEM";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--caramel);
+  color: #fff;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  padding: 4px 14px;
+  border-radius: 0 0 6px 6px;
+  border: 1.5px solid #7A4B1C;
+  z-index: 2;
+  box-shadow: 0 2px 4px var(--shadow-soft);
+}
+
+/* placeholder face when image missing */
+.card-ph {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(168,130,72,0.06) 0 2px, transparent 2px 14px),
+    radial-gradient(circle at 30% 20%, #FFF6DC 0%, var(--paper-warm) 50%, #E8C879 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
   text-align: center;
 }
-.same-emoji { font-size: 40px; margin-bottom: 12px; }
-.same-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
-.same-body { font-size: 14px; color: #AAA; line-height: 1.6; }
+.card-ph .code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  text-shadow: 2px 2px 0 #FFE7A4;
+}
+.card-ph .ph-fam {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--brown); margin-bottom: 4px;
+}
+.card-ph .ph-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 13px;
+  line-height: 1.1; margin-top: 6px;
+  color: var(--ink); text-wrap: balance;
+}
+
+/* ─── PAIR HEADER (You × Them) ─── */
+.pair-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 18px;
+  position: relative; z-index: 2;
+}
+.pair-row .card-thumb { margin-top: 12px; }
+.pair-connector {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+}
+.pair-stamp {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--caramel);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--caramel);
+  background: rgba(255,255,255,0.5);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  transform: rotate(-6deg);
+  position: relative;
+}
+.pair-stamp::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--caramel);
+  opacity: 0.5;
+}
+
+/* ─── COMPAT LABEL PILL ─── */
+.compat-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid;
+}
+.compat-label--es { background: var(--es-bg); border-color: var(--es-bd); color: var(--es-ink); }
+.compat-label--gb { background: var(--gb-bg); border-color: var(--gb-bd); color: var(--gb-ink); }
+.compat-label--pt { background: var(--pt-bg); border-color: var(--pt-bd); color: var(--pt-ink); }
+.compat-label--nc { background: var(--nc-bg); border-color: var(--nc-bd); color: var(--nc-ink); }
+.compat-label--hf { background: var(--hf-bg); border-color: var(--hf-bd); color: var(--hf-ink); }
+.compat-label--br { background: var(--br-bg); border-color: var(--br-bd); color: var(--br-ink); }
+
+/* ─── VERDICT BLOCK ─── */
+.verdict {
+  text-align: center;
+  margin: 6px 0 18px;
+  position: relative; z-index: 2;
+}
+.verdict-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brown-soft);
+  margin-bottom: 8px;
+}
+.verdict-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 12px;
+  text-wrap: balance;
+}
+.verdict-sub {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  max-width: 380px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+
+/* ─── METERS BLOCK ─── */
+.meters-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 18px 16px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-card);
+  position: relative; z-index: 2;
+}
+.meter-row {
+  display: grid;
+  grid-template-columns: 28px 92px 1fr 72px;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px dashed #E0CA8E;
+}
+.meter-row:last-child { border-bottom: none; }
+.meter-icon {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.meter-icon svg { width: 22px; height: 22px; }
+.meter-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+.meter-bar {
+  position: relative;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #D7E1B7 0%, #F5C842 50%, #E89A7F 100%);
+  border: 1px solid var(--border-soft);
+  overflow: visible;
+}
+.meter-arrow {
+  position: absolute;
+  top: -2px;
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid var(--ink);
+  transform: translateX(-50%);
+}
+.meter-arrow::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: -6px;
+  width: 12px; height: 14px;
+  border-radius: 0 0 6px 6px;
+  background: var(--honey);
+  border: 1.5px solid var(--honey-deep);
+  border-top: none;
+}
+.meter-value {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brown);
+  text-align: right;
+  line-height: 1.1;
+}
+
+/* ─── SECTION CARDS (paper notes) ─── */
+.section-card {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 14px;
+  align-items: start;
+  z-index: 2;
+}
+.section-card::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, transparent 50%, var(--border-soft) 50%, var(--border-soft) 56%, var(--paper-warm) 56%);
+  border-bottom-right-radius: var(--radius-lg);
+}
+.sc-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sc-icon svg { width: 26px; height: 26px; }
+.sc-icon.chem    { background: #F8D7C2; border: 1.5px solid #DC9F7F; color: #8A4324; }
+.sc-icon.fric    { background: #FFE4B8; border: 1.5px solid var(--honey-deep); color: #8C5614; }
+.sc-icon.best    { background: var(--sage-light); border: 1.5px solid #B7C28A; color: var(--sage-deep); }
+.sc-icon.watch   { background: var(--paper-warm); border: 1.5px solid var(--tan); color: var(--brown); }
+
+.sc-body {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sc-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.sc-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.sc-stamp {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1.5px dashed;
+  white-space: nowrap;
+  transform: rotate(-3deg);
+}
+.sc-stamp.chem  { color: #8A4324; border-color: #DC9F7F; background: #FFF1E8; }
+.sc-stamp.fric  { color: var(--honey-deep); border-color: var(--honey-deep); background: #FFF6DC; }
+.sc-stamp.best  { color: var(--sage-deep); border-color: #B7C28A; background: #F3F7DF; }
+.sc-stamp.watch { color: var(--brown); border-color: var(--tan); background: var(--paper-warm); }
+.sc-text {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.sc-list {
+  list-style: none; padding: 0; margin: 4px 0 0;
+}
+.sc-list li {
+  position: relative;
+  padding: 6px 0 6px 18px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.sc-list li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 12px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+/* ─── BUTTONS ─── */
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  position: relative; z-index: 2;
+}
+.btn-row.single { grid-template-columns: 1fr; }
+
+.btn {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  border: 2px solid;
+  transition: transform 0.12s, box-shadow 0.12s;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.btn-primary {
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  border-color: var(--honey-deep);
+  box-shadow: 0 3px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--honey-deep), 0 14px 22px -6px var(--shadow); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--honey-deep); }
+
+.btn-secondary {
+  background: var(--paper-light);
+  color: var(--brown);
+  border-color: var(--tan);
+  border-style: dashed;
+  box-shadow: var(--shadow-card);
+}
+.btn-secondary:hover { border-color: var(--brown); color: var(--ink); }
+
+/* ─── PICKER GRID ─── */
+.picker-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brown-soft);
+  text-align: center;
+  margin: 14px 0 12px;
+  position: relative; z-index: 2;
+}
+.picker-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+  position: relative; z-index: 2;
+}
+.pick-card {
+  position: relative;
+  padding: 6px 6px 10px;
+  border-radius: var(--radius-md);
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  cursor: pointer;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.12s, border-color 0.12s, background 0.12s, box-shadow 0.12s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pick-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--honey);
+}
+.pick-card .card-thumb {
+  border: none;
+  box-shadow: none;
+  background: #FFF6E6;
+}
+.pick-meta {
+  padding: 0 4px;
+}
+.pick-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--ink);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.pick-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--brown-soft);
+  margin-top: 4px;
+}
+
+/* User card hero (top of picker) */
+.you-hero {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-paper);
+  position: relative; z-index: 2;
+}
+.you-hero .card-thumb { width: 96px; }
+.you-hero-meta {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.you-hero-tag {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+.you-hero-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.05;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.you-hero-fam {
+  font-size: 12px;
+  color: var(--brown-soft);
+  font-weight: 600;
+}
+.you-hero-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--brown);
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* ─── BRIDGE SCREEN ─── */
+.bridge-cards-pair {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative; z-index: 2;
+}
+.bridge-x-mark {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--caramel);
+  text-align: center;
+  line-height: 1;
+}
+
+.side-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 16px 16px 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-card);
+  position: relative; z-index: 2;
+}
+.side-card-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px;
+}
+.side-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--sage-light);
+  border: 1.5px solid #B7C28A;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--sage-deep);
+}
+.side-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+}
+.side-title small {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--brown-soft);
+  margin-left: 6px;
+}
+.side-body {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* ─── NOTICE STRIP ─── */
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--brown);
+  line-height: 1.4;
+  padding: 12px 14px;
+  background: var(--paper);
+  border: 1.5px dashed var(--tan);
+  border-radius: var(--radius-md);
+  margin: 18px 0 0;
+  position: relative; z-index: 2;
+}
+.notice .leaf {
+  width: 20px; height: 20px; flex: 0 0 20px;
+  color: var(--sage-deep);
+}
+
+/* ─── REDUCED MOTION ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+button { font-family: inherit; }
+button:focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 2px; }
+
+/* small screens */
+@media (max-width: 360px) {
+  .page-title { font-size: 30px; }
+  .verdict-title { font-size: 26px; }
+  .meter-row { grid-template-columns: 24px 80px 1fr 60px; }
+  #app { padding: 18px 14px 90px; }
+}
 </style>
 </head>
 <body>
-<div id="app">
-  <div class="brand">du<span>Ring</span>It — Monie ID</div>
-  <div class="page-title">Monie Compatibility</div>
-  <div class="page-sub">Pick two money types to see how they click — or clash.</div>
 
-  <div class="select-wrap">
-    <div class="select-label">Your type</div>
-    <select id="selA"></select>
-  </div>
-  <div class="select-wrap">
-    <div class="select-label">Their type</div>
-    <select id="selB"></select>
-  </div>
-  <button class="btn-check" onclick="checkCompat()">Check compatibility →</button>
-
-  <div id="result"></div>
+<div class="phone">
+  <div id="app"></div>
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════════════════════ */
+
 var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
 var COMPAT_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/compatibility.html";
 
@@ -148,15 +803,12 @@ var NAMES = {
   LR: "Lifestyle Romantic",  SG: "Steady Guardian",    AX: "Anxious Achiever",
   EE: "Emotional Escapist",  WN: "The Free Spirit"
 };
-
-var COLORS = {
-  AB: "#FF6B81", FC: "#F5A623", WA: "#7CB87C",
-  ST: "#9B7ED9", SS: "#C9A84C", LI: "#E8A87C",
-  LR: "#E87C8C", SG: "#5BB8B8", AX: "#7CA8D9",
-  EE: "#B87CB8", WN: "#7CBFDD"
+var TYPE_CODES = {
+  AB: "BLD-AB", FC: "BLD-FC", WA: "BLD-WA", ST: "BLD-OP",
+  SS: "EXP-SS", LI: "EXP-LI", LR: "EXP-LR",
+  SG: "GRD-SG", AX: "GRD-AA",
+  EE: "AVD-EE", WN: "AVD-WN"
 };
-
-// B=Builders, E=Experiencers, G=Guardians, A=Avoiders
 var CAT = {
   AB:"Builders", FC:"Builders", WA:"Builders", ST:"Builders",
   SS:"Experiencers", LI:"Experiencers", LR:"Experiencers",
@@ -164,378 +816,677 @@ var CAT = {
   EE:"Avoiders", WN:"Avoiders"
 };
 
-// Compatibility data: key = sorted pair "XX-YY"
-// score: 0-100, verdict, summary, strengths[], tensions[]
+/* BEGA card image paths (same mapping as quiz) */
+var CARD_ASSETS = {
+  AB: "cards/AB.jpg", FC: "cards/FC.jpg", WA: "cards/WA.jpg", ST: "cards/ST.jpg",
+  SS: "cards/SS.jpg", LI: "cards/LI.jpg", LR: "cards/LR.jpg",
+  SG: "cards/SG.jpg", AX: "cards/AX.jpg",
+  EE: "cards/EE.jpg", WN: "cards/WN.jpg"
+};
+
+/* Per-archetype profile for meter bars.
+   Each axis runs -2..+2 (label at the +2 end shown on the meter).
+   Pair value = average of the two profiles. */
+var PROFILE = {
+  AB: { rhythm:  1, plan:  1, stress:  1 },
+  FC: { rhythm:  0, plan:  1, stress:  0 },
+  WA: { rhythm:  2, plan:  2, stress:  2 },
+  ST: { rhythm:  2, plan:  2, stress:  2 },
+  SS: { rhythm:  0, plan:  0, stress:  0 },
+  LI: { rhythm:  0, plan:  0, stress:  0 },
+  LR: { rhythm: -2, plan: -2, stress: -1 },
+  SG: { rhythm:  1, plan:  1, stress:  1 },
+  AX: { rhythm:  1, plan:  1, stress: -1 },
+  EE: { rhythm: -1, plan: -1, stress: -2 },
+  WN: { rhythm: -1, plan: -1, stress: -1 }
+};
+
+/* Compatibility pair data (preserved from original compatibility.html). */
 var COMPAT = {};
-
-function key(a, b) {
-  return [a, b].sort().join("-");
-}
-
+function key(a, b) { return [a, b].sort().join("-"); }
 function addCompat(a, b, score, verdict, summary, strengths, tensions) {
   COMPAT[key(a, b)] = { score: score, verdict: verdict, summary: summary, strengths: strengths, tensions: tensions };
 }
-
-// --- BUILDER × BUILDER ---
+/* — Builder × Builder — */
 addCompat("AB","WA", 72, "Grind meets plan", "You're both wired to grow — but on different timelines. The Aggressive Builder wants results now; the Wealth Architect wants results that last. This can be electric when you're aligned, and exhausting when one thinks the other is either reckless or too slow.",
   ["Shared ambition makes execution conversations easy", "The Architect's patience gives the Builder a longer runway"],
   ["Builder pushes for speed; Architect brakes for risk", "Neither of you is great at celebrating progress — you just move the goalpost"]);
-
 addCompat("AB","FC", 65, "Grind meets escape", "Both want to stop answering to people — but differently. The Builder wants to dominate; the Freedom Chaser wants to disappear. Together you can build something real, as long as the Chaser doesn't bolt the moment it gets institutional.",
   ["Shared rejection of mediocrity", "Builder drives output; Chaser keeps the mission honest"],
   ["Builder needs loyalty; Chaser needs exit options", "Different endgames: empire vs. autonomy"]);
-
 addCompat("AB","ST", 78, "Output meets system", "High-functioning pair. The Aggressive Builder generates momentum, The Optimizer builds the infrastructure around it. You'll move fast and not break things — if the Optimizer gets enough say in how the machine runs.",
   ["Builder moves fast; Optimizer catches the holes", "Both hate inefficiency — different definitions of it", "Shared data-orientation makes decisions easier"],
   ["Optimizer slows down decisions; Builder hates that", "Builder may override systems that haven't proven themselves yet"]);
-
 addCompat("WA","FC", 58, "Blueprint meets freedom", "Wealth Architect has a destination; Freedom Chaser has an escape plan. You can coexist — but the Architect's long horizon may feel like a trap to the Chaser, and the Chaser's fluid plans may feel like noise to the Architect.",
   ["Both are self-directed and don't need external validation", "Architect funds the Chaser's exit timeline"],
   ["Chaser may resist long-term commitments the Architect depends on", "Architect reads drifting as failure; Chaser reads structure as captivity"]);
-
 addCompat("WA","ST", 85, "Blueprint meets algorithm", "Best Builder pairing. Both are analytical, long-term, and low-drama. Wealth Architect holds the destination; The Optimizer holds the system. You argue about method, not direction. Strong.",
   ["Near-identical time preference — both play long", "Low ego friction; decisions are data-driven", "Together you cover goals AND efficiency"],
   ["Neither pushes the other to take risk when risk is appropriate", "Can over-optimize at the expense of bold moves"]);
-
 addCompat("FC","ST", 60, "Flight meets framework", "Freedom Chaser wants to operate without friction; The Optimizer wants everything optimised. Decent pairing when roles are clear — Optimizer runs the system, Chaser runs the mission. Breaks down when the Chaser goes off-system.",
   ["Optimizer gives Chaser a foundation to operate from", "Chaser stops Optimizer from optimising things that don't matter"],
   ["Chaser resists the reporting structures Optimizer creates", "Optimizer finds Chaser's spontaneity inefficient"]);
-
-// --- EXPERIENCER × EXPERIENCER ---
+/* — Experiencer × Experiencer — */
 addCompat("LR","LI", 60, "Romance meets reward", "Both love the feeling of a beautiful life — but for different reasons. Lifestyle Romantic wants meaning in the moment; Lifestyle Inflator wants to feel deserved. Together you'll have amazing experiences and absolutely no savings without external structure.",
   ["Deep understanding of spending as emotional language", "Neither judges the other for enjoying life"],
   ["No natural financial anchor between you", "Joint spending can spiral fast without a third-party check"]);
-
 addCompat("LR","SS", 68, "Feeling meets signal", "Lifestyle Romantic spends for beauty; Status Strategist spends for position. You can create genuinely impressive environments together — but the Romantic may feel the Strategist is too calculated, and the Strategist may find the Romantic naive.",
   ["Shared aesthetic sensibility makes decisions feel aligned", "Status Strategist gives direction; Romantic gives warmth"],
   ["Romantic wants authentic connection; Strategist is always performing", "Different relationship with money's purpose"]);
-
 addCompat("LI","SS", 55, "Reward meets positioning", "Both are experiencer-types, but your spending logic differs. The Inflator rewards effort with comfort; the Strategist invests in image. The Strategist may privately judge the Inflator's purchases as tactically weak, and the Inflator may find the Strategist exhausting.",
   ["Both comfortable with visible spending", "Shared appreciation for quality over frugality"],
   ["Strategist is calculating; Inflator is emotional — different decision engines", "Neither will push the other toward financial planning"]);
-
-// --- GUARDIAN × GUARDIAN ---
+/* — Guardian × Guardian — */
 addCompat("SG","AX", 70, "Shield meets sensor", "Strong protective instincts on both sides. Steady Guardian builds the structure; Anxious Achiever monitors the gaps. Together you'll have the most prepared household of anyone you know — just make sure you don't spend all your energy protecting yourselves from futures that never come.",
   ["Both prioritise safety — no arguments about emergency funds", "Guardian calms Achiever; Achiever spots risks Guardian missed"],
   ["Combined anxiety can cause over-caution and under-investment", "Neither will push the other to take the risks needed to grow"]);
-
-// --- AVOIDER × AVOIDER ---
+/* — Avoider × Avoider — */
 addCompat("EE","WN", 48, "Escape meets drift", "Two Avoiders together means money never gets discussed — until it has to. The Emotional Escapist avoids through emotional overwhelm; the Free Spirit avoids through perpetual movement. You'll have a wonderful time until reality lands.",
   ["Deep mutual understanding — no one is judging anyone", "Low-conflict: neither is confrontational by nature"],
   ["Money topics stay unaddressed for very long periods", "Neither naturally triggers the other to face financial reality", "Shared avoidance compounds over time"]);
-
-// --- CROSS-CATEGORY ---
-// Builder × Experiencer
+/* — Cross-category: Builder × Experiencer — */
 addCompat("AB","SS", 52, "Grind meets image", "The Aggressive Builder earns; the Status Strategist curates the signal of earning. Short-term very attractive — but the Builder may resent funding aesthetics that don't compound, and the Strategist may feel the Builder is too rough around the edges.",
   ["Builder produces the wins Strategist knows how to amplify", "Strategist helps Builder's ambition look credible externally"],
-  ["Builder sees Strategist spending as waste; Strategist sees Builder's style as unrefined", "Different definition of what success looks like"]);
-
-addCompat("AB","LI", 45, "Grind meets reward", "Aggressive Builder delays gratification to build; Lifestyle Inflator rewards every milestone with upgrades. The Builder will feel like they're filling a bucket with a hole in it. The Inflator will feel chronically under-appreciated.",
+  ["Builder resents lifestyle spending that doesn't compound", "Strategist's image priorities can divert capital from Builder's plans"]);
+addCompat("AB","LI", 45, "Grind meets reward", "Aggressive Builder delays gratification to build; Lifestyle Inflator rewards every milestone with upgrades. The Builder will feel like they're filling a bucket with holes in it. The Inflator will feel constantly judged.",
   ["Inflator's enjoyment can remind Builder why they're building", "Builder creates the income Inflator enjoys spending"],
   ["Fundamental mismatch in spending philosophy", "Builder will eventually try to restructure Inflator's habits — badly", "Inflator may feel judged and controlled"]);
-
-addCompat("AB","LR", 50, "Grind meets beauty", "Aggressive Builder wants to win; Lifestyle Romantic wants to feel alive. The friction is real — but it's also the most complementary tension. Builder needs someone to remind them why the goal matters; Romantic needs someone to fund the dream.",
+addCompat("AB","LR", 50, "Grind meets beauty", "Aggressive Builder wants to win; Lifestyle Romantic wants to feel alive. The friction is real — but it's also the most complementary tension. Builder learns to enjoy; Romantic learns to plan. When it works, it works.",
   ["Romantic brings emotional richness the Builder forgets to pursue", "Builder provides the security Romantic's lifestyle needs"],
   ["Builder may see Romantic spending as irresponsible", "Romantic may feel the Builder never stops to enjoy anything"]);
-
-addCompat("WA","SS", 58, "Blueprint meets brand", "Wealth Architect has a plan; Status Strategist has an image to maintain. Can work if the Architect's plan includes the Strategist's positioning budget. Breaks down when image costs start eating into compounding.",
-  ["Architect gives Strategist a financial foundation to signal from", "Strategist helps Architect's plan look intentional publicly"],
-  ["Strategist spending is often not in Architect's model", "Architect may find Strategist's social calculus exhausting"]);
-
-addCompat("WA","LR", 55, "Blueprint meets feeling", "Wealth Architect is building to a destination; Lifestyle Romantic is building a feeling. You can coexist — and the Architect's financial groundwork genuinely enables the Romantic's beautiful life. The conflict comes when feeling and forecast diverge.",
-  ["Architect provides stability; Romantic provides warmth and meaning", "Architect's plan can fund everything the Romantic wants — eventually"],
-  ["Romantic's timeline is now; Architect's timeline is a decade out", "Architect may feel their plan is being emotionally overridden"]);
-
-addCompat("WA","LI", 48, "Blueprint meets indulgence", "Low compatibility on spending philosophy. Wealth Architect compounds deliberately; Lifestyle Inflator spends deliberately. Every inflator purchase is a deviation from the Architect's model. Will require very explicit money agreements to survive.",
+addCompat("WA","SS", 60, "Blueprint meets brand", "Both deliberate, both long-thinking. Wealth Architect builds substance; Status Strategist builds positioning. The Architect can fund the Strategist's signal; the Strategist can amplify the Architect's actual results.",
+  ["Architect's substance gives Strategist's image something real to project", "Both willing to play long games"],
+  ["Architect quietly judges status spending as inefficient", "Strategist may find Architect's lack of style limiting"]);
+addCompat("WA","LR", 50, "Blueprint meets romance", "Wealth Architect plans 10 years out; Lifestyle Romantic plans this weekend. Genuine cross-temporal pairing. The Architect's structure can fund the Romantic's experiences; the Romantic's presence keeps the Architect from becoming a spreadsheet.",
+  ["Romantic helps Architect remember the destination has to be lived", "Architect creates the conditions Romantic's life depends on"],
+  ["Romantic spending disrupts Architect's models", "Architect's planning feels emotionally cold to Romantic"]);
+addCompat("WA","LI", 48, "Blueprint meets indulgence", "Low compatibility on spending philosophy. Wealth Architect compounds deliberately; Lifestyle Inflator spends deliberately. Every inflator purchase is, to the architect, a quietly suboptimal allocation.",
   ["Inflator's enjoyment can help Architect loosen up on small wins", "Architect can help Inflator see the long-term cost of comfort creep"],
   ["Spending friction is frequent and structural, not one-time", "Architect will try to educate; Inflator will feel lectured"]);
-
-addCompat("FC","SS", 42, "Exit meets entrance", "Freedom Chaser wants out of everything; Status Strategist wants into the right rooms. Fundamentally different social and financial orientations. The Chaser finds the Strategist's networking exhausting; the Strategist finds the Chaser's detachment embarrassing.",
-  ["Both are highly self-directed — no codependency", "Chaser keeps Strategist from getting trapped by image maintenance"],
-  ["Deeply different views on what financial success is for", "Strategist needs visibility; Chaser needs invisibility"]);
-
-addCompat("FC","LI", 50, "Exit meets comfort", "Freedom Chaser wants to reduce dependency; Lifestyle Inflator wants to increase comfort. As long as income supports both, this is fine. When income contracts, priorities collide hard.",
-  ["Inflator's comfort-seeking can make the Chaser's life more enjoyable day-to-day", "Chaser's self-sufficiency means Inflator isn't funding two people's lifestyles"],
-  ["Chaser will cut lifestyle aggressively when threatened; Inflator will resist that", "Different risk tolerance to income volatility"]);
-
-addCompat("FC","LR", 62, "Exit meets experience", "Surprisingly compatible. Both value freedom and presence over accumulation. Freedom Chaser wants the autonomy to leave; Lifestyle Romantic wants the richness to stay. Together you travel well, spend on experiences, and don't obsess over careers.",
-  ["Shared anti-conventionalism — neither wants the default life", "Both prioritise experiences over status symbols"],
+addCompat("FC","SS", 42, "Exit meets entrance", "Freedom Chaser wants out of everything; Status Strategist wants into the right rooms. Fundamentally different social and financial orientations. The Chaser will find the Strategist exhausting; the Strategist will find the Chaser unambitious.",
+  ["Chaser's freedom can occasionally inspire Strategist to drop the act", "Strategist's positioning can help Chaser monetise faster"],
+  ["Chaser sees status games as a cage; Strategist sees them as the game", "Different definitions of success — collision is structural"]);
+addCompat("FC","LI", 48, "Exit meets reward", "Freedom Chaser keeps lifestyle lean to preserve options; Lifestyle Inflator scales lifestyle with income. Direct philosophical clash on the role of money. Workable only with very separate financial domains.",
+  ["Inflator's comfort focus can sometimes pull Chaser out of austerity", "Chaser models the financial discipline Inflator's growth needs"],
+  ["Inflator's upgrades trap them in a structure Chaser is trying to escape", "Chaser's restraint reads as deprivation to Inflator"]);
+addCompat("FC","LR", 55, "Exit meets moment", "Both reject conventional accumulation, but for opposite reasons. Chaser is strategic about freedom; Romantic is impulsive about presence. You'll have rich, unstructured lives — but neither will reliably build the foundation under them.",
+  ["Shared rejection of conventional success markers", "Both genuinely enjoy life as it happens"],
   ["Neither will naturally build long-term financial structure", "Romantic wants to stay; Chaser wants the option to go"]);
-
-addCompat("ST","SS", 65, "Algorithm meets strategy", "Both analytical and status-aware — but The Optimizer optimises efficiency; the Status Strategist optimises image. Good alignment when goals overlap. Tension when the Optimizer's data contradicts the Strategist's spend.",
+addCompat("ST","SS", 65, "Algorithm meets strategy", "Both analytical and status-aware — but The Optimizer optimises efficiency; the Status Strategist optimises image. Good alignment when goals overlap; clash when Optimizer questions Strategist's ROI on visible spending.",
   ["Both think strategically — decisions feel mutual, not impulsive", "Optimizer can model the ROI of Strategist's positioning spend"],
   ["Optimizer may flag Strategist's luxury spend as irrational", "Strategist may find Optimizer's framing cold and unimaginative"]);
-
-addCompat("ST","LR", 45, "Algorithm meets feeling", "Low natural compatibility. The Optimizer runs on data; the Lifestyle Romantic runs on feeling. The Optimizer will try to model the Romantic's spending patterns and the Romantic will find this offensive.",
-  ["Optimizer's structure can free up money for Romantic's experiences", "Romantic can help Optimizer see that not everything is optimisable"],
+addCompat("ST","LR", 42, "Algorithm meets moment", "The Optimizer wants to control all variables; the Lifestyle Romantic refuses to be one. Genuine mismatch in how each understands their relationship with money.",
+  ["Optimizer's structure provides a foundation Romantic occasionally benefits from", "Romantic's presence can soften Optimizer's mechanical edges"],
   ["Fundamentally different languages for making decisions", "Optimizer sees emotion-spending as a variable to control; Romantic sees it as the point"]);
-
-addCompat("ST","LI", 48, "Algorithm meets appetite", "The Optimizer tracks everything; the Lifestyle Inflator upgrades everything. Will create friction regularly. The Optimizer can show the Inflator exactly what comfort is costing — which may help or enrage, depending on the Inflator's self-awareness.",
+addCompat("ST","LI", 48, "Algorithm meets appetite", "The Optimizer tracks everything; the Lifestyle Inflator upgrades everything. Will create friction regularly. The Optimizer can show the Inflator efficient paths to lifestyle goals — but only if the Inflator accepts coaching.",
   ["Optimizer's systems can catch Inflator's spend before it becomes structural", "Inflator can remind Optimizer that optimising lifestyle is also a valid goal"],
   ["Inflator's spending disrupts Optimizer's models constantly", "Optimizer will feel like they're fighting a tide"]);
-
-// Builder × Guardian
-addCompat("AB","SG", 75, "Grind meets shield", "High-function pairing. Aggressive Builder takes the shots; Steady Guardian protects the downside. Builder wins big and occasionally loses big — Guardian is there to make sure the losses don't wipe out the gains. Natural risk partnership.",
-  ["Guardian's stability gives Builder the safety net to take bigger risks", "Builder's drive gives Guardian something worth protecting", "Both are action-oriented — low drama"],
-  ["Builder may feel Guardian's caution is holding them back", "Guardian may find Builder's risk appetite genuinely stressful"]);
-
-addCompat("AB","AX", 60, "Grind meets worry", "The Builder moves fast; the Anxious Achiever checks everything twice. Can work — the Achiever's vigilance catches risks the Builder ignores. Breaks down if the Builder interprets the Achiever's worry as weakness.",
-  ["Achiever's risk-monitoring prevents Builder from self-destructing", "Builder's momentum pulls Achiever forward when anxiety would stall them"],
-  ["Builder finds Achiever's caution frustrating under pressure", "Achiever finds Builder's aggression genuinely alarming"]);
-
-addCompat("WA","SG", 80, "Blueprint meets shield", "Excellent pairing. Both are deliberate, long-horizon, and low-drama. Wealth Architect has the destination; Steady Guardian protects the journey. You'll make decisions slowly and correctly and build something very stable.",
-  ["Near-identical time preference — both play the long game", "Guardian's protection instinct aligns with Architect's accumulation logic", "Very low financial conflict — both value security differently but compatibly"],
-  ["Neither will push the other toward bold opportunity", "Risk appetite combined is near-zero — can under-invest for growth"]);
-
-addCompat("WA","AX", 68, "Blueprint meets worry", "Wealth Architect provides the plan; Anxious Achiever monitors its execution nervously. Works when the Architect's plan is robust enough to absorb the Achiever's scenario planning. Breaks down when the Achiever's anxiety starts re-writing the plan.",
-  ["Achiever's vigilance catches plan deviations early", "Architect's calmness is genuinely soothing for Achiever anxiety"],
+/* — Builder × Guardian — */
+addCompat("AB","SG", 60, "Grind meets shield", "Aggressive Builder takes the risk; Steady Guardian holds the base. Genuinely complementary if both stay in their lanes. Friction if the Builder pressures the Guardian to take more risk, or the Guardian pulls the Builder back too hard.",
+  ["Guardian's stability lets Builder take bigger swings", "Builder's growth pulls Guardian out of pure preservation"],
+  ["Guardian's caution can feel like a ceiling to Builder", "Builder's risk profile triggers Guardian's protective response"]);
+addCompat("AB","AX", 50, "Grind meets alarm", "Aggressive Builder generates risk; Anxious Achiever monitors risk. Together you'll have detailed worst-case planning around every move. Productive if the Builder respects it, exhausting if they don't.",
+  ["Achiever's monitoring catches risks Builder ignores", "Builder's momentum eventually reduces Achiever's anxiety triggers"],
+  ["Builder pace amplifies Achiever's anxiety", "Achiever's vigilance feels like brakes to Builder"]);
+addCompat("WA","SG", 78, "Blueprint meets shield", "Both want structure. Wealth Architect builds toward the future; Steady Guardian protects what's been built. Cleanly complementary — Architect drives accumulation, Guardian prevents catastrophe.",
+  ["Tightly aligned on long-term thinking", "Architect grows; Guardian protects — natural division of labour", "Both prefer low-drama financial decision-making"],
+  ["Both can be too cautious to take bold action when needed", "Risk of building a fortress nobody actually lives in"]);
+addCompat("WA","AX", 65, "Blueprint meets alarm", "Wealth Architect has a plan; Anxious Achiever needs to feel certain about it. The Architect's analytical calm can genuinely soothe the Achiever's anxiety — when they take the time to explain the model.",
+  ["Architect's plan gives Achiever something concrete to trust", "Achiever's vigilance catches gaps Architect missed"],
   ["Achiever may add unnecessary complexity to an already good plan", "Architect may dismiss Achiever concerns that were actually valid"]);
-
-addCompat("FC","SG", 50, "Exit meets anchor", "Freedom Chaser wants to reduce anchors; Steady Guardian wants to build them. Genuine philosophical tension. Can work if the Guardian accepts the Chaser needs to feel unconstrained, and the Chaser accepts the Guardian's need for stability.",
+addCompat("FC","SG", 50, "Exit meets anchor", "Freedom Chaser wants to reduce anchors; Steady Guardian wants to build them. Genuine philosophical tension. Can work if the Guardian accepts the Chaser needs space, and the Chaser accepts the Guardian needs foundation.",
   ["Guardian provides the safety infrastructure that lets Chaser actually leave", "Chaser prevents Guardian from over-investing in protective structures"],
   ["Guardian's financial commitments feel like chains to Chaser", "Chaser's desire to stay light feels reckless to Guardian"]);
-
-addCompat("FC","AX", 44, "Exit meets alert", "Both uncomfortable — the Anxious Achiever's worst fear is instability, and the Freedom Chaser embodies it. Deep friction unless the Chaser's financial independence is genuinely demonstrated to the Achiever.",
+addCompat("FC","AX", 44, "Exit meets alert", "Both uncomfortable — the Anxious Achiever's worst fear is instability, and the Freedom Chaser embodies it. Deep friction unless the Chaser's financial independence is genuinely watertight.",
   ["Chaser's self-sufficiency means they're not a financial burden on Achiever", "Achiever's preparation can catch risks the Chaser ignores"],
   ["Achiever's anxiety is triggered by everything the Chaser does", "Chaser finds Achiever's monitoring suffocating"]);
-
-addCompat("ST","SG", 72, "Algorithm meets shield", "Solid pairing. The Optimizer runs the system efficiently; the Steady Guardian keeps it safe. You'll have a very well-run financial life with strong downside protection. May lack aggression on the upside.",
-  ["Both systematic — financial life runs smoothly", "Optimizer's efficiency + Guardian's protection = strong compound base", "Low conflict on financial decisions"],
-  ["Neither pushes the other toward wealth creation, only preservation", "Combined conservatism can mean missed growth windows"]);
-
-addCompat("ST","AX", 62, "Algorithm meets alarm", "The Optimizer has systems for everything, which genuinely calms the Anxious Achiever — right up until the system finds a gap the Achiever hadn't thought of. The Optimizer must earn trust gradually; the Achiever must let the system run.",
-  ["Optimizer's data gives Achiever's anxiety something concrete to work with", "Achiever's monitoring instinct improves Optimizer's system inputs"],
-  ["Achiever may override Optimizer's systems with emotional decisions during downturns", "Optimizer may underestimate how much emotional reassurance the Achiever needs"]);
-
-// Experiencer × Guardian
-addCompat("LR","SG", 58, "Romance meets anchor", "Lifestyle Romantic wants to feel alive; Steady Guardian wants to keep everything safe. The Guardian enables the Romantic's experiences by maintaining the floor. Works when roles are accepted — breaks when the Romantic sees the Guardian's structure as a ceiling.",
-  ["Guardian creates the stability that lets Romantic enjoy without worry", "Romantic brings warmth and meaning to Guardian's otherwise utilitarian world"],
-  ["Romantic's discretionary spending is a recurring point of friction", "Guardian may feel they're working hard so the Romantic can spend freely"]);
-
-addCompat("LR","AX", 52, "Romance meets anxiety", "The Romantic spends for feeling; the Achiever is anxious about spending. Every discretionary purchase is a small conflict. Can work if both genuinely value what the other brings — warmth vs. security — and have separate money autonomy.",
-  ["Achiever's vigilance creates a floor the Romantic can trust", "Romantic's lightness can temporarily lift the Achiever's chronic stress"],
-  ["Achiever's anxiety around Romantic's spending triggers regular conflict", "Romantic may feel permanently judged for how they use money"]);
-
-addCompat("LI","SG", 42, "Appetite meets shield", "High friction. Lifestyle Inflator's comfort spending conflicts directly with Steady Guardian's protection logic. The Guardian will feel like they're bailing out a boat while the Inflator makes holes. Requires hard money agreements to function.",
-  ["Guardian's structure prevents Inflator's spending from becoming structural debt", "Inflator's quality-of-life focus can soften Guardian's hyper-frugal tendencies"],
-  ["Guardian sees Inflator's spending as threat to security — regularly", "Inflator feels monitored and controlled in this pairing"]);
-
-addCompat("LI","AX", 38, "Appetite meets alarm", "Difficult pairing. Lifestyle Inflator increases comfort-spending naturally; Anxious Achiever is triggered by comfort-spending. The Achiever will spend significant energy trying to manage what the Inflator considers normal. High conflict, low resolution without professional help.",
-  ["Inflator's enjoyment can be a reminder to Achiever that life should also be lived", "Achiever catches Inflator before lifestyle creep becomes structural"],
-  ["Achiever finds Inflator's spending pattern genuinely anxiety-inducing", "Inflator feels permanently wrong in this pairing", "Difficult to find a shared spending framework"]);
-
-addCompat("SS","SG", 55, "Signal meets shield", "Status Strategist invests in image; Steady Guardian invests in protection. The Guardian will tolerate the Strategist's positioning spend only if the emergency fund is fully loaded and the insurance is paid. Surface alignment on financial seriousness, deep divergence on what to do with it.",
-  ["Guardian's groundwork lets Strategist's positioning look credible long-term", "Strategist's social capital can create opportunities Guardian's conservatism wouldn't"],
+addCompat("ST","SG", 75, "Algorithm meets shield", "Strong pair. Optimizer builds elegant systems; Guardian gives them something worth protecting. You'll run a low-friction household with serious financial machinery underneath it.",
+  ["Aligned values on diligence, low drama, and long-term thinking", "Optimizer automates what Guardian wants protected"],
+  ["Both can be excessively risk-averse together", "Optimizer may over-engineer protection Guardian wanted simple"]);
+addCompat("ST","AX", 58, "Algorithm meets alarm", "Optimizer's systems can genuinely calm the Achiever — IF the Achiever trusts them. Can also amplify anxiety if the Achiever doesn't fully understand the system and starts second-guessing.",
+  ["Optimizer's automation reduces Achiever's monitoring load", "Achiever's vigilance keeps Optimizer's systems honest"],
+  ["Achiever may want manual oversight Optimizer designed away", "Optimizer's confidence can feel dismissive to Achiever"]);
+/* — Experiencer × Guardian — */
+addCompat("SS","SG", 52, "Signal meets shelter", "Status Strategist invests in visible position; Steady Guardian invests in hidden protection. Different theories of where money should go. Workable when both respect the trade-off, frictional otherwise.",
+  ["Strategist's external success makes Guardian's financial planning easier", "Guardian's hidden reserves make Strategist's visible position more sustainable"],
   ["Guardian views status-spending as non-essential; Strategist views it as ROI", "Guardian's frugal instincts feel like a ceiling on Strategist's ambition"]);
-
-addCompat("SS","AX", 50, "Signal meets scanner", "Status Strategist projects calm confidence; Anxious Achiever scans for threats. Interesting tension. The Achiever's vigilance makes the Strategist's positioning safer; the Strategist's composure can quiet the Achiever's alarm. But the Strategist's spending may be the Achiever's biggest trigger.",
+addCompat("SS","AX", 50, "Signal meets scanner", "Status Strategist projects calm confidence; Anxious Achiever scans for threats. Interesting tension. The Achiever's vigilance makes the Strategist's positioning more defensible.",
   ["Achiever's monitoring gives Strategist's ambition a risk-check", "Strategist's external success helps Achiever feel more secure"],
   ["Achiever's anxiety about status-spending creates regular friction", "Strategist finds Achiever's conservatism limiting"]);
-
-// Experiencer × Avoider
+addCompat("LR","SG", 58, "Romance meets anchor", "Lifestyle Romantic wants to feel alive; Steady Guardian wants to keep everything safe. The Guardian enables the Romantic's experiences by maintaining the foundation — quietly the most-undervalued contribution of the pair.",
+  ["Guardian creates the stability that lets Romantic enjoy without worry", "Romantic brings warmth and meaning to Guardian's otherwise utilitarian world"],
+  ["Romantic's discretionary spending is a recurring point of friction", "Guardian may feel they're working hard so the Romantic can spend freely"]);
+addCompat("LR","AX", 52, "Romance meets anxiety", "The Romantic spends for feeling; the Achiever is anxious about spending. Every discretionary purchase is a small conflict. Can work if both genuinely understand what the other is experiencing.",
+  ["Romantic's warmth can soothe Achiever's vigilance", "Achiever's vigilance prevents Romantic spending from going structural"],
+  ["Achiever's anxiety around Romantic's spending triggers regular conflict", "Romantic may feel permanently judged for how they use money"]);
+addCompat("LI","SG", 42, "Appetite meets shield", "High friction. Lifestyle Inflator's comfort spending conflicts directly with Steady Guardian's protection logic. The Guardian will feel like they're protecting against a threat coming from inside the household.",
+  ["Guardian's structure prevents Inflator's spending from becoming structural debt", "Inflator's quality-of-life focus can soften Guardian's hyper-frugal tendencies"],
+  ["Guardian sees Inflator's spending as threat to security — regularly", "Inflator feels monitored and controlled in this pairing"]);
+addCompat("LI","AX", 38, "Appetite meets alarm", "Lifestyle Inflator's upgrades trigger Anxious Achiever's worst-case modelling on a near-constant basis. The Achiever's anxiety becomes a recurring cost the Inflator's enjoyment can't quite outweigh.",
+  ["Achiever's monitoring catches inflator-spend before it spirals", "Inflator can occasionally pull Achiever out of permanent vigilance"],
+  ["High structural friction on every upgrade decision", "Neither feels safe with how the other handles money"]);
+/* — Experiencer × Avoider — */
 addCompat("LR","EE", 55, "Romance meets refuge", "Both emotionally-driven and avoidant of financial reality — but for different reasons. The Romantic wants beauty; the Escapist wants relief. You'll create a warm, feeling-first environment together. Financial structure will need to come from somewhere external to both of you.",
   ["Deep mutual emotional attunement — very low conflict", "Both prioritise how life feels over how it looks on paper"],
   ["Neither will naturally initiate financial conversations", "Shared avoidance creates a comfortable but financially fragile home"]);
-
-addCompat("LR","WN", 62, "Romance meets wandering", "Surprisingly compatible. Both live in the present, prioritise experience, and don't fetishise accumulation. The Romantic wants depth in the moment; the Free Spirit wants breadth across moments. You'll have a rich, interesting life together and a complicated tax return.",
+addCompat("LR","WN", 62, "Romance meets wandering", "Surprisingly compatible. Both live in the present, prioritise experience, and don't fetishise accumulation. The Romantic wants depth in the moment; the Free Spirit wants breadth across moments.",
   ["Shared anti-accumulation philosophy — very low spending friction", "Both value experience over status or security"],
   ["Neither will build long-term financial structure without external help", "May avoid 'adult money conversations' indefinitely"]);
-
 addCompat("LI","EE", 48, "Reward meets escape", "Both spend for emotional reasons — the Inflator for reward, the Escapist for relief. Together you'll justify each other's purchases without realising it. No natural anchor against comfort spending.",
   ["Deep mutual understanding of emotional spending — no judgment", "Neither will make the other feel guilty for necessary self-care spending"],
   ["No financial guardian between you — spending can spiral in harmony", "Neither is naturally equipped to start hard money conversations"]);
-
-addCompat("LI","WN", 52, "Appetite meets drift", "Lifestyle Inflator rewards deliberately; Free Spirit drifts without noticing. The Inflator at least tracks what they're buying. The Free Spirit may not. Together you'll spend comfortably and plan rarely.",
+addCompat("LI","WN", 52, "Appetite meets drift", "Lifestyle Inflator rewards deliberately; Free Spirit drifts without noticing. The Inflator at least tracks what they're buying. The Free Spirit may not.",
   ["Inflator's enjoyment focus aligns with Free Spirit's experiential values", "Neither will judge the other for spending on life"],
   ["Combined avoidance of financial planning creates long-term exposure", "When income drops, neither has built the reserves to weather it"]);
-
-addCompat("SS","EE", 42, "Signal meets shadow", "Status Strategist is hyper-visible; Emotional Escapist goes invisible when stressed. Very different relationships with image and money. The Strategist may find the Escapist's avoidance embarrassing; the Escapist will feel the Strategist is performing constantly.",
+addCompat("SS","EE", 42, "Signal meets shadow", "Status Strategist is hyper-visible; Emotional Escapist goes invisible when stressed. Very different relationships with image and money.",
   ["Strategist can create external structure the Escapist benefits from", "Escapist's sensitivity can humanise the Strategist's calculated approach"],
   ["Strategist finds Escapist's financial chaos a liability to their image", "Escapist feels judged and performed at simultaneously"]);
-
 addCompat("SS","WN", 40, "Signal meets drift", "Difficult. Status Strategist is building toward a specific image of success; Free Spirit is wandering away from all images of success. Fundamentally incompatible orientations to money, status, and ambition.",
   ["Free Spirit's detachment from status games can occasionally free the Strategist up", "Strategist can help Free Spirit build enough foundation to actually wander freely"],
-  ["Strategist finds Free Spirit's lack of direction genuinely frustrating", "Free Spirit finds Strategist's positioning exhausting and artificial", "Very different endgames"]);
-
-// Guardian × Avoider
-addCompat("SG","EE", 55, "Shield meets shadow", "Steady Guardian builds the fortress; Emotional Escapist hides inside it. The Guardian will carry the financial weight of this pairing — which they can handle, until they feel alone in it. The Escapist needs to meet the Guardian halfway.",
+  ["Strategist finds Free Spirit's lack of direction genuinely frustrating", "Free Spirit finds Strategist's positioning exhausting and artificial"]);
+/* — Guardian × Avoider — */
+addCompat("SG","EE", 55, "Shield meets shadow", "Steady Guardian builds the fortress; Emotional Escapist hides inside it. The Guardian will carry the financial weight of this pairing — which they can handle, until they feel alone in it.",
   ["Guardian's protection structure genuinely reduces Escapist's anxiety triggers", "Escapist's emotional depth can help Guardian develop their softer side"],
   ["Guardian does all the financial heavy lifting — burnout risk", "Escapist may feel permanently financially infantilised"]);
-
-addCompat("SG","WN", 50, "Shield meets wandering", "Steady Guardian wants to anchor; Free Spirit wants to float. The Guardian can provide the base the Free Spirit actually needs — but only if the Spirit accepts some structure. If the Spirit keeps drifting, the Guardian will eventually stop building.",
+addCompat("SG","WN", 50, "Shield meets wandering", "Steady Guardian wants to anchor; Free Spirit wants to float. The Guardian can provide the base the Free Spirit actually needs — but only if the Spirit accepts some structure.",
   ["Guardian's stability creates a home base the Free Spirit genuinely benefits from", "Free Spirit reminds Guardian that not everything needs to be locked down"],
   ["Guardian may resent building a structure the Free Spirit doesn't inhabit", "Free Spirit finds Guardian's anchors feel like chains"]);
-
-addCompat("AX","EE", 45, "Alert meets escape", "Anxious Achiever monitors everything; Emotional Escapist avoids everything. Your coping mechanisms are opposite. The Achiever's monitoring will feel suffocating to the Escapist; the Escapist's avoidance will escalate the Achiever's anxiety.",
+addCompat("AX","EE", 45, "Alert meets escape", "Anxious Achiever monitors everything; Emotional Escapist avoids everything. Your coping mechanisms are opposite.",
   ["Achiever ensures nothing falls through the cracks", "Escapist's need for breathing room can force Achiever to step back occasionally"],
-  ["Achiever's anxiety is amplified by Escapist's avoidance", "Escapist's coping strategy is the exact opposite of what Achiever needs to feel safe", "High conflict, high anxiety household"]);
-
-addCompat("AX","WN", 48, "Alert meets drift", "Anxious Achiever needs to know the plan; Free Spirit resists having one. The Achiever's need for certainty meets the Spirit's need for openness. Can work if the Spirit accepts some planning structure; fails if the Achiever tries to control the Spirit's entire financial life.",
+  ["Achiever's anxiety is amplified by Escapist's avoidance", "Escapist's coping strategy is the exact opposite of what Achiever needs to feel safe"]);
+addCompat("AX","WN", 48, "Alert meets drift", "Anxious Achiever needs to know the plan; Free Spirit resists having one. Can work if the Spirit accepts some planning structure; fails if the Achiever tries to control the Spirit's entire financial life.",
   ["Achiever creates the safety net that lets Free Spirit move freely", "Free Spirit can help Achiever notice when their vigilance is excessive"],
   ["Achiever's need for certainty conflicts fundamentally with Spirit's orientation", "Free Spirit's financial looseness is Achiever's core anxiety"]);
-
-// Builder × Avoider
-addCompat("AB","EE", 42, "Grind meets escape", "High friction. Aggressive Builder creates intensity; Emotional Escapist retreats from it. The Builder will interpret the Escapist's avoidance as sabotage. The Escapist will find the Builder's pressure overwhelming. Hard pairing without significant self-awareness on both sides.",
+/* — Builder × Avoider — */
+addCompat("AB","EE", 42, "Grind meets escape", "High friction. Aggressive Builder creates intensity; Emotional Escapist retreats from it. The Builder will interpret the Escapist's avoidance as sabotage.",
   ["Builder creates financial results that reduce Escapist's underlying anxiety", "Escapist's sensitivity can surface emotional realities the Builder ignores"],
-  ["Builder's intensity is Escapist's trigger — chronic misread of each other", "Escapist's avoidance looks like passivity to the Builder", "Neither naturally meets the other halfway"]);
-
-addCompat("AB","WN", 48, "Grind meets drift", "Aggressive Builder is charging forward; Free Spirit is drifting sideways. The Builder will find the Spirit's lack of direction deeply frustrating. The Spirit will find the Builder's intensity suffocating. Can work only if their domains are clearly separated.",
+  ["Builder's intensity is Escapist's trigger — chronic misread of each other", "Escapist's avoidance looks like passivity to the Builder"]);
+addCompat("AB","WN", 48, "Grind meets drift", "Aggressive Builder is charging forward; Free Spirit is drifting sideways. Can work only if their domains are clearly separated.",
   ["Builder's drive can pull Free Spirit forward when they're willing", "Free Spirit can occasionally remind Builder that not every moment needs to be productive"],
   ["Builder may try to fix the Free Spirit's financial life — badly", "Free Spirit will resist every structure the Builder imposes"]);
-
-addCompat("WA","EE", 52, "Blueprint meets escape", "Wealth Architect has a 10-year plan; Emotional Escapist has a 10-minute attention span for finances. The Architect can carry the financial structure for both — but needs the Escapist to engage occasionally. More manageable than Builder × Avoider; lower pressure environment.",
+addCompat("WA","EE", 52, "Blueprint meets escape", "Wealth Architect has a 10-year plan; Emotional Escapist has a 10-minute attention span for finances. The Architect can carry the financial structure for both — but needs the Escapist to engage occasionally.",
   ["Architect's calm delivery of financial information is less triggering for Escapist", "Escapist's avoidance is a data point the Architect can plan around"],
   ["Escapist may resist Architect's plan without fully understanding it", "Architect may feel they're planning in a vacuum"]);
-
-addCompat("WA","WN", 55, "Blueprint meets freedom", "Wealth Architect builds toward a specific future; Free Spirit builds toward no particular future. Architect can tolerate this if the Spirit doesn't actively disrupt the plan. Spirit can tolerate this if the Architect doesn't try to enlist them in execution.",
+addCompat("WA","WN", 55, "Blueprint meets freedom", "Wealth Architect builds toward a specific future; Free Spirit builds toward no particular future. Can coexist if the Spirit doesn't actively disrupt the plan.",
   ["Architect's plan creates a foundation the Free Spirit benefits from without noticing", "Free Spirit's lightness keeps the Architect from becoming too rigid"],
   ["Spirit's financial looseness may periodically disrupt Architect's model", "Architect will eventually try to bring the Spirit into the plan — which will fail"]);
-
-addCompat("FC","EE", 58, "Exit meets escape", "Freedom Chaser wants out; Emotional Escapist already checked out. Oddly compatible — neither needs the other to be ambitious, neither judges the other's disengagement. The risk is that both might drift in the same direction at the same time.",
+addCompat("FC","EE", 58, "Exit meets escape", "Freedom Chaser wants out; Emotional Escapist already checked out. Oddly compatible — neither needs the other to be ambitious, neither judges the other's disengagement.",
   ["Mutual acceptance of non-conventional financial attitudes", "Low-pressure dynamic — neither pushes the other toward mainstream metrics"],
   ["Neither will build financial structure proactively", "Joint crises may land without warning because neither was monitoring"]);
-
-addCompat("FC","WN", 65, "Exit meets wander", "Highest Avoider-Builder compatibility. Both value freedom over accumulation, mobility over roots. Freedom Chaser is deliberate about independence; Free Spirit is casual about it. You'll live lightly and move freely. Just make sure one of you is watching the numbers.",
+addCompat("FC","WN", 65, "Exit meets wander", "Both value freedom over accumulation, mobility over roots. Freedom Chaser is deliberate about independence; Free Spirit is casual about it.",
   ["Shared rejection of conventional success metrics — very low conflict", "Both comfortable with uncertainty and change", "Good travel and life-design companions"],
   ["Neither will build long-term financial infrastructure without prompting", "Freedom Chaser's self-sufficiency doesn't guarantee Spirit's financial safety"]);
-
-addCompat("ST","EE", 50, "Algorithm meets avoidance", "The Optimizer wants to systematise everything; the Emotional Escapist avoids everything. The Optimizer's systems can actually help the Escapist — if presented calmly and not as corrections. Breaks down when the Optimizer treats the Escapist's avoidance as an optimisation problem.",
+addCompat("ST","EE", 50, "Algorithm meets avoidance", "The Optimizer wants to systematise everything; the Emotional Escapist avoids everything. The Optimizer's systems can actually help the Escapist — if presented calmly and not as corrections.",
   ["Optimizer's automation removes Escapist's most triggering financial tasks", "Escapist can improve when handed a system, not a lesson"],
   ["Optimizer's data-first approach feels cold and overwhelming to Escapist", "Optimizer may run out of patience for Escapist's disengagement"]);
-
-addCompat("ST","WN", 45, "Algorithm meets wandering", "The Optimizer builds precise systems; the Free Spirit wanders through them. The Optimizer will find the Spirit's financial looseness irrational. The Spirit will find the Optimizer's precision oppressive. Needs very clear financial separation to function.",
+addCompat("ST","WN", 45, "Algorithm meets wandering", "The Optimizer builds precise systems; the Free Spirit wanders through them. Needs very clear financial separation to function.",
   ["Optimizer can build systems that protect the Free Spirit without their input", "Free Spirit occasionally asks naive questions that reveal genuine gaps in Optimizer's models"],
   ["Free Spirit will not engage with or maintain Optimizer's systems", "Optimizer reads Spirit's disorganisation as a character flaw — it's not"]);
+/* — Mirror matches — */
+addCompat("AB","AB", 70, "Mirror match", "Two Aggressive Builders running parallel. You won't slow each other down. You also won't catch each other's blind spots — both of you will be sprinting past the same warning signs.",
+  ["Shared drive — no one is asking the other to be more ambitious", "Decisions move fast"],
+  ["Doubled blind spots: speed without checks", "Both push for growth at the cost of rest"]);
+addCompat("FC","FC", 68, "Mirror match", "Two Freedom Chasers means two people optimising for the exit. Low conflict on values. Low likelihood of either becoming the financial anchor.",
+  ["No one is pressuring anyone into commitments they don't want", "Shared appreciation for autonomy and lean living"],
+  ["Neither builds the institutional commitment that compounds wealth", "Both keep doors open — neither walks through any"]);
+addCompat("WA","WA", 82, "Mirror match", "Two Wealth Architects align almost effortlessly. You share the same long-horizon worldview. The risk is that you both plan and execute identically — leaving little room for either to grow outside the plan.",
+  ["Aligned long-term values and decision frameworks", "Both bring discipline; structure isn't a fight"],
+  ["Identical blind spots: neither pushes the other to take needed risks", "Plan may quietly become the only identity in the relationship"]);
+addCompat("ST","ST", 75, "Mirror match", "Two Optimizers in one system. You'll build the most elegant financial machine of anyone you know — and you may forget to actually use it.",
+  ["Decisions are framework-driven, low ego", "Shared appreciation for elegance and craft"],
+  ["Optimisation can substitute for execution", "Both delay action waiting for the optimal setup"]);
+addCompat("SS","SS", 60, "Mirror match", "Two Status Strategists become an external-facing brand together. You'll move in the right rooms. The question is whether the inside of the household has the substance the outside is signaling.",
+  ["Aligned positioning and aspiration", "Sophisticated taste in shared decisions"],
+  ["Substance can lag the signal", "Visible spending may outpace invisible saving"]);
+addCompat("LI","LI", 55, "Mirror match", "Two Lifestyle Inflators upgrade in lockstep. You'll have a beautiful home, a great life, and a savings rate that stays low even as income climbs.",
+  ["Shared philosophy of earning to enjoy", "Both comfortable with visible quality"],
+  ["Lifestyle inflation compounds; net worth doesn't", "Best earning years get absorbed into best lifestyle years"]);
+addCompat("LR","LR", 70, "Mirror match", "Two Lifestyle Romantics live a life rich in moments. The aesthetic is beautiful, the experiences are real, and the foundation under it depends entirely on luck or external help.",
+  ["Deep alignment on values — life is for living", "Low emotional friction around money"],
+  ["No natural financial anchor between you", "Future planning rarely originates from either of you"]);
+addCompat("SG","SG", 85, "Mirror match", "Two Steady Guardians make one of the most low-stress financial households possible. The risk isn't fragility. It's stagnation — neither pushes the other beyond protection into growth.",
+  ["Aligned protective instincts", "Calm, low-drama financial decisions"],
+  ["Risk profile may be too conservative for long-term growth", "Both may protect their way past the trajectory-changing risk"]);
+addCompat("AX","AX", 50, "Mirror match", "Two Anxious Achievers can spiral together. The vigilance is doubled, but so is the worst-case modelling.",
+  ["Nothing falls through the cracks", "Both genuinely understand the other's stress response"],
+  ["Anxiety compounds — both reinforce each other's vigilance", "Joint risk tolerance shrinks further than either's individually"]);
+addCompat("EE","EE", 52, "Mirror match", "Two Emotional Escapists in one household means the financial conversation may simply never happen.",
+  ["Total mutual understanding — no judgment", "Low-conflict by nature"],
+  ["Nothing in the system forces the conversation", "Avoidance compounds silently"]);
+addCompat("WN","WN", 62, "Mirror match", "Two Free Spirits drift in parallel. Light, easy, often happy — and almost entirely dependent on chance to land somewhere stable.",
+  ["Shared appreciation for openness and possibility", "Genuinely low day-to-day friction"],
+  ["Neither builds the financial structure that makes 'free' actually free", "Decisions get made by default rather than design"]);
 
-// Same-category same-archetype (handled separately in UI)
-// These are added for completeness if needed
-addCompat("AB","AB", 70, "Mirror match", "", [], []);
-addCompat("FC","FC", 68, "Mirror match", "", [], []);
-addCompat("WA","WA", 82, "Mirror match", "", [], []);
-addCompat("ST","ST", 75, "Mirror match", "", [], []);
-addCompat("SS","SS", 60, "Mirror match", "", [], []);
-addCompat("LI","LI", 55, "Mirror match", "", [], []);
-addCompat("LR","LR", 70, "Mirror match", "", [], []);
-addCompat("SG","SG", 85, "Mirror match", "", [], []);
-addCompat("AX","AX", 50, "Mirror match", "", [], []);
-addCompat("EE","EE", 52, "Mirror match", "", [], []);
-addCompat("WN","WN", 62, "Mirror match", "", [], []);
-
+/* Order shown in picker. */
 var ORDER = ["WA","AB","ST","FC","LR","LI","SS","SG","AX","EE","WN"];
 
-function populate() {
-  var sA = document.getElementById("selA");
-  var sB = document.getElementById("selB");
-  ORDER.forEach(function(code) {
-    var opt1 = document.createElement("option");
-    opt1.value = code;
-    opt1.textContent = NAMES[code] + " (" + CAT[code] + ")";
-    var opt2 = document.createElement("option");
-    opt2.value = code;
-    opt2.textContent = NAMES[code] + " (" + CAT[code] + ")";
-    sA.appendChild(opt1);
-    sB.appendChild(opt2);
-  });
-  // Read URL params
-  var params = new URLSearchParams(window.location.search);
-  var pa = params.get("a"), pb = params.get("b");
-  if (pa && NAMES[pa]) sA.value = pa;
-  if (pb && NAMES[pb]) sB.value = pb;
-  else {
-    // Default B to something different from A
-    var codes = ORDER.filter(function(c){ return c !== (pa || ORDER[0]); });
-    sB.value = codes[0];
-  }
-  if (pa) checkCompat();
+/* ═══════════════════════════════════════════════════════════
+   LABEL DERIVATION — score → label
+   Per spec: Easy Sync, Good Balance, Productive Tension,
+             Needs Care, High Friction
+   ═══════════════════════════════════════════════════════════ */
+function labelFor(score) {
+  if (score >= 75) return { code: 'es', name: 'Easy Sync',          tagline: 'Aligned values, low friction.' };
+  if (score >= 60) return { code: 'gb', name: 'Good Balance',       tagline: 'Different strengths, same direction.' };
+  if (score >= 50) return { code: 'pt', name: 'Productive Tension', tagline: 'Healthy push and pull.' };
+  if (score >= 40) return { code: 'nc', name: 'Needs Care',         tagline: 'Manageable, with intention.' };
+  return                   { code: 'hf', name: 'High Friction',     tagline: 'Real work required.' };
 }
 
-function meterColor(score) {
-  if (score >= 75) return "#4CAF50";
-  if (score >= 60) return "#F5C842";
-  if (score >= 45) return "#FF9800";
-  return "#F44336";
+/* ═══════════════════════════════════════════════════════════
+   METER LABEL TEXT — translate -2..+2 to friendly labels
+   ═══════════════════════════════════════════════════════════ */
+function meterLabel(axis, v) {
+  // v is in -2..+2 (avg of two profiles). Map to 0..1 for arrow position.
+  var pct = (v + 2) / 4;
+  var text = '';
+  if (axis === 'sync') {
+    if (v >= 1.2) text = 'High';
+    else if (v >= 0.4) text = 'Steady';
+    else if (v >= -0.4) text = 'Mixed';
+    else if (v >= -1.2) text = 'Variable';
+    else text = 'Low';
+  } else if (axis === 'rhythm') {
+    if (v >= 1.2) text = 'Planned';
+    else if (v >= 0.4) text = 'Mostly planned';
+    else if (v >= -0.4) text = 'Balanced';
+    else if (v >= -1.2) text = 'Mostly free';
+    else text = 'Spontaneous';
+  } else if (axis === 'plan') {
+    if (v >= 1.2) text = 'Long-term';
+    else if (v >= 0.4) text = 'Future-focused';
+    else if (v >= -0.4) text = 'Balanced';
+    else if (v >= -1.2) text = 'Present-focused';
+    else text = 'In the moment';
+  } else if (axis === 'stress') {
+    if (v >= 1.2) text = 'Analyse';
+    else if (v >= 0.4) text = 'Tackle';
+    else if (v >= -0.4) text = 'Mixed';
+    else if (v >= -1.2) text = 'Pause';
+    else text = 'Avoid';
+  }
+  return { pct: pct, text: text };
 }
 
-function verdictEmoji(score) {
-  if (score >= 80) return "🔥";
-  if (score >= 65) return "⚡";
-  if (score >= 50) return "⚖️";
-  if (score >= 38) return "⚠️";
-  return "💥";
+/* ═══════════════════════════════════════════════════════════
+   ROUTER
+   ?a=X            → picker (single archetype, choose to compare)
+   ?a=X&compare=Y  → pair result (X vs Y)
+   ?a=X&b=Y        → bridge result (user is bridge of X+Y)
+   ═══════════════════════════════════════════════════════════ */
+function getParams() {
+  var p = new URLSearchParams(window.location.search);
+  return { a: p.get('a'), b: p.get('b'), compare: p.get('compare') };
 }
 
-function checkCompat() {
-  var a = document.getElementById("selA").value;
-  var b = document.getElementById("selB").value;
-  var k = key(a, b);
-  var c = COMPAT[k];
-  var out = document.getElementById("result");
+function render() {
+  var app = document.getElementById('app');
+  var p = getParams();
 
-  if (a === b) {
-    out.innerHTML = '<div class="same-card">'+
-      '<div class="same-emoji">🪞</div>'+
-      '<div class="same-title">Same type — mirror match</div>'+
-      '<div class="same-body">Two '+NAMES[a]+'s together. You\'ll understand each other intuitively — but you\'ll also share the same blind spots. Your strengths will compound. So will your weaknesses.</div>'+
-      shareSection(a, a)+
-    '</div>';
-    return;
+  if (p.a && p.b && p.a !== p.b) {
+    app.innerHTML = renderBridge(p.a, p.b);
+  } else if (p.a && p.compare && p.a !== p.compare) {
+    app.innerHTML = renderPair(p.a, p.compare, /*youIsA=*/true);
+  } else if (p.a && NAMES[p.a]) {
+    app.innerHTML = renderPicker(p.a);
+  } else {
+    app.innerHTML = renderEmpty();
   }
+  scrollTo(0, 0);
+}
 
-  if (!c) {
-    out.innerHTML = '<div class="result-card"><p style="color:#666">Compatibility data for this pair is coming soon.</p></div>';
-    return;
-  }
-
-  var fillColor = meterColor(c.score);
-  var emoji = verdictEmoji(c.score);
-
-  var strengthsHtml = c.strengths.map(function(s){ return '<div class="strength-item">✓ '+s+'</div>'; }).join('');
-  var tensionsHtml = c.tensions.map(function(t){ return '<div class="tension-item">↯ '+t+'</div>'; }).join('');
-
-  out.innerHTML = '<div class="result-card">'+
-    '<div class="compat-pair">'+
-      '<div>'+
-        '<div class="compat-blob" style="background:'+COLORS[a]+'">'+NAMES[a].charAt(0)+'</div>'+
-        '<div class="compat-name">'+NAMES[a]+'</div>'+
-        '<div class="compat-cat">'+CAT[a]+'</div>'+
-      '</div>'+
-      '<div class="compat-x">×</div>'+
-      '<div>'+
-        '<div class="compat-blob" style="background:'+COLORS[b]+'">'+NAMES[b].charAt(0)+'</div>'+
-        '<div class="compat-name">'+NAMES[b]+'</div>'+
-        '<div class="compat-cat">'+CAT[b]+'</div>'+
-      '</div>'+
-    '</div>'+
-
-    '<div class="score-label">Compatibility score</div>'+
-    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">'+
-      '<div class="compat-meter-wrap">'+
-        '<div class="compat-meter-bg"><div class="compat-meter-fill" style="width:'+c.score+'%;background:'+fillColor+'"></div></div>'+
-      '</div>'+
-      '<div class="compat-score-num">'+c.score+'</div>'+
-    '</div>'+
-
-    '<div class="compat-verdict">'+emoji+' '+c.verdict+'</div>'+
-    '<div class="compat-summary">'+c.summary+'</div>'+
-
-    (strengthsHtml ? '<div class="tension-section"><div class="tension-label">What works</div>'+strengthsHtml+'</div>' : '')+
-    (tensionsHtml ? '<div class="tension-section"><div class="tension-label">Where it gets hard</div>'+tensionsHtml+'</div>' : '')+
-    shareSection(a, b)+
+/* ═══════════════════════════════════════════════════════════
+   COMMON CHROME
+   ═══════════════════════════════════════════════════════════ */
+function topbarChrome(backHref) {
+  var back = backHref
+    ? '<a class="back-arrow" href="' + escHtml(backHref) + '" aria-label="Back">←</a>'
+    : '';
+  return '<div class="topbar">' +
+    back +
+    '<div class="brand-pill">' +
+      '<span class="brand-name">du<span class="ring">Ring</span>It</span>' +
+      '<span class="dot"></span>' +
+      '<span>Monie Compatibility</span>' +
+    '</div>' +
   '</div>';
-
-  // Update URL without reload
-  var newUrl = COMPAT_URL + '?a=' + a + '&b=' + b;
-  window.history.replaceState({}, '', window.location.pathname + '?a='+a+'&b='+b);
 }
 
-function shareSection(a, b) {
-  var text = "I checked the duRingIt Monie Compatibility between "+NAMES[a]+" and "+NAMES[b]+" 👀\n\nCheck yours: "+COMPAT_URL+"?a="+a+"&b="+b;
-  var waHref = "https://wa.me/?text="+encodeURIComponent(text);
-  return '<button class="btn-whatsapp" onclick="window.open(\''+waHref+'\',\'_blank\')">💬 Share this result on WhatsApp</button>'+
-    '<a class="btn-retake" href="'+QUIZ_URL+'">Don\'t know your type? Take the quiz →</a>';
+function ambient(variant) {
+  variant = variant || 'a';
+  return doodle('clip', 'doodle--clip') +
+         doodle('stamp', 'doodle--stamp') +
+         (variant === 'a' ? doodle('coins', 'doodle--coins') + doodle('receipt', 'doodle--receipt')
+                          : doodle('leaf', 'doodle--leaf'));
 }
 
-populate();
+var DOODLES = {
+  clip: '<svg viewBox="0 0 50 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8 C12 4 18 2 22 6 L40 28 C44 32 44 40 38 44 C32 48 24 46 22 40 L10 26" stroke="#8A5A33" stroke-width="3" stroke-linecap="round"/><path d="M12 14 L12 50 C12 56 18 60 24 60 C30 60 34 56 34 50 L34 22" stroke="#8A5A33" stroke-width="3" stroke-linecap="round"/></svg>',
+  stamp: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><g transform="rotate(-8 40 40)"><circle cx="40" cy="40" r="32" fill="none" stroke="#A66A2E" stroke-width="2.5"/><circle cx="40" cy="40" r="26" fill="none" stroke="#A66A2E" stroke-width="1.5" stroke-dasharray="2 3"/><text x="40" y="34" font-family="Bricolage Grotesque, sans-serif" font-size="8" font-weight="800" fill="#A66A2E" text-anchor="middle" letter-spacing="1">MONIE</text><text x="40" y="50" font-family="Bricolage Grotesque, sans-serif" font-size="8" font-weight="800" fill="#A66A2E" text-anchor="middle" letter-spacing="1">COMPAT.</text></g></svg>',
+  coins: '<svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="80" rx="34" ry="8" fill="#A66A2E" opacity="0.2"/><rect x="20" y="50" width="60" height="22" rx="11" fill="#F6B638" stroke="#A66A2E" stroke-width="2"/><rect x="20" y="32" width="60" height="22" rx="11" fill="#FFD56A" stroke="#A66A2E" stroke-width="2"/><rect x="20" y="14" width="60" height="22" rx="11" fill="#F6B638" stroke="#A66A2E" stroke-width="2"/><text x="50" y="30" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="800" fill="#6B3F22" text-anchor="middle">$</text></svg>',
+  receipt: '<svg viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 6 L62 6 L62 86 L56 92 L50 86 L44 92 L38 86 L32 92 L26 86 L20 92 L14 86 L8 92 Z" fill="#FFFBF3" stroke="#A66A2E" stroke-width="2"/><line x1="16" y1="22" x2="54" y2="22" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="34" x2="48" y2="34" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="46" x2="54" y2="46" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="58" x2="42" y2="58" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="70" x2="50" y2="70" stroke="#A66A2E" stroke-width="1.5"/></svg>',
+  leaf: '<svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg"><path d="M20 4 C8 14 6 30 18 44 C30 30 32 14 20 4 Z" fill="none" stroke="#5E6E3E" stroke-width="2"/><path d="M20 8 L20 42" stroke="#5E6E3E" stroke-width="1.5"/></svg>'
+};
+function doodle(kind, cls) {
+  return '<div class="doodle ' + cls + '">' + DOODLES[kind] + '</div>';
+}
+
+/* card thumbnail (image with placeholder fallback) */
+function cardThumb(code, role, extraClass) {
+  var src = CARD_ASSETS[code];
+  var roleClass = role ? ' ' + role : '';
+  var ph = '<div class="card-ph">' +
+    '<div class="ph-fam">' + escHtml(CAT[code]) + '</div>' +
+    '<div class="code">' + code + '</div>' +
+    '<div class="ph-name">' + escHtml(NAMES[code]) + '</div>' +
+  '</div>';
+  var imgHtml = src
+    ? '<img src="' + escHtml(src) + '" alt="' + escHtml(NAMES[code]) + '" onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.card-ph\').style.display=\'flex\';">' +
+      ph.replace('<div class="card-ph">', '<div class="card-ph" style="display:none;">')
+    : ph;
+  return '<div class="card-thumb' + roleClass + (extraClass ? ' ' + extraClass : '') + '">' + imgHtml + '</div>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 1: PICKER (user is single archetype X)
+   ═══════════════════════════════════════════════════════════ */
+function renderPicker(a) {
+  var others = ORDER.filter(function(c) { return c !== a; });
+  return topbarChrome(QUIZ_URL) +
+    ambient('a') +
+    '<div class="page-eyebrow">Your Monie ID</div>' +
+    '<div class="you-hero">' +
+      cardThumb(a, 'you') +
+      '<div class="you-hero-meta">' +
+        '<span class="you-hero-tag">You are</span>' +
+        '<div class="you-hero-name">' + escHtml(NAMES[a]) + '</div>' +
+        '<div class="you-hero-fam">' + escHtml(CAT[a]) + '</div>' +
+        '<div class="you-hero-code">' + escHtml(TYPE_CODES[a]) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="page-title">Choose a Monie ID<br>to compare with</div>' +
+    '<div class="page-sub">Tap any card below to see how your money patterns interact.</div>' +
+    '<div class="picker-grid">' +
+      others.map(function(c) {
+        return '<button class="pick-card" onclick="goCompare(\'' + a + '\',\'' + c + '\')" aria-label="Compare with ' + escHtml(NAMES[c]) + '">' +
+          cardThumb(c) +
+          '<div class="pick-meta">' +
+            '<div class="pick-name">' + escHtml(NAMES[c]) + '</div>' +
+            '<div class="pick-code">' + escHtml(TYPE_CODES[c]) + '</div>' +
+          '</div>' +
+        '</button>';
+      }).join('') +
+    '</div>' +
+    '<div class="notice">' +
+      leafSvg() +
+      '<span>Compatibility isn\'t good or bad — it\'s a mirror. The frictions show where to slow down. The syncs show where to lean in.</span>' +
+    '</div>' +
+    '<div class="btn-row single">' +
+      '<a class="btn btn-secondary" href="' + escHtml(QUIZ_URL) + '">← Back to my result</a>' +
+    '</div>';
+}
+
+function leafSvg() {
+  return '<svg class="leaf" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20 C12 20 20 12 20 4 C12 4 4 12 4 20 Z" stroke="currentColor" stroke-width="1.8"/><path d="M5 19 L13 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 2: PAIR RESULT
+   ═══════════════════════════════════════════════════════════ */
+function renderPair(a, b, youIsA) {
+  var pair = COMPAT[key(a, b)];
+  if (!pair) {
+    return topbarChrome(COMPAT_URL + '?a=' + a) +
+      '<div class="page-title" style="margin-top:24px">Pair not found</div>' +
+      '<div class="page-sub">We couldn\'t find compatibility data for this combination.</div>';
+  }
+  var label = labelFor(pair.score);
+
+  // meters (mid-point between two profiles)
+  var pa = PROFILE[a], pb = PROFILE[b];
+  var rhythmAvg = (pa.rhythm + pb.rhythm) / 2;
+  var planAvg   = (pa.plan + pb.plan) / 2;
+  var stressAvg = (pa.stress + pb.stress) / 2;
+  // sync from pair score, mapped to -2..+2
+  var syncAvg = (pair.score - 50) / 12.5; // 50→0, 100→4 clamp
+  if (syncAvg > 2) syncAvg = 2;
+  if (syncAvg < -2) syncAvg = -2;
+
+  var sync   = meterLabel('sync', syncAvg);
+  var rhythm = meterLabel('rhythm', rhythmAvg);
+  var planM  = meterLabel('plan', planAvg);
+  var stress = meterLabel('stress', stressAvg);
+
+  // map strengths/tensions → 4 sections
+  var moneyChemBody = pair.summary;
+  var fricBody  = (pair.tensions[0] || 'A pairing without natural tension can also have natural drift.');
+  var fricExtra = pair.tensions.slice(1, 3);
+  var bestBody  = (pair.strengths[0] || 'Find a shared rhythm and let each lead in their domain.');
+  var bestExtra = pair.strengths.slice(1, 3);
+  var watchBody = pair.tensions.length > 1
+    ? pair.tensions[pair.tensions.length - 1]
+    : 'Check in regularly so neither of you ends up carrying the financial weight alone.';
+
+  return topbarChrome(COMPAT_URL + '?a=' + a) +
+    ambient('a') +
+    '<div class="page-eyebrow">Compatibility Read</div>' +
+    '<div class="pair-row">' +
+      cardThumb(youIsA ? a : b, 'you') +
+      '<div class="pair-connector">' +
+        '<div class="pair-stamp">×</div>' +
+      '</div>' +
+      cardThumb(youIsA ? b : a, 'them') +
+    '</div>' +
+
+    '<div class="verdict">' +
+      '<div class="verdict-eyebrow"><span class="compat-label compat-label--' + label.code + '">' + label.name + '</span></div>' +
+      '<div class="verdict-title">' + escHtml(pair.verdict) + '</div>' +
+      '<div class="verdict-sub">' + escHtml(label.tagline) + '</div>' +
+    '</div>' +
+
+    /* — METERS — */
+    '<div class="meters-card">' +
+      meterRow(coinIcon(),     'Money Sync',      sync.pct,   sync.text) +
+      meterRow(heartIcon(),    'Spending Rhythm', rhythm.pct, rhythm.text) +
+      meterRow(clipIcon(),     'Planning Style',  planM.pct,  planM.text) +
+      meterRow(boltIcon(),     'Stress Response', stress.pct, stress.text) +
+    '</div>' +
+
+    /* — SECTIONS — */
+    sectionCard('chem',  heartLgIcon(),  'Money Chemistry',   'GOOD CHEMISTRY',  moneyChemBody,  []) +
+    sectionCard('fric',  boltLgIcon(),   'Friction Point',    'HANDLE WITH CARE', fricBody,      fricExtra) +
+    sectionCard('best',  leafLgIcon(),   'Best Together For', 'STRONG MATCH',    bestBody,       bestExtra) +
+    sectionCard('watch', shieldLgIcon(), 'Watch Out For',     'CHECK ALIGNMENT', watchBody,      []) +
+
+    '<div class="btn-row">' +
+      '<button class="btn btn-secondary" onclick="goPicker(\'' + a + '\')">← Compare another</button>' +
+      '<button class="btn btn-primary" onclick="sharePair(\'' + a + '\',\'' + b + '\',false)">Share pairing</button>' +
+    '</div>' +
+    '<div class="btn-row single">' +
+      '<a class="btn btn-secondary" href="' + escHtml(QUIZ_URL) + '">← Back to my result</a>' +
+    '</div>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 3: BRIDGE RESULT (two YOU cards)
+   ═══════════════════════════════════════════════════════════ */
+function renderBridge(a, b) {
+  return topbarChrome(QUIZ_URL) +
+    ambient('a') +
+    '<div class="page-eyebrow">Your Monie ID</div>' +
+    '<div class="page-title">You are a Bridge</div>' +
+    '<div class="page-sub">You naturally connect two different money worlds. Most people are one. You\'re the rare case that\'s both.</div>' +
+    '<div class="bridge-cards-pair">' +
+      cardThumb(a, 'you') +
+      '<div class="bridge-x-mark">×</div>' +
+      cardThumb(b, 'you') +
+    '</div>' +
+    '<div style="text-align:center;margin:0 0 18px;position:relative;z-index:2;">' +
+      '<span class="compat-label compat-label--br">Bridge Identity</span>' +
+    '</div>' +
+
+    /* Side A */
+    '<div class="side-card">' +
+      '<div class="side-card-head">' +
+        '<div class="side-icon">A</div>' +
+        '<div class="side-title">Your ' + escHtml(a) + ' side <small>· ' + escHtml(NAMES[a]) + '</small></div>' +
+      '</div>' +
+      '<div class="side-body">' + escHtml(sideBlurb(a)) + '</div>' +
+    '</div>' +
+
+    /* Side B */
+    '<div class="side-card">' +
+      '<div class="side-card-head">' +
+        '<div class="side-icon">B</div>' +
+        '<div class="side-title">Your ' + escHtml(b) + ' side <small>· ' + escHtml(NAMES[b]) + '</small></div>' +
+      '</div>' +
+      '<div class="side-body">' + escHtml(sideBlurb(b)) + '</div>' +
+    '</div>' +
+
+    /* Combined read */
+    sectionCard('chem',  heartLgIcon(), 'Money Chemistry',  'BRIDGE READ',
+      'Your relationship with money operates on two tracks. ' + bridgeCombinedBlurb(a, b),
+      []) +
+    sectionCard('fric',  boltLgIcon(),  'Friction Point',   'INSIDE YOU',
+      'The two sides of you can pull in opposite directions when stress hits. Watch for the moment one side overrides the other without negotiating.',
+      []) +
+    sectionCard('best',  leafLgIcon(),  'Best Together For','DUAL STRENGTH',
+      'You can hold both stability and momentum. The pairings that struggle to do one will look to you to do both.',
+      []) +
+    sectionCard('watch', shieldLgIcon(),'Watch Out For',    'STAY HONEST',
+      'When you\'re tired, the easier side wins. Notice which one that is for you — and what it costs the other.',
+      []) +
+
+    '<div class="btn-row">' +
+      '<button class="btn btn-secondary" onclick="goPicker(\'' + a + '\')">Compare with a type</button>' +
+      '<button class="btn btn-primary" onclick="sharePair(\'' + a + '\',\'' + b + '\',true)">Share bridge</button>' +
+    '</div>' +
+    '<div class="btn-row single">' +
+      '<a class="btn btn-secondary" href="' + escHtml(QUIZ_URL) + '">← Back to my result</a>' +
+    '</div>';
+}
+
+var FAM_CHARS = {
+  Builders:     "strategic, growth-oriented action",
+  Experiencers: "present-moment expression and experience",
+  Guardians:    "security and careful protection",
+  Avoiders:     "avoidance and disengagement from money"
+};
+function sideBlurb(code) {
+  var blurbs = {
+    AB: "You move fast, hold parallel bets, and define enough as a moving target. Wealth is a scoreboard.",
+    FC: "You filter every decision through how much autonomy it adds. Money is the route out of obligation.",
+    WA: "You know the number, the timeline, and the milestones. Discipline isn't a trait, it's architecture.",
+    ST: "Money is a system to be tuned. You find the craft of optimisation genuinely interesting.",
+    SS: "Visible decisions communicate who you are becoming. Status is a strategy, not vanity.",
+    LI: "Each level up earns the next level of lifestyle. Quality is a value, not a flex.",
+    LR: "Money is for living. The future feels abstract next to what's happening right now.",
+    SG: "Safety isn't fear — it's design. You built a base solid enough that disruption doesn't devastate.",
+    AX: "Fear is the engine. Vigilance is the cost. Security is the promise that never quite delivers.",
+    EE: "You know exactly what you're avoiding. That's the part you can't escape.",
+    WN: "You haven't built a relationship with money yet. Nothing has made it urgent enough — yet."
+  };
+  return blurbs[code] || ("Your " + NAMES[code] + " side shapes how you act when no one is looking.");
+}
+function bridgeCombinedBlurb(a, b) {
+  return FAM_CHARS[CAT[a]] + ' on one side, ' + FAM_CHARS[CAT[b]] + ' on the other. You\'ve internalised both — which is what makes this rare.';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EMPTY / NO-PARAM FALLBACK — invite to take the quiz
+   ═══════════════════════════════════════════════════════════ */
+function renderEmpty() {
+  return topbarChrome(null) +
+    ambient('a') +
+    '<div class="page-eyebrow">Monie Compatibility</div>' +
+    '<div class="page-title">See how your<br>money patterns connect</div>' +
+    '<div class="page-sub">Take the duRingIt quiz first to discover your Monie ID, then come back to see compatibility with any other type.</div>' +
+    '<div class="btn-row single" style="max-width:340px;margin:8px auto 14px;">' +
+      '<a class="btn btn-primary" href="' + escHtml(QUIZ_URL) + '">Take the quiz →</a>' +
+    '</div>' +
+    '<div class="page-eyebrow" style="margin-top:30px">Already know your type?</div>' +
+    '<div class="picker-grid">' +
+      ORDER.map(function(c) {
+        return '<button class="pick-card" onclick="goPicker(\'' + c + '\')" aria-label="' + escHtml(NAMES[c]) + '">' +
+          cardThumb(c) +
+          '<div class="pick-meta">' +
+            '<div class="pick-name">' + escHtml(NAMES[c]) + '</div>' +
+            '<div class="pick-code">' + escHtml(TYPE_CODES[c]) + '</div>' +
+          '</div>' +
+        '</button>';
+      }).join('') +
+    '</div>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUILDING BLOCKS
+   ═══════════════════════════════════════════════════════════ */
+function meterRow(iconHtml, name, pct, text) {
+  var p = Math.max(0, Math.min(1, pct)) * 100;
+  return '<div class="meter-row">' +
+    '<div class="meter-icon">' + iconHtml + '</div>' +
+    '<div class="meter-name">' + escHtml(name) + '</div>' +
+    '<div class="meter-bar"><div class="meter-arrow" style="left:' + p.toFixed(1) + '%"></div></div>' +
+    '<div class="meter-value">' + escHtml(text) + '</div>' +
+  '</div>';
+}
+
+function sectionCard(kind, iconHtml, title, stampText, bodyText, listItems) {
+  var listHtml = listItems && listItems.length
+    ? '<ul class="sc-list">' + listItems.map(function(t) { return '<li>' + escHtml(t) + '</li>'; }).join('') + '</ul>'
+    : '';
+  return '<div class="section-card">' +
+    '<div class="sc-icon ' + kind + '">' + iconHtml + '</div>' +
+    '<div class="sc-body">' +
+      '<div class="sc-head">' +
+        '<div class="sc-title">' + escHtml(title) + '</div>' +
+        '<div class="sc-stamp ' + kind + '">' + escHtml(stampText) + '</div>' +
+      '</div>' +
+      '<div class="sc-text">' + escHtml(bodyText) + '</div>' +
+      listHtml +
+    '</div>' +
+  '</div>';
+}
+
+/* ─── ICONS (inline SVG) ─── */
+function heartLgIcon() { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20 C5 15 3 10 6 7 C8 5 11 6 12 8 C13 6 16 5 18 7 C21 10 19 15 12 20 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>'; }
+function boltLgIcon()  { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 L4 14 L11 14 L10 22 L20 9 L13 9 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="currentColor" fill-opacity="0.15"/></svg>'; }
+function leafLgIcon()  { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20 C12 20 20 12 20 4 C12 4 4 12 4 20 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 19 L13 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'; }
+function shieldLgIcon(){ return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3 L20 6 L20 13 C20 17 16 20 12 21 C8 20 4 17 4 13 L4 6 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12 L11 14 L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+function coinIcon()  { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#A66A2E" stroke-width="2" fill="#F6B638"/><text x="12" y="16" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#6B3F22" text-anchor="middle">$</text></svg>'; }
+function heartIcon() { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20 C5 15 3 10 6 7 C8 5 11 6 12 8 C13 6 16 5 18 7 C21 10 19 15 12 20 Z" stroke="#A66A2E" stroke-width="1.8" stroke-linejoin="round" fill="#FFD56A"/></svg>'; }
+function clipIcon()  { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="4" width="12" height="17" rx="2" stroke="#5E6E3E" stroke-width="1.8" fill="#E6EBD3"/><rect x="9" y="2" width="6" height="3" rx="1" stroke="#5E6E3E" stroke-width="1.5" fill="#7F8F5A"/><line x1="9" y1="10" x2="15" y2="10" stroke="#5E6E3E" stroke-width="1.4" stroke-linecap="round"/><line x1="9" y1="13" x2="14" y2="13" stroke="#5E6E3E" stroke-width="1.4" stroke-linecap="round"/></svg>'; }
+function boltIcon()  { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 L4 14 L11 14 L10 22 L20 9 L13 9 Z" stroke="#A66A2E" stroke-width="1.8" stroke-linejoin="round" fill="#F6B638"/></svg>'; }
+
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION + SHARE
+   ═══════════════════════════════════════════════════════════ */
+function goPicker(a) {
+  window.location.href = COMPAT_URL + '?a=' + a;
+}
+function goCompare(a, b) {
+  window.location.href = COMPAT_URL + '?a=' + a + '&compare=' + b;
+}
+function sharePair(a, b, isBridge) {
+  var text;
+  if (isBridge) {
+    text = "On the duRingIt Monie ID quiz, I'm a Bridge between " + NAMES[a] + " and " + NAMES[b] + " 🔀\n\nWhat's your money type?\n\n" + COMPAT_URL + "?a=" + a + "&b=" + b;
+  } else {
+    var label = labelFor(COMPAT[key(a,b)].score).name;
+    text = NAMES[a] + " × " + NAMES[b] + ": " + label + " on the duRingIt Monie Compatibility map 💡\n\nFind out yours: " + COMPAT_URL + "?a=" + a + "&compare=" + b;
+  }
+  window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILS
+   ═══════════════════════════════════════════════════════════ */
+function escHtml(s) {
+  if (s === undefined || s === null) return "";
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+render();
 </script>
 </body>
 </html>
