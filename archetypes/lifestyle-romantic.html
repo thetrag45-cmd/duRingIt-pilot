@@ -2,108 +2,517 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lifestyle Romantic &mdash; duRingIt Monie ID</title>
-<meta name="description" content="Lifestyle Romantic &mdash; one of 11 Monie ID financial archetypes. Life is happening now. Why live like a robot just to maybe enjoy life later?">
-<meta property="og:title" content="Lifestyle Romantic &mdash; duRingIt Monie ID">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lifestyle Romantic — duRingIt Monie ID</title>
+<meta name="description" content="Lifestyle Romantic — one of 11 Monie ID financial archetypes. Life is happening now. Why live like a robot just to maybe enjoy life later?">
+<meta property="og:title" content="Lifestyle Romantic — duRingIt Monie ID">
 <meta property="og:description" content="Life is happening now. Why live like a robot just to maybe enjoy life later?">
 <meta property="og:type" content="article">
+<meta property="og:image" content="../cards/LR.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── TOKENS (shared Monie ID Intake system) ─── */
+:root {
+  --bg-cream:    #FFF7EA;
+  --paper:       #FFF2D9;
+  --paper-light: #FFFBF3;
+  --paper-warm:  #FAE7C5;
+  --ink:         #2A170D;
+  --ink-soft:    #4A2E1A;
+  --brown:       #6B3F22;
+  --brown-soft:  #8A5A33;
+  --caramel:     #A66A2E;
+  --honey:       #F6B638;
+  --honey-light: #FFD56A;
+  --honey-deep:  #D89724;
+  --sage:        #7F8F5A;
+  --sage-light:  #E6EBD3;
+  --sage-deep:   #5E6E3E;
+  --border:      #D8B982;
+  --border-soft: #E8D4A4;
+  --tan:         #C9A36A;
+  --shadow:      rgba(91, 55, 20, 0.16);
+  --shadow-soft: rgba(91, 55, 20, 0.08);
+  --tape:        #F1E2BD;
+
+  --fam-bg:  #F8D7C2;
+  --fam-bd:  #E8B58E;
+  --fam-ink: #8C4626;
+
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-card: 0 2px 0 var(--border-soft), 0 8px 18px -6px var(--shadow);
+  --shadow-paper: 0 1px 0 #fff inset, 0 2px 0 var(--border-soft), 0 14px 24px -10px var(--shadow);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: #E8D8B8; }
 body {
-  background: #0D0D0D; color: #E8E8E8;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.6;
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink); line-height: 1.6; font-size: 16px;
+  background: radial-gradient(circle at 20% 10%, #F0E0BE 0%, #E8D8B8 60%, #DCC89A 100%);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
-.wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
-.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 32px; }
-.brand span { color: #F5C842; }
-.brand a { color: inherit; text-decoration: none; }
-.fam { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
-h1 {
-  font-size: 44px; font-weight: 900; line-height: 1.05;
-  margin-bottom: 14px; letter-spacing: -0.02em;
+
+/* paper sheet container — wider than phone, single-column long-form */
+.sheet {
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background:
+    repeating-linear-gradient(0deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    radial-gradient(120% 80% at 50% 0%, #FFF9EC 0%, var(--bg-cream) 60%, #F8EAD0 100%);
+  padding: 28px 22px 80px;
+  position: relative;
 }
-.tagline {
-  font-size: 19px; font-style: italic; color: #F5C842;
-  border-left: 3px solid #F5C842; padding: 4px 0 4px 16px;
-  margin-bottom: 40px; line-height: 1.5;
+@media (min-width: 820px) {
+  body { padding: 28px 16px; }
+  .sheet {
+    margin: 0 auto;
+    min-height: calc(100vh - 56px);
+    border-radius: 26px;
+    box-shadow:
+      0 2px 0 var(--border-soft),
+      0 30px 60px -20px rgba(0,0,0,0.25),
+      0 50px 100px -30px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
 }
-.section {
-  margin-bottom: 44px;
+
+/* ─── BRAND PILL + BACK ─── */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; position: relative; z-index: 2; }
+.back-arrow {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brown); font-size: 18px; font-weight: 800;
+  text-decoration: none; box-shadow: var(--shadow-card);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  transition: transform 0.12s;
 }
-.section h2 {
-  font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: #F5C842; margin-bottom: 16px; font-weight: 700;
-  padding-bottom: 8px; border-bottom: 1px solid #2A2A2A;
+.back-arrow:hover { transform: translateY(-2px); }
+.brand-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
 }
-.sub-h {
-  font-size: 17px; font-weight: 700; color: #FFFFFF;
-  margin-top: 22px; margin-bottom: 8px;
+.brand-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown); flex: 0 0 auto; }
+.brand-pill .brand-name { white-space: nowrap; }
+.brand-pill .ring { color: var(--honey-deep); font-weight: 700; }
+.share-coin {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--shadow-card);
+  font-size: 16px; color: var(--brown);
+  font-family: inherit;
 }
-.prose {
-  font-size: 16px; color: #C8C8C8; margin-bottom: 14px; line-height: 1.7;
+
+/* ─── HERO ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  margin: 12px 0 28px;
+  align-items: start;
+  position: relative;
+  z-index: 2;
 }
-.b-list {
-  list-style: none; padding: 0; margin: 0 0 16px 0;
+.card-slot {
+  position: relative;
+  aspect-ratio: 948 / 1659;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-paper);
 }
-.b-list li {
-  font-size: 15px; color: #B0B0B0; line-height: 1.6;
-  padding: 6px 0 6px 22px; position: relative;
+.card-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-ph {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(168,130,72,0.06) 0 2px, transparent 2px 14px),
+    radial-gradient(circle at 30% 20%, #FFF6DC 0%, var(--paper-warm) 50%, #E8C879 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 18px; text-align: center;
 }
-.b-list li::before {
-  content: "—"; position: absolute; left: 0; color: #F5C842;
+.card-ph .code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 60px; font-weight: 800; color: var(--ink); line-height: 1;
+  text-shadow: 2px 2px 0 #FFE7A4;
 }
-.pull-q {
-  font-size: 18px; font-style: italic; color: #D4AA40;
-  background: #161616; border-left: 3px solid #F5C842;
-  padding: 14px 18px; border-radius: 0 10px 10px 0;
-  margin: 18px 0;
+.card-ph .ph-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 18px; line-height: 1.1;
+  color: var(--ink); margin-top: 8px;
 }
-hr.divider {
-  border: 0; border-top: 1px solid #2A2A2A; margin: 28px 0;
+
+.hero-meta { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+.fam-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--fam-bg);
+  border: 1.5px solid var(--fam-bd);
+  color: var(--fam-ink);
+  padding: 5px 14px; border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  align-self: flex-start;
 }
-.foot-card {
-  background: #1A1A1A; border: 1px solid #2A2A2A; border-radius: 14px;
-  padding: 24px; margin-top: 48px; text-align: center;
+.hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 48px;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--ink); text-wrap: balance;
 }
-.foot-card h3 {
-  font-size: 22px; font-weight: 800; margin-bottom: 8px; color: #FFF;
+.hero-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--brown);
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  padding: 4px 12px; border-radius: 6px;
+  align-self: flex-start;
 }
-.foot-card p { color: #888; font-size: 14px; margin-bottom: 16px; }
-.cta {
-  display: inline-block;
-  background: #F5C842; color: #000; text-decoration: none;
-  padding: 14px 24px; border-radius: 10px;
-  font-weight: 700; font-size: 15px;
-  transition: background 0.12s;
+.hero-quote {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--caramel);
+  line-height: 1.4;
+  padding: 14px 16px 14px 22px;
+  background: var(--paper-light);
+  border-left: 4px solid var(--honey);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+  margin-top: 2px;
+  text-wrap: pretty;
 }
-.cta:hover { background: #FFD700; }
-.nav-prev {
-  display: flex; justify-content: space-between; gap: 12px; margin-top: 24px;
+.hero-quote::before {
+  content: '\201C';
+  position: absolute;
+  left: 4px; top: 0;
+  color: var(--honey-deep);
+  font-size: 38px;
+  line-height: 1;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .hero { grid-template-columns: 1fr; gap: 18px; }
+  .card-slot { max-width: 220px; margin: 0 auto; width: 100%; }
+  .hero-title { font-size: 36px; text-align: center; }
+  .fam-pill, .hero-code { align-self: center; }
+}
+
+/* ─── TABLE OF CONTENTS ─── */
+.toc {
+  background: var(--paper-light);
+  border: 1.5px dashed var(--tan);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 28px;
+  position: relative; z-index: 2;
+}
+.toc-label {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--brown-soft); margin-bottom: 8px;
+}
+.toc ul {
+  list-style: none; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 4px 14px;
+}
+.toc li {
   font-size: 13px;
+  padding: 4px 0;
+  position: relative;
 }
-.nav-prev a { color: #666; text-decoration: none; padding: 8px 12px; border: 1px solid #2A2A2A; border-radius: 8px; }
-.nav-prev a:hover { color: #F5C842; border-color: #F5C842; }
-@media (max-width: 520px) {
-  h1 { font-size: 34px; }
-  .tagline { font-size: 17px; }
-  .wrap { padding: 20px 16px 60px; }
+.toc a {
+  color: var(--brown);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--tan);
+  padding-bottom: 1px;
+  transition: color 0.12s, border-color 0.12s;
+}
+.toc a:hover { color: var(--honey-deep); border-color: var(--honey-deep); }
+
+/* ─── PAPER SECTIONS ─── */
+.paper-section {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 26px 22px 22px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-card);
+  background-image:
+    radial-gradient(circle at 14% 10%, rgba(168,130,72,0.04) 0 1px, transparent 1px),
+    radial-gradient(circle at 78% 70%, rgba(168,130,72,0.05) 0 1px, transparent 1px);
+  background-size: 12px 12px, 16px 16px;
+  z-index: 2;
+}
+.paper-section::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, transparent 50%, var(--border-soft) 50%, var(--border-soft) 56%, var(--paper-warm) 56%);
+  border-bottom-right-radius: var(--radius-lg);
+}
+.tape {
+  position: absolute;
+  top: -10px; left: 24px;
+  width: 64px; height: 20px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+  opacity: 0.95;
+}
+.tape--right { left: auto; right: 24px; transform: rotate(3deg); }
+
+.ps-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--honey-deep); margin-bottom: 6px;
+}
+.ps-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 26px; font-weight: 800;
+  line-height: 1.05; letter-spacing: -0.015em;
+  color: var(--ink); margin-bottom: 14px;
+  text-wrap: balance;
+}
+
+/* Preserve original content classes — restyle to paper aesthetic */
+.ps-body .sub-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--brown); margin-top: 18px; margin-bottom: 6px;
+  letter-spacing: -0.005em;
+}
+.ps-body .prose {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  line-height: 1.65;
+}
+.ps-body .b-list {
+  list-style: none; padding: 0; margin: 4px 0 14px;
+}
+.ps-body .b-list li {
+  position: relative;
+  padding: 5px 0 5px 22px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.ps-body .b-list li::before {
+  content: "";
+  position: absolute;
+  left: 8px; top: 13px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--honey);
+  border: 1.5px solid var(--honey-deep);
+}
+.ps-body .pull-q {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--caramel);
+  background: #FFF6DC;
+  border: 1.5px solid var(--honey-deep);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin: 14px 0;
+  line-height: 1.5;
+}
+
+/* ─── FOOTER CTAs ─── */
+.foot-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  margin: 28px 0 14px;
+  text-align: center;
+  box-shadow: var(--shadow-paper);
+  position: relative; z-index: 2;
+}
+.foot-tag {
+  display: inline-block;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--sage-deep);
+  margin-bottom: 4px;
+  transform: rotate(-1deg);
+}
+.foot-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--ink); margin-bottom: 6px;
+}
+.foot-sub {
+  font-size: 14px;
+  color: var(--brown-soft);
+  margin-bottom: 16px;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  position: relative; z-index: 2;
+}
+.btn-row.single { grid-template-columns: 1fr; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px; font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 999px;
+  cursor: pointer; text-decoration: none;
+  border: 2px solid;
+  transition: transform 0.12s, box-shadow 0.12s;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  border-color: var(--honey-deep);
+  box-shadow: 0 3px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--honey-deep), 0 14px 22px -6px var(--shadow); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--honey-deep); }
+
+.btn-secondary {
+  background: var(--paper-light);
+  color: var(--brown);
+  border-color: var(--tan);
+  border-style: dashed;
+  box-shadow: var(--shadow-card);
+}
+.btn-secondary:hover { border-color: var(--brown); color: var(--ink); }
+
+.nav-prev {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-top: 24px; font-size: 13px;
+  position: relative; z-index: 2;
+}
+.nav-prev a {
+  color: var(--brown);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px dashed var(--tan);
+  border-radius: 8px;
+  background: var(--paper-light);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+}
+.nav-prev a:hover { color: var(--ink); border-color: var(--brown); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 30px; }
+  .ps-title { font-size: 22px; }
+  .sheet { padding: 22px 16px 60px; }
+  .btn-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
-<body>
-<div class="wrap">
+<body data-archetype="LR">
 
-<div class="brand"><a href="../duRingIt-pilot-quiz.html">du<span>Ring</span>It &mdash; Monie ID</a></div>
+<div class="sheet">
 
-<div class="fam">Experiencers</div>
-<h1>Lifestyle Romantic</h1>
-<div class="tagline">&ldquo;Life is happening now. Why live like a robot just to maybe enjoy life later?&rdquo;</div>
+  <!-- ─── TOPBAR ─── -->
+  <div class="topbar">
+    <a class="back-arrow" data-back-to-result href="../duRingIt-pilot-quiz.html" aria-label="Back to my result">&larr;</a>
+    <a class="brand-pill" href="../duRingIt-pilot-quiz.html">
+      <span class="brand-name">du<span class="ring">Ring</span>It</span>
+      <span class="dot"></span>
+      <span>Monie ID Profile</span>
+    </a>
+    <button class="share-coin" onclick="navigator.share ? navigator.share({title: document.title, url: location.href}) : (navigator.clipboard && navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!')))" aria-label="Share">⇪</button>
+  </div>
 
-<section class="section" id="archetype-overview">
-  <h2>Archetype Overview</h2>
-  <p class="prose">The The Lifestyle Romantic lives emotionally close to the present. To them, money is not primarily about:</p>
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div class="card-slot">
+      <img src="../cards/LR.jpg" alt="Lifestyle Romantic BEGA card" onerror="this.style.display='none';this.parentNode.querySelector('.card-ph').style.display='flex';">
+      <div class="card-ph" style="display:none;">
+        <div class="code">LR</div>
+        <div class="ph-name">Lifestyle Romantic</div>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span class="fam-pill">Experiencers</span>
+      <h1 class="hero-title">Lifestyle Romantic</h1>
+      <span class="hero-code">EXP-LR</span>
+      <div class="hero-quote">Life is happening now. Why live like a robot just to maybe enjoy life later?</div>
+    </div>
+  </header>
+
+  <!-- ─── TABLE OF CONTENTS ─── -->
+  <nav class="toc" aria-label="On this page">
+    <div class="toc-label">In this file</div>
+    <ul>
+      <li><a href="#archetype-overview">Archetype Overview</a></li>
+      <li><a href="#core-strengths">Core Strengths</a></li>
+      <li><a href="#core-weaknesses">Core Weaknesses</a></li>
+      <li><a href="#spending-habits">Spending Habits</a></li>
+      <li><a href="#investing-style">Investing Style</a></li>
+      <li><a href="#relationship-with-money">Relationship With Money</a></li>
+      <li><a href="#career-behavior">Career Behavior</a></li>
+      <li><a href="#emotional-triggers">Emotional Triggers</a></li>
+      <li><a href="#common-mistakes">Common Mistakes</a></li>
+      <li><a href="#growth-path">Growth Path</a></li>
+      <li><a href="#ideal-partner">Ideal Partner</a></li>
+      <li><a href="#stress-behavior">Stress Behavior</a></li>
+      <li><a href="#financial-fear">Financial Fear</a></li>
+      <li><a href="#financial-superpower">Financial Superpower</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── BODY SECTIONS ─── -->
+
+  <section class="paper-section" id="archetype-overview">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 1</div>
+    <h2 class="ps-title">Archetype Overview</h2>
+    <div class="ps-body"><p class="prose">The The Lifestyle Romantic lives emotionally close to the present. To them, money is not primarily about:</p>
       <ul class="b-list"><li>status</li><li>security</li><li>long-term optimization</li></ul>
       <p class="prose">Money is meant to:</p>
       <ul class="b-list"><li>create experiences</li><li>generate memories</li><li>reduce emotional restriction</li><li>make life feel alive</li></ul>
@@ -121,12 +530,14 @@ hr.divider {
       <p class="prose">To outsiders, they may appear:</p>
       <ul class="b-list"><li>irresponsible</li><li>reckless</li><li>financially unserious</li></ul>
       <p class="prose">But internally, they are often trying to protect something:</p>
-      <p class="prose">emotional aliveness.</p>
-</section>
+      <p class="prose">emotional aliveness.</p></div>
+  </section>
 
-<section class="section" id="core-strengths">
-  <h2>Core Strengths</h2>
-  <h3 class="sub-h">1. Ability To Enjoy Life</h3>
+  <section class="paper-section" id="core-strengths">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 2</div>
+    <h2 class="ps-title">Core Strengths</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Ability To Enjoy Life</h3>
       <p class="prose">The The Lifestyle Romantic naturally understands:</p>
       <ul class="b-list"><li>presence</li><li>enjoyment</li><li>spontaneity</li><li>emotional richness</li></ul>
       <p class="prose">They rarely postpone life entirely for the future.</p>
@@ -141,12 +552,14 @@ hr.divider {
       <p class="prose">They are comfortable acting quickly and embracing opportunities spontaneously. This makes them:</p>
       <ul class="b-list"><li>flexible</li><li>socially agile</li><li>open to experiences</li></ul>
       <h3 class="sub-h">5. Strong Present-Moment Awareness</h3>
-      <p class="prose">Unlike archetypes obsessed with future planning, the YOLO Spender genuinely understands: life is happening right now. This gives them emotional richness many other archetypes lack.</p>
-</section>
+      <p class="prose">Unlike archetypes obsessed with future planning, the YOLO Spender genuinely understands: life is happening right now. This gives them emotional richness many other archetypes lack.</p></div>
+  </section>
 
-<section class="section" id="core-weaknesses">
-  <h2>Core Weaknesses</h2>
-  <h3 class="sub-h">1. Poor Delayed Gratification</h3>
+  <section class="paper-section" id="core-weaknesses">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 3</div>
+    <h2 class="ps-title">Core Weaknesses</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Poor Delayed Gratification</h3>
       <p class="prose">This is their defining challenge. They often prioritize:</p>
       <ul class="b-list"><li>current enjoyment</li></ul>
       <p class="prose">over</p>
@@ -166,53 +579,63 @@ hr.divider {
       <blockquote class="pull-q">&ldquo;You only live once&rdquo;</blockquote>
       <h3 class="sub-h">5. Difficulty Maintaining Consistency</h3>
       <p class="prose">They often struggle with:</p>
-      <ul class="b-list"><li>routines</li><li>systems</li><li>repetitive financial discipline</li></ul>
-</section>
+      <ul class="b-list"><li>routines</li><li>systems</li><li>repetitive financial discipline</li></ul></div>
+  </section>
 
-<section class="section" id="spending-habits">
-  <h2>Spending Habits</h2>
-  <p class="prose">The YOLO Spender spends emotionally and experientially. Typical categories:</p>
+  <section class="paper-section" id="spending-habits">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 4</div>
+    <h2 class="ps-title">Spending Habits</h2>
+    <div class="ps-body"><p class="prose">The YOLO Spender spends emotionally and experientially. Typical categories:</p>
       <ul class="b-list"><li>travel</li><li>food</li><li>nightlife</li><li>fashion</li><li>gadgets</li><li>concerts</li><li>spontaneous experiences</li><li>social events</li><li>gifts</li><li>emotional dopamine purchases</li></ul>
       <p class="prose">Their purchases are often justified through:</p>
       <ul class="b-list"><li>emotional value</li><li>memory creation</li><li>lifestyle enjoyment</li></ul>
       <p class="prose">Their internal logic is: “I can always make more money. I can’t get this moment back.” They dislike:</p>
-      <ul class="b-list"><li>feeling restricted</li><li>hyper-budgeted</li><li>emotionally trapped by money systems</li></ul>
-</section>
+      <ul class="b-list"><li>feeling restricted</li><li>hyper-budgeted</li><li>emotionally trapped by money systems</li></ul></div>
+  </section>
 
-<section class="section" id="investing-style">
-  <h2>Investing Style</h2>
-  <p class="prose">YOLO Spenders often know investing is important —​ but consistency is the issue. Common behaviors:</p>
+  <section class="paper-section" id="investing-style">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 5</div>
+    <h2 class="ps-title">Investing Style</h2>
+    <div class="ps-body"><p class="prose">YOLO Spenders often know investing is important —​ but consistency is the issue. Common behaviors:</p>
       <ul class="b-list"><li>investing only when emotionally motivated</li><li>inconsistent contributions</li><li>chasing exciting investments</li><li>abandoning systems quickly</li></ul>
       <p class="prose">Some may:</p>
       <ul class="b-list"><li>enter speculative trends impulsively</li><li>FOMO into markets</li><li>invest emotionally rather than strategically</li></ul>
       <p class="prose">Their investing style often mirrors their personality:</p>
-      <ul class="b-list"><li>high excitement</li><li>low patience</li><li>emotionally driven timing</li></ul>
-</section>
+      <ul class="b-list"><li>high excitement</li><li>low patience</li><li>emotionally driven timing</li></ul></div>
+  </section>
 
-<section class="section" id="relationship-with-money">
-  <h2>Relationship With Money</h2>
-  <p class="prose">To the YOLO Spender, money represents:</p>
+  <section class="paper-section" id="relationship-with-money">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 6</div>
+    <h2 class="ps-title">Relationship With Money</h2>
+    <div class="ps-body"><p class="prose">To the YOLO Spender, money represents:</p>
       <ul class="b-list"><li>freedom to experience life</li><li>emotional enjoyment</li><li>spontaneity</li><li>self-expression</li></ul>
       <p class="prose">Money is deeply tied to:</p>
       <ul class="b-list"><li>emotional energy</li><li>social life</li><li>feeling alive</li></ul>
-      <p class="prose">Their core belief is often: “Life should be experienced, not endlessly postponed.” Unlike Security Seekers who use money to reduce anxiety,​ YOLO Spenders use money to increase emotional richness.</p>
-</section>
+      <p class="prose">Their core belief is often: “Life should be experienced, not endlessly postponed.” Unlike Security Seekers who use money to reduce anxiety,​ YOLO Spenders use money to increase emotional richness.</p></div>
+  </section>
 
-<section class="section" id="career-behavior">
-  <h2>Career Behavior</h2>
-  <p class="prose">YOLO Spenders usually prefer careers that feel:</p>
+  <section class="paper-section" id="career-behavior">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 7</div>
+    <h2 class="ps-title">Career Behavior</h2>
+    <div class="ps-body"><p class="prose">YOLO Spenders usually prefer careers that feel:</p>
       <ul class="b-list"><li>exciting</li><li>dynamic</li><li>socially stimulating</li><li>emotionally engaging</li></ul>
       <p class="prose">They dislike:</p>
       <ul class="b-list"><li>repetitive environments</li><li>emotionally dead workplaces</li><li>rigid systems</li></ul>
       <p class="prose">Common tendencies:</p>
       <ul class="b-list"><li>creative industries</li><li>media</li><li>sales</li><li>hospitality</li><li>entrepreneurship</li><li>content creation</li><li>entertainment</li><li>flexible work environments</li></ul>
       <p class="prose">They often perform best when:</p>
-      <ul class="b-list"><li>emotionally inspired</li><li>socially engaged</li><li>energized by the environment</li></ul>
-</section>
+      <ul class="b-list"><li>emotionally inspired</li><li>socially engaged</li><li>energized by the environment</li></ul></div>
+  </section>
 
-<section class="section" id="emotional-triggers">
-  <h2>Emotional Triggers</h2>
-  <p class="prose">The YOLO Spender becomes emotionally triggered by:</p>
+  <section class="paper-section" id="emotional-triggers">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 8</div>
+    <h2 class="ps-title">Emotional Triggers</h2>
+    <div class="ps-body"><p class="prose">The YOLO Spender becomes emotionally triggered by:</p>
       <h3 class="sub-h">Feeling Restricted</h3>
       <p class="prose">Strict financial rules can feel emotionally suffocating.</p>
       <h3 class="sub-h">Missing Out</h3>
@@ -222,12 +645,14 @@ hr.divider {
       <p class="prose">When life feels repetitive or emotionally flat, they often spend to create stimulation.</p>
       <h3 class="sub-h">Harsh Financial Judgment</h3>
       <p class="prose">They dislike being made to feel:</p>
-      <ul class="b-list"><li>irresponsible</li><li>childish</li><li>“bad with money.”</li></ul>
-</section>
+      <ul class="b-list"><li>irresponsible</li><li>childish</li><li>“bad with money.”</li></ul></div>
+  </section>
 
-<section class="section" id="common-mistakes">
-  <h2>Common Mistakes</h2>
-  <h3 class="sub-h">1. Sacrificing Long-Term Freedom For Short-Term</h3>
+  <section class="paper-section" id="common-mistakes">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 9</div>
+    <h2 class="ps-title">Common Mistakes</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Sacrificing Long-Term Freedom For Short-Term</h3>
       <h3 class="sub-h">Enjoyment</h3>
       <p class="prose">This is their biggest financial trap. Too much present-focused living can quietly destroy future flexibility.</p>
       <h3 class="sub-h">2. Emotional Justification Loops</h3>
@@ -239,23 +664,27 @@ hr.divider {
       <h3 class="sub-h">5. Living On Future Optimism</h3>
       <p class="prose">Some YOLO Spenders assume:</p>
       <ul class="b-list"><li>future income</li><li>future opportunities</li><li>future success</li></ul>
-      <p class="prose">will eventually “solve everything.”</p>
-</section>
+      <p class="prose">will eventually “solve everything.”</p></div>
+  </section>
 
-<section class="section" id="growth-path">
-  <h2>Growth Path</h2>
-  <p class="prose">The YOLO Spender evolves when they realize:</p>
+  <section class="paper-section" id="growth-path">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 10</div>
+    <h2 class="ps-title">Growth Path</h2>
+    <div class="ps-body"><p class="prose">The YOLO Spender evolves when they realize:</p>
       <p class="prose">financial structure creates more freedom to enjoy life — not less. This becomes their breakthrough. Their next stage of growth is learning:</p>
       <ul class="b-list"><li>intentional enjoyment</li><li>sustainable spending</li><li>future-proof freedom</li></ul>
       <p class="prose">They do NOT need to become:</p>
       <ul class="b-list"><li>hyper-frugal</li><li>emotionally cold</li><li>excessively restrictive</li></ul>
       <p class="prose">Instead, they must understand: the goal is not to stop enjoying life — it is to make enjoyment sustainable. Healthy YOLO Spenders eventually learn how to:</p>
-      <ul class="b-list"><li>enjoy the present</li><li>while protecting future freedom simultaneously</li></ul>
-</section>
+      <ul class="b-list"><li>enjoy the present</li><li>while protecting future freedom simultaneously</li></ul></div>
+  </section>
 
-<section class="section" id="ideal-partner">
-  <h2>Ideal Partner</h2>
-  <p class="prose">The YOLO Spender thrives with partners who are:</p>
+  <section class="paper-section" id="ideal-partner">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 11</div>
+    <h2 class="ps-title">Ideal Partner</h2>
+    <div class="ps-body"><p class="prose">The YOLO Spender thrives with partners who are:</p>
       <ul class="b-list"><li>emotionally warm</li><li>adventurous</li><li>socially alive</li><li>financially grounding without being controlling</li></ul>
       <p class="prose">They value:</p>
       <ul class="b-list"><li>fun</li><li>emotional connection</li><li>spontaneity</li><li>shared experiences</li></ul>
@@ -264,47 +693,85 @@ hr.divider {
       <p class="prose">Their ideal partner helps them:</p>
       <ul class="b-list"><li>stay grounded</li></ul>
       <p class="prose">without</p>
-      <ul class="b-list"><li>killing their emotional energy</li></ul>
-</section>
+      <ul class="b-list"><li>killing their emotional energy</li></ul></div>
+  </section>
 
-<section class="section" id="stress-behavior">
-  <h2>Stress Behavior</h2>
-  <p class="prose">Under stress, the YOLO Spender may:</p>
+  <section class="paper-section" id="stress-behavior">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 12</div>
+    <h2 class="ps-title">Stress Behavior</h2>
+    <div class="ps-body"><p class="prose">Under stress, the YOLO Spender may:</p>
       <ul class="b-list"><li>spend impulsively</li><li>emotionally escape</li><li>avoid financial reality</li><li>seek stimulation to numb discomfort</li></ul>
       <p class="prose">They may:</p>
       <ul class="b-list"><li>binge-spend</li><li>travel impulsively</li><li>over-socialize</li><li>justify reckless spending emotionally</li></ul>
-      <p class="prose">Their stress response is often: “I just need to feel better right now.”</p>
-</section>
+      <p class="prose">Their stress response is often: “I just need to feel better right now.”</p></div>
+  </section>
 
-<section class="section" id="financial-fear">
-  <h2>Financial Fear</h2>
-  <p class="prose">The YOLO Spender’s deepest fear is:</p>
+  <section class="paper-section" id="financial-fear">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 13</div>
+    <h2 class="ps-title">Financial Fear</h2>
+    <div class="ps-body"><p class="prose">The YOLO Spender’s deepest fear is:</p>
       <p class="prose">wasting life by becoming emotionally numb or overly restricted. They fear:</p>
       <ul class="b-list"><li>missing experiences</li><li>losing youth</li><li>becoming trapped in routine</li><li>sacrificing life purely for future security</li></ul>
-      <p class="prose">Ironically, they also quietly fear: waking up later in life with no financial foundation underneath all the memories.</p>
-</section>
+      <p class="prose">Ironically, they also quietly fear: waking up later in life with no financial foundation underneath all the memories.</p></div>
+  </section>
 
-<section class="section" id="financial-superpower">
-  <h2>Financial Superpower</h2>
-  <h3 class="sub-h">Emotional Vitality</h3>
+  <section class="paper-section" id="financial-superpower">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 14</div>
+    <h2 class="ps-title">Financial Superpower</h2>
+    <div class="ps-body"><h3 class="sub-h">Emotional Vitality</h3>
       <p class="prose">The YOLO Spender’s greatest strength is their ability to:</p>
       <ul class="b-list"><li>fully experience life</li><li>create emotional richness</li><li>bring energy, spontaneity, and humanity into money</li></ul>
       <p class="prose">They understand something many archetypes forget: wealth is meaningless if life feels empty. Their superpower is not optimization. It is:</p>
       <p class="prose">turning money into memorable experiences, emotional connection, and present-moment living.</p>
-      <h3 class="sub-h">The Emotional Escapist</h3>
-</section>
+      <h3 class="sub-h">The Emotional Escapist</h3></div>
+  </section>
 
-<div class="foot-card">
-  <h3>Don&rsquo;t know your Monie ID yet?</h3>
-  <p>Take the 4-minute quiz to discover which of 11 archetypes you are.</p>
-  <a class="cta" href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  <!-- ─── FOOTER CTA ─── -->
+  <div class="foot-card">
+    <div class="foot-tag">your monie id file →</div>
+    <div class="foot-title">Want the full picture?</div>
+    <div class="foot-sub">See how the Lifestyle Romantic works with the other 10 Monie IDs, or retake the quiz.</div>
+    <div class="btn-row">
+      <a class="btn btn-secondary" data-back-to-result href="../duRingIt-pilot-quiz.html">&larr; Back to my result</a>
+      <a class="btn btn-primary" href="../compatibility.html?a=LR">🔁 See your compatibility</a>
+    </div>
+  </div>
+
+  <!-- ─── PREV / NEXT NAV ─── -->
+  <nav class="nav-prev" aria-label="Browse">
+    <a href="./index.html">&larr; All archetypes</a>
+    <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  </nav>
+
 </div>
 
-<div class="nav-prev">
-  <a href="./index.html">&larr; All archetypes</a>
-  <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
-</div>
+<script>
+(function(){
+  function backToMyResult() {
+    try {
+      var code = document.body.getAttribute('data-archetype') || '';
+      if (!code) { window.location.href = '../duRingIt-pilot-quiz.html'; return; }
+      var NAMES_ALL = ['AB','FC','WA','ST','SS','LI','LR','SG','AX','EE','WN'];
+      var state = {
+        screen: 'result', name: '', scores: {}, scaleAns: {}, mainAns: [],
+        tbPair: null, tbQs: [], tbAns: [], flags: [], qi: 0, val: {}, loadingStep: 0,
+        result: code, bridge: null
+      };
+      NAMES_ALL.forEach(function(k){ state.scores[k] = 4.0; });
+      state.scores[code] = 9.0;
+      sessionStorage.setItem('_quizState', JSON.stringify(state));
+    } catch (e) {}
+    window.location.href = '../duRingIt-pilot-quiz.html';
+  }
+  // Wire up all back-to-result links/buttons
+  document.querySelectorAll('[data-back-to-result]').forEach(function(el){
+    el.addEventListener('click', function(ev){ ev.preventDefault(); backToMyResult(); });
+  });
+})();
+</script>
 
-</div>
 </body>
 </html>

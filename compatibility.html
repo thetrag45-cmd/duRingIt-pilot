@@ -1116,7 +1116,7 @@ function meterLabel(axis, v) {
    ═══════════════════════════════════════════════════════════ */
 function getParams() {
   var p = new URLSearchParams(window.location.search);
-  return { a: p.get('a'), b: p.get('b'), compare: p.get('compare') };
+  return { a: p.get('a'), b: p.get('b'), compare: p.get('compare'), from: p.get('from') };
 }
 
 function render() {
@@ -1126,9 +1126,9 @@ function render() {
   if (p.a && p.b && p.a !== p.b) {
     app.innerHTML = renderBridge(p.a, p.b);
   } else if (p.a && p.compare && p.a !== p.compare) {
-    app.innerHTML = renderPair(p.a, p.compare, /*youIsA=*/true);
+    app.innerHTML = renderPair(p.a, p.compare, p.from);
   } else if (p.a && NAMES[p.a]) {
-    app.innerHTML = renderPicker(p.a);
+    app.innerHTML = renderPicker(p.a, p.from);
   } else {
     app.innerHTML = renderEmpty();
   }
@@ -1140,7 +1140,7 @@ function render() {
    ═══════════════════════════════════════════════════════════ */
 function topbarChrome(backHref) {
   var back = backHref
-    ? '<a class="back-arrow" href="' + escHtml(backHref) + '" aria-label="Back">←</a>'
+    ? '<a class="back-arrow" href="javascript:void(0)" onclick="' + backHref + ';return false;" aria-label="Back">←</a>'
     : '';
   return '<div class="topbar">' +
     back +
@@ -1190,25 +1190,34 @@ function cardThumb(code, role, extraClass) {
 /* ═══════════════════════════════════════════════════════════
    SCREEN 1: PICKER (user is single archetype X)
    ═══════════════════════════════════════════════════════════ */
-function renderPicker(a) {
-  var others = ORDER.filter(function(c) { return c !== a; });
-  return topbarChrome(QUIZ_URL) +
+function renderPicker(a, bridgePartner) {
+  var hasBridge = bridgePartner && NAMES[bridgePartner] && bridgePartner !== a;
+  var others = ORDER.filter(function(c) { return c !== a && c !== bridgePartner; });
+  var backCall = hasBridge
+    ? "backToMyResult('" + a + "','" + bridgePartner + "')"
+    : "backToMyResult('" + a + "')";
+  return topbarChrome(backCall) +
     ambient('a') +
-    '<div class="page-eyebrow">Your Monie ID</div>' +
+    (hasBridge
+      ? '<div class="page-eyebrow">Your Bridge · ' + escHtml(NAMES[a]) + ' × ' + escHtml(NAMES[bridgePartner]) + '</div>'
+      : '<div class="page-eyebrow">Your Monie ID</div>') +
     '<div class="you-hero">' +
       cardThumb(a, 'you') +
       '<div class="you-hero-meta">' +
-        '<span class="you-hero-tag">You are</span>' +
-        '<div class="you-hero-name">' + escHtml(NAMES[a]) + '</div>' +
-        '<div class="you-hero-fam">' + escHtml(CAT[a]) + '</div>' +
-        '<div class="you-hero-code">' + escHtml(TYPE_CODES[a]) + '</div>' +
+        '<span class="you-hero-tag">You are' + (hasBridge ? ' a Bridge' : '') + '</span>' +
+        '<div class="you-hero-name">' + escHtml(NAMES[a]) + (hasBridge ? '<br><span style="font-size:14px;color:var(--caramel);">× ' + escHtml(NAMES[bridgePartner]) + '</span>' : '') + '</div>' +
+        '<div class="you-hero-fam">' + escHtml(CAT[a]) + (hasBridge ? ' × ' + escHtml(CAT[bridgePartner]) : '') + '</div>' +
+        '<div class="you-hero-code">' + escHtml(TYPE_CODES[a]) + (hasBridge ? ' / ' + escHtml(TYPE_CODES[bridgePartner]) : '') + '</div>' +
       '</div>' +
     '</div>' +
     '<div class="page-title">Choose a Monie ID<br>to compare with</div>' +
     '<div class="page-sub">Tap any card below to see how your money patterns interact.</div>' +
     '<div class="picker-grid">' +
       others.map(function(c) {
-        return '<button class="pick-card" onclick="goCompare(\'' + a + '\',\'' + c + '\')" aria-label="Compare with ' + escHtml(NAMES[c]) + '">' +
+        var clickFn = hasBridge
+          ? "goComparePicker('" + a + "','" + c + "','" + bridgePartner + "')"
+          : "goCompare('" + a + "','" + c + "')";
+        return '<button class="pick-card" onclick="' + clickFn + '" aria-label="Compare with ' + escHtml(NAMES[c]) + '">' +
           cardThumb(c) +
           '<div class="pick-meta">' +
             '<div class="pick-name">' + escHtml(NAMES[c]) + '</div>' +
@@ -1222,7 +1231,7 @@ function renderPicker(a) {
       '<span>Compatibility isn\'t good or bad — it\'s a mirror. The frictions show where to slow down. The syncs show where to lean in.</span>' +
     '</div>' +
     '<div class="btn-row single">' +
-      '<a class="btn btn-secondary" href="' + escHtml(QUIZ_URL) + '">← Back to my result</a>' +
+      '<button class="btn btn-secondary" onclick="' + backCall + '">← Back to my result</button>' +
     '</div>';
 }
 
@@ -1233,10 +1242,11 @@ function leafSvg() {
 /* ═══════════════════════════════════════════════════════════
    SCREEN 2: PAIR RESULT
    ═══════════════════════════════════════════════════════════ */
-function renderPair(a, b, youIsA) {
+function renderPair(a, b, bridgePartner) {
+  var hasBridge = bridgePartner && NAMES[bridgePartner] && bridgePartner !== a && bridgePartner !== b;
   var pair = COMPAT[key(a, b)];
   if (!pair) {
-    return topbarChrome(COMPAT_URL + '?a=' + a) +
+    return topbarChrome("goPicker('" + a + "'" + (hasBridge ? ",'" + bridgePartner + "'" : '') + ")") +
       '<div class="page-title" style="margin-top:24px">Pair not found</div>' +
       '<div class="page-sub">We couldn\'t find compatibility data for this combination.</div>';
   }
@@ -1267,15 +1277,22 @@ function renderPair(a, b, youIsA) {
     ? pair.tensions[pair.tensions.length - 1]
     : 'Check in regularly so neither of you ends up carrying the financial weight alone.';
 
-  return topbarChrome(COMPAT_URL + '?a=' + a) +
+  var pickerCall = hasBridge
+    ? "goPicker('" + a + "','" + bridgePartner + "')"
+    : "goPicker('" + a + "')";
+  var backCall = hasBridge
+    ? "backToMyResult('" + a + "','" + bridgePartner + "')"
+    : "backToMyResult('" + a + "')";
+
+  return topbarChrome(pickerCall) +
     ambient('a') +
-    '<div class="page-eyebrow">Compatibility Read</div>' +
+    '<div class="page-eyebrow">Compatibility Read' + (hasBridge ? ' · Your ' + escHtml(a) + ' side' : '') + '</div>' +
     '<div class="pair-row">' +
-      cardThumb(youIsA ? a : b, 'you') +
+      cardThumb(a, 'you') +
       '<div class="pair-connector">' +
         '<div class="pair-stamp">×</div>' +
       '</div>' +
-      cardThumb(youIsA ? b : a, 'them') +
+      cardThumb(b, 'them') +
     '</div>' +
 
     '<div class="verdict">' +
@@ -1299,11 +1316,11 @@ function renderPair(a, b, youIsA) {
     sectionCard('watch', shieldLgIcon(), 'Watch Out For',     'CHECK ALIGNMENT', watchBody,      []) +
 
     '<div class="btn-row">' +
-      '<button class="btn btn-secondary" onclick="goPicker(\'' + a + '\')">← Compare another</button>' +
+      '<button class="btn btn-secondary" onclick="' + pickerCall + '">← Compare another</button>' +
       '<button class="btn btn-primary" onclick="sharePair(\'' + a + '\',\'' + b + '\',false)">Share pairing</button>' +
     '</div>' +
     '<div class="btn-row single">' +
-      '<a class="btn btn-secondary" href="' + escHtml(QUIZ_URL) + '">← Back to my result</a>' +
+      '<button class="btn btn-secondary" onclick="' + backCall + '">← Back to my result</button>' +
     '</div>';
 }
 
@@ -1311,7 +1328,7 @@ function renderPair(a, b, youIsA) {
    SCREEN 3: BRIDGE RESULT (two YOU cards)
    ═══════════════════════════════════════════════════════════ */
 function renderBridge(a, b) {
-  return topbarChrome(QUIZ_URL) +
+  return topbarChrome("backToMyResult('" + a + "','" + b + "')") +
     ambient('a') +
     '<div class="page-eyebrow">Your Monie ID</div>' +
     '<div class="page-title">You are a Bridge</div>' +
@@ -1358,11 +1375,11 @@ function renderBridge(a, b) {
       []) +
 
     '<div class="btn-row">' +
-      '<button class="btn btn-secondary" onclick="goPicker(\'' + a + '\')">Compare with a type</button>' +
+      '<button class="btn btn-secondary" onclick="goPicker(\'' + a + '\',\'' + b + '\')">Compare with a type</button>' +
       '<button class="btn btn-primary" onclick="sharePair(\'' + a + '\',\'' + b + '\',true)">Share bridge</button>' +
     '</div>' +
     '<div class="btn-row single">' +
-      '<a class="btn btn-secondary" href="' + escHtml(QUIZ_URL) + '">← Back to my result</a>' +
+      '<button class="btn btn-secondary" onclick="backToMyResult(\'' + a + '\',\'' + b + '\')">← Back to my result</button>' +
     '</div>';
 }
 
@@ -1461,11 +1478,54 @@ function boltIcon()  { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http:
 /* ═══════════════════════════════════════════════════════════
    NAVIGATION + SHARE
    ═══════════════════════════════════════════════════════════ */
-function goPicker(a) {
-  window.location.href = COMPAT_URL + '?a=' + a;
+function goPicker(a, bridgePartner) {
+  var url = COMPAT_URL + '?a=' + a;
+  if (bridgePartner) url += '&from=' + bridgePartner;
+  window.location.href = url;
 }
 function goCompare(a, b) {
   window.location.href = COMPAT_URL + '?a=' + a + '&compare=' + b;
+}
+/* Compare from a bridge user's picker. Preserves bridge partner in URL
+   so back navigation can restore the bridge result page. */
+function goComparePicker(a, b, bridgePartner) {
+  window.location.href = COMPAT_URL + '?a=' + a + '&compare=' + b + '&from=' + bridgePartner;
+}
+
+/* Seed quiz sessionStorage with the user's result so the quiz lands
+   on their result screen instead of the welcome page when they click
+   "Back to my result". Works whether they got here via the quiz
+   originally or directly via a shared URL. */
+function backToMyResult(a, b) {
+  try {
+    var state = {
+      screen: 'result',
+      name: '',
+      scores: {},
+      scaleAns: {},
+      mainAns: [],
+      tbPair: null,
+      tbQs: [],
+      tbAns: [],
+      flags: [],
+      qi: 0,
+      val: {},
+      loadingStep: 0
+    };
+    // give every archetype a baseline score so the bars look reasonable
+    Object.keys(NAMES).forEach(function(k){ state.scores[k] = 4.0; });
+    if (b && b !== a) {
+      state.result = 'BRIDGE';
+      state.bridge = [a, b];
+      state.scores[a] = 8.5;
+      state.scores[b] = 8.5;
+    } else {
+      state.result = a;
+      state.scores[a] = 9.0;
+    }
+    sessionStorage.setItem('_quizState', JSON.stringify(state));
+  } catch (e) {}
+  window.location.href = QUIZ_URL;
 }
 function sharePair(a, b, isBridge) {
   var text;
