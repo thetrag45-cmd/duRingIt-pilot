@@ -2,216 +2,1334 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>duRingIt — Monie ID (Pilot)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ───────────────────────────────────────────────────────────
+   DESIGN TOKENS — Monie ID Intake / Paper Folder visual system
+   ─────────────────────────────────────────────────────────── */
+:root {
+  --bg-cream:    #FFF7EA;
+  --paper:       #FFF2D9;
+  --paper-light: #FFFBF3;
+  --paper-warm:  #FAE7C5;
+  --ink:         #2A170D;
+  --ink-soft:    #4A2E1A;
+  --brown:       #6B3F22;
+  --brown-soft:  #8A5A33;
+  --caramel:     #A66A2E;
+  --honey:       #F6B638;
+  --honey-light: #FFD56A;
+  --honey-deep:  #D89724;
+  --sage:        #7F8F5A;
+  --sage-light:  #E6EBD3;
+  --sage-deep:   #5E6E3E;
+  --border:      #D8B982;
+  --border-soft: #E8D4A4;
+  --tan:         #C9A36A;
+  --shadow:      rgba(91, 55, 20, 0.16);
+  --shadow-soft: rgba(91, 55, 20, 0.08);
+  --shadow-deep: rgba(91, 55, 20, 0.28);
+  --tape:        #F1E2BD;
+
+  /* Archetype family colors */
+  --fam-builders:     #A66A2E;
+  --fam-experiencers: #C76A3A;
+  --fam-guardians:    #7F8F5A;
+  --fam-avoiders:     #8A7A95;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+
+  --shadow-card: 0 2px 0 var(--border-soft), 0 8px 18px -6px var(--shadow);
+  --shadow-paper: 0 1px 0 #fff inset, 0 2px 0 var(--border-soft), 0 14px 24px -10px var(--shadow);
+  --shadow-press: 0 2px 6px -2px var(--shadow);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body { background: #E8D8B8; }
+
 body {
-  background: #0D0D0D;
-  color: #FFFFFF;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink);
   min-height: 100vh;
+  line-height: 1.5;
+  font-size: 16px;
+  /* Outer "desk" — slightly darker so the device pops on desktop */
+  background:
+    radial-gradient(circle at 20% 10%, #F0E0BE 0%, #E8D8B8 60%, #DCC89A 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-#app {
+
+/* ───────────────────────────────────────────────────────────
+   PHONE FRAME — full-bleed on mobile, framed on desktop
+   ─────────────────────────────────────────────────────────── */
+.phone {
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
-  padding: 24px 16px 80px;
+  min-height: 100vh;
+  position: relative;
+  background:
+    /* faint grid */
+    repeating-linear-gradient(0deg, rgba(168,130,72,0.07) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, rgba(168,130,72,0.07) 0 1px, transparent 1px 22px),
+    /* paper tint */
+    radial-gradient(120% 80% at 50% 0%, #FFF9EC 0%, var(--bg-cream) 60%, #F8EAD0 100%);
+  border-radius: 0;
+  overflow: hidden;
 }
-.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 20px; }
-.brand span { color: #F5C842; }
-.progress-wrap { margin-bottom: 4px; }
-.progress-bg { width: 100%; height: 3px; background: #222; border-radius: 2px; }
-.progress-fill { height: 100%; background: #F5C842; border-radius: 2px; transition: width 0.3s ease; }
-.progress-text { font-size: 12px; color: #555; margin-top: 6px; }
-.card {
-  background: #1A1A1A;
-  border: 1px solid #2A2A2A;
-  border-radius: 16px;
-  padding: 24px;
+
+@media (min-width: 540px) {
+  body { padding: 28px 16px; }
+  .phone {
+    margin: 0 auto;
+    min-height: calc(100vh - 56px);
+    max-height: 940px;
+    border-radius: 44px;
+    box-shadow:
+      0 0 0 10px #2A170D,
+      0 0 0 12px #4A2E1A,
+      0 30px 60px -20px rgba(0,0,0,0.45),
+      0 50px 100px -30px rgba(0,0,0,0.35);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--tan) transparent;
+  }
+  .phone::-webkit-scrollbar { width: 6px; }
+  .phone::-webkit-scrollbar-thumb { background: var(--tan); border-radius: 3px; }
+}
+
+#app {
+  padding: 22px 18px 110px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ───────────────────────────────────────────────────────────
+   AMBIENT DOODLES — generic finance/intake decorations
+   Subtle; never compete with content
+   ─────────────────────────────────────────────────────────── */
+.doodle {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 0;
+}
+.doodle svg { display: block; }
+
+/* paperclip top-left */
+.doodle--clip { top: 6px; left: 8px; transform: rotate(-18deg); width: 44px; }
+/* stamp top-right */
+.doodle--stamp { top: 14px; right: 12px; width: 70px; }
+/* coin stack bottom-right */
+.doodle--coins { bottom: 100px; right: -6px; width: 86px; opacity: 0.75; }
+/* receipt bottom-left */
+.doodle--receipt { bottom: 80px; left: -6px; width: 64px; opacity: 0.7; transform: rotate(-6deg); }
+/* wallet bottom-left for some screens */
+.doodle--wallet { bottom: 28px; left: 6px; width: 78px; opacity: 0.7; }
+/* calculator bottom-right alt */
+.doodle--calc { bottom: 28px; right: 10px; width: 70px; opacity: 0.7; }
+/* sparkles scattered */
+.doodle--sparkle { width: 18px; opacity: 0.7; }
+
+/* ───────────────────────────────────────────────────────────
+   TOP BRAND PILL
+   ─────────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 36px 8px 14px;
+  z-index: 2;
+}
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+}
+.brand-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown); flex: 0 0 auto; }
+.brand-pill .brand-name { white-space: nowrap; }
+.brand-pill .ring { color: var(--honey-deep); font-weight: 700; }
+
+/* ───────────────────────────────────────────────────────────
+   FOLDER-TAB PROGRESS
+   ─────────────────────────────────────────────────────────── */
+.tabs-wrap { margin: 6px -2px 8px; position: relative; z-index: 2; }
+.tabs-row {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  padding: 0 2px;
+}
+.tabs-row + .tabs-row { margin-top: 6px; }
+
+.tab {
+  position: relative;
+  height: 38px;
+  border-radius: 6px 6px 4px 4px;
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  border-bottom-width: 2.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--brown);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 2px 0 var(--border-soft);
+}
+/* folder tab "ear" on top-right */
+.tab::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 42%;
+  height: 7px;
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+.tab.done {
+  background: var(--sage-light);
+  border-color: #B7C28A;
+  color: var(--sage-deep);
+}
+.tab.done::before { background: var(--sage-light); border-color: #B7C28A; border-bottom: none; }
+.tab.done .check {
+  position: absolute;
+  right: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #fff;
+  font-weight: 800;
+  line-height: 1;
+}
+.tab.current {
+  background: var(--honey);
+  border-color: var(--honey-deep);
+  color: var(--ink);
+  font-size: 16px;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 0 var(--honey-deep), 0 8px 12px -4px var(--shadow);
+  z-index: 2;
+}
+.tab.current::before { background: var(--honey); border-color: var(--honey-deep); border-bottom: none; }
+.tab.current .spark {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  color: var(--honey-deep); font-size: 10px; font-weight: 700;
+}
+.tab.ellipsis { color: var(--brown-soft); font-size: 14px; letter-spacing: 1px; }
+
+.progress-text {
+  text-align: center;
+  font-size: 12px;
+  color: var(--brown);
+  margin-top: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ───────────────────────────────────────────────────────────
+   CHAPTER CAPSULE LABEL
+   ─────────────────────────────────────────────────────────── */
+.chapter {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 16px;
+  position: relative;
+  z-index: 2;
+}
+.chapter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  border: 1.5px solid;
+}
+.chapter-pill .dot { font-size: 10px; line-height: 1; }
+/* themed by chapter family */
+.chapter--money    { background: #FFF1CE; border-color: #E8C672; color: #8C6018; }
+.chapter--drive    { background: #E6EBD3; border-color: #B7C28A; color: var(--sage-deep); }
+.chapter--reality  { background: #DEE6F0; border-color: #A8BCD3; color: #3D5878; }
+.chapter--identity { background: #ECDFEC; border-color: #C5A8CA; color: #6A4275; }
+
+/* ───────────────────────────────────────────────────────────
+   QUESTION PAPER CARD (washi-taped sheet)
+   ─────────────────────────────────────────────────────────── */
+.qcard {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px 26px;
+  margin: 0 0 18px;
+  box-shadow: var(--shadow-paper);
+  z-index: 2;
+  /* paper texture */
+  background-image:
+    radial-gradient(circle at 14% 10%, rgba(168,130,72,0.04) 0 1px, transparent 1px),
+    radial-gradient(circle at 78% 70%, rgba(168,130,72,0.05) 0 1px, transparent 1px);
+  background-size: 12px 12px, 16px 16px;
+}
+/* folded corner */
+.qcard::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 28px; height: 28px;
+  background:
+    linear-gradient(135deg, transparent 50%, var(--border-soft) 50%, var(--border-soft) 56%, var(--paper-warm) 56%);
+  border-bottom-right-radius: var(--radius-lg);
+}
+/* washi tape */
+.tape {
+  position: absolute;
+  top: -10px; left: 22px;
+  width: 64px; height: 20px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+  opacity: 0.95;
+}
+.tape.right { left: auto; right: 22px; transform: rotate(3deg); }
+
+.qcard .qlabel {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--honey-deep);
+  margin-bottom: 12px;
+}
+.qcard .qlabel.tb { color: #6A4275; }
+
+.qcard .qtext {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+.qcard .underline {
+  display: block;
+  width: 64%;
+  height: 8px;
+  margin: -8px 0 16px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'><path d='M2 5 Q 50 1 100 4 T 198 3' fill='none' stroke='%23F6B638' stroke-width='2' stroke-linecap='round'/></svg>") center/contain no-repeat;
+}
+
+/* ───────────────────────────────────────────────────────────
+   ANSWER CARDS — raised paper with letter badge
+   ─────────────────────────────────────────────────────────── */
+.answers { display: flex; flex-direction: column; gap: 11px; }
+
+.ans-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 14px 16px 14px 14px;
+  text-align: left;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.12s ease, border-color 0.12s, box-shadow 0.12s, background 0.12s;
+  min-height: 64px;
+}
+.ans-btn:hover {
+  border-color: var(--honey);
+  transform: translateY(-1px);
+  background: #FFFBF0;
+}
+.ans-btn:active { transform: translateY(0); box-shadow: var(--shadow-press); }
+.ans-btn:focus-visible { outline: 3px solid var(--honey); outline-offset: 2px; }
+
+.ans-btn .badge {
+  flex: 0 0 38px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--sage-light);
+  border: 2px dashed #B7C28A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sage-deep);
+}
+.ans-btn .ans-text { flex: 1; }
+
+/* selected state — gold ink stamp */
+.ans-btn.chosen {
+  background: #FFF6DC;
+  border-color: var(--honey-deep);
+  box-shadow: 0 2px 0 var(--honey-deep), 0 10px 18px -8px var(--shadow);
+}
+.ans-btn.chosen .badge {
+  background: var(--honey);
+  border-style: dashed;
+  border-color: var(--honey-deep);
+  color: var(--ink);
+}
+.ans-btn.chosen::after {
+  content: "✓";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-8deg);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 2.5px solid var(--caramel);
+  color: var(--caramel);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  background: rgba(255,255,255,0.4);
+  /* faint stamp opacity */
+  opacity: 0.85;
+}
+
+/* ───────────────────────────────────────────────────────────
+   COIN SCALE 1-5
+   ─────────────────────────────────────────────────────────── */
+.scale-poles {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--brown-soft);
+  font-weight: 500;
+  margin: 4px 4px 16px;
+}
+.coins-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 4px 0 8px;
+}
+.coin {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #FFFCEC 0%, var(--paper-light) 60%, #F1E0B8 100%);
+  border: 2.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--brown);
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--border), 0 6px 10px -4px var(--shadow);
+  transition: transform 0.12s, border-color 0.12s, background 0.12s, box-shadow 0.12s;
+}
+.coin::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1.5px dashed #D8B98290;
+  pointer-events: none;
+}
+.coin:hover { transform: translateY(-2px); border-color: var(--honey); }
+.coin:focus-visible { outline: 3px solid var(--honey); outline-offset: 3px; }
+.coin.chosen {
+  background:
+    radial-gradient(circle at 35% 30%, #FFE7A4 0%, var(--honey) 55%, var(--honey-deep) 100%);
+  border-color: var(--honey-deep);
+  color: var(--ink);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 4px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+}
+.coin.chosen::before { border-color: #00000022; }
+.coin.chosen::after {
+  content: "";
+  position: absolute;
+  top: -16px; left: 50%;
+  transform: translateX(-50%);
+  width: 24px; height: 12px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 12'><g stroke='%23F6B638' stroke-width='1.6' stroke-linecap='round'><line x1='12' y1='1' x2='12' y2='5'/><line x1='4' y1='3' x2='7' y2='6'/><line x1='20' y1='3' x2='17' y2='6'/></g></svg>") center/contain no-repeat;
+}
+
+/* ───────────────────────────────────────────────────────────
+   PRIMARY / BACK BUTTONS — paper ticket style
+   ─────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 16px 22px;
+  border-radius: 999px;
+  border: 2px solid var(--honey-deep);
+  cursor: pointer;
+  margin-top: 4px;
+  box-shadow: 0 3px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+  letter-spacing: 0.01em;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--honey-deep), 0 14px 22px -6px var(--shadow); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--honey-deep); }
+.btn-primary:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.btn-primary:disabled {
+  background: #E9D9B4; color: #A89066; border-color: #C9A36A;
+  box-shadow: 0 2px 0 #C9A36A;
+  cursor: not-allowed; transform: none;
+}
+
+.btn-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  color: var(--brown);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 22px;
+  border-radius: 12px;
+  border: 1.5px dashed var(--tan);
+  cursor: pointer;
+  margin-top: 16px;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.12s, color 0.12s;
+}
+.btn-back:hover { border-color: var(--brown); color: var(--ink); }
+.btn-back:focus-visible { outline: 3px solid var(--honey); outline-offset: 2px; }
+
+.btn-row { display: flex; flex-direction: column; gap: 0; }
+
+/* ───────────────────────────────────────────────────────────
+   WELCOME SCREEN
+   ─────────────────────────────────────────────────────────── */
+.welcome-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px 0 14px;
+}
+.welcome-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  text-wrap: balance;
+}
+.welcome-sub {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 22px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.stat {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 14px 6px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.stat-n {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--honey-deep);
+  line-height: 1;
+}
+.stat-l {
+  font-size: 10px;
+  color: var(--brown-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+  font-weight: 600;
+}
+.field-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-card);
+}
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brown);
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+input[type=text] {
+  width: 100%;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+}
+input[type=text]::placeholder { color: #B0915C; }
+input[type=text]:focus { border-color: var(--honey-deep); background: #FFFBF0; }
+
+.welcome-tagline {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--sage-deep);
+  text-align: center;
+  margin: 6px 0 18px;
+  transform: rotate(-1deg);
+}
+
+.pilot-note {
+  font-size: 11px;
+  color: var(--brown-soft);
+  text-align: center;
+  margin-top: 18px;
+  letter-spacing: 0.04em;
+}
+
+/* ───────────────────────────────────────────────────────────
+   CHAPTER INTRO / TRANSITION (used between major sections)
+   ─────────────────────────────────────────────────────────── */
+.intro-card {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 36px 24px;
+  text-align: center;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-paper);
+}
+.intro-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  margin-bottom: 12px;
+}
+.intro-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.intro-body { font-size: 15px; line-height: 1.55; color: var(--ink-soft); }
+.intro-divider {
+  width: 56px; height: 2px;
+  background: repeating-linear-gradient(90deg, var(--honey) 0 6px, transparent 6px 12px);
+  margin: 14px auto;
+}
+
+/* ───────────────────────────────────────────────────────────
+   IDENTITY CALIBRATION (TIE-BREAKER) — two folder-tab options
+   ─────────────────────────────────────────────────────────── */
+.tb-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  border: 2px solid;
+  background: var(--paper-light);
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.tb-card::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 16px;
+  width: 60px;
+  height: 8px;
+  background: inherit;
+  border: 2px solid;
+  border-color: inherit;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+.tb-card:hover { transform: translateY(-2px); }
+.tb-card.honey { border-color: var(--honey-deep); background: #FFF7E0; }
+.tb-card.sage  { border-color: #B7C28A; background: #F1F4E0; }
+.tb-card .tb-text {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+  flex: 1;
+}
+.tb-card .tb-arrow {
+  flex: 0 0 36px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+.tb-card.honey .tb-arrow { background: var(--honey-deep); }
+.tb-card.sage  .tb-arrow { background: var(--sage); }
+.tb-icon { font-size: 30px; }
+
+/* ───────────────────────────────────────────────────────────
+   LOADING / COMPILING SCREEN
+   ─────────────────────────────────────────────────────────── */
+.loading-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin: 8px 16px 8px;
+}
+.loading-sub {
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.folder-illo {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 22px;
+}
+.checklist {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 10px 14px;
+  box-shadow: var(--shadow-card);
+}
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 4px;
+  border-bottom: 1.5px dashed #E0CA8E;
+}
+.check-row:last-child { border-bottom: none; }
+.cr-icon {
+  flex: 0 0 36px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px dashed #C9A36A;
+  background: var(--paper-warm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brown-soft);
+  font-weight: 800;
+  font-size: 14px;
+}
+.cr-icon.done { background: var(--sage); border-color: var(--sage-deep); color: #fff; border-style: solid; }
+.cr-icon.active { background: var(--honey); border-color: var(--honey-deep); color: var(--ink); border-style: solid; animation: pulse 1.1s ease-in-out infinite; }
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(246,182,56,0.4); }
+  50% { transform: scale(1.07); box-shadow: 0 0 0 7px rgba(246,182,56,0); }
+}
+.cr-label {
+  flex: 1;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cr-stamp {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1.5px dashed;
+}
+.cr-stamp.done    { color: var(--sage-deep); border-color: var(--sage-deep); }
+.cr-stamp.active  { color: var(--honey-deep); border-color: var(--honey-deep); }
+.cr-stamp.pending { color: #B0915C; border-color: #C9A36A; }
+
+/* ───────────────────────────────────────────────────────────
+   RESULT SCREEN
+   ─────────────────────────────────────────────────────────── */
+.result-family-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--sage-light);
+  color: var(--sage-deep);
+  border: 1.5px solid #B7C28A;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.result-family-pill.builders     { background: #F6E2C2; border-color: #E2BE7B; color: #7A4B1C; }
+.result-family-pill.experiencers { background: #F8D7C2; border-color: #E8B58E; color: #8C4626; }
+.result-family-pill.guardians    { background: var(--sage-light); border-color: #B7C28A; color: var(--sage-deep); }
+.result-family-pill.avoiders     { background: #EADFEC; border-color: #C5A8CA; color: #6A4275; }
+
+.result-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 4px;
+  text-wrap: balance;
+}
+.result-monieid {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--caramel);
   margin-bottom: 16px;
 }
-.q-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
-.q-label.tb { color: #9999FF; }
-.q-text { font-size: 21px; font-weight: 600; line-height: 1.35; margin-bottom: 26px; }
-.ans-btn {
-  display: block; width: 100%;
-  background: #222; border: 1.5px solid #2E2E2E;
-  border-radius: 12px; padding: 15px 18px;
-  text-align: left; color: #CCC;
-  font-size: 15px; line-height: 1.5;
-  cursor: pointer; margin-bottom: 10px;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
-  font-family: inherit;
+
+/* Card image slot — uses real BEGA asset if provided; otherwise a placeholder folder/card */
+.card-slot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 948 / 1659; /* matches BEGA card art (~4:7) */
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-paper);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.ans-btn:hover { background: #2A2A2A; border-color: #F5C842; color: #FFF; }
-.ans-btn.chosen { background: #261E00; border-color: #F5C842; color: #FFF; }
-.scale-poles { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 10px; }
-.dots-row { display: flex; justify-content: space-between; gap: 8px; margin: 8px 0 4px; }
-.dot {
-  flex: 1; aspect-ratio: 1;
-  max-width: 52px; max-height: 52px;
-  border-radius: 50%;
-  background: #222; border: 2px solid #333;
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s;
+.card-slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.dot:hover { border-color: #F5C842; }
-.dot.chosen { background: #F5C842; border-color: #F5C842; }
-.btn-primary {
-  display: block; width: 100%;
-  background: #F5C842; color: #000;
-  font-size: 16px; font-weight: 700;
-  padding: 16px; border-radius: 12px;
-  border: none; cursor: pointer;
-  font-family: inherit; margin-top: 8px;
-  transition: background 0.12s;
+/* Placeholder when image missing */
+.card-ph {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(168,130,72,0.06) 0 2px, transparent 2px 14px),
+    radial-gradient(circle at 30% 20%, #FFF6DC 0%, var(--paper-warm) 50%, #E8C879 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
 }
-.btn-primary:hover { background: #FFD700; }
-.btn-primary:disabled { background: #2A2A2A; color: #555; cursor: not-allowed; }
-.btn-back {
-  display: block; width: 100%;
-  background: transparent; color: #555;
-  font-size: 14px; font-weight: 500;
-  padding: 12px; border-radius: 12px;
-  border: 1.5px solid #222; cursor: pointer;
-  font-family: inherit; margin-top: 8px;
-  text-align: center; transition: border-color 0.12s, color 0.12s;
+.card-ph .code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 80px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-shadow: 2px 2px 0 #FFE7A4;
+  margin-bottom: 10px;
 }
-.btn-back:hover { border-color: #444; color: #AAA; }
-.btn-blog {
-  display: block; width: 100%;
-  background: transparent; color: #F5C842;
-  font-size: 15px; font-weight: 600;
-  padding: 14px; border-radius: 12px;
-  border: 1.5px solid #3A3000; cursor: pointer;
-  font-family: inherit; margin-bottom: 12px;
-  text-decoration: none; text-align: center;
-  transition: background 0.12s, border-color 0.12s;
+.card-ph .ph-fam {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin-bottom: 6px;
 }
-.btn-blog:hover { background: #1A1400; border-color: #F5C842; }
-.btn-whatsapp {
-  display: block; width: 100%;
-  background: #25D366; color: #FFF;
-  font-size: 15px; font-weight: 700;
-  padding: 14px; border-radius: 12px;
-  border: none; cursor: pointer;
-  font-family: inherit; margin-bottom: 12px;
-  text-decoration: none; text-align: center;
-  transition: background 0.12s;
+.card-ph .ph-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+  text-wrap: balance;
 }
-.btn-whatsapp:hover { background: #1EBE5A; }
-.btn-tally-wrap {
-  background: #1A1A1A; border: 1px solid #2A2A2A;
-  border-radius: 16px; padding: 24px;
-  margin-bottom: 16px; text-align: center;
-}
-.btn-tally-title { font-size: 16px; font-weight: 700; color: #FFF; margin-bottom: 6px; }
-.btn-tally-sub { font-size: 13px; color: #777; margin-bottom: 16px; line-height: 1.5; }
-.btn-tally {
+.card-ph .ph-stamp {
   display: inline-block;
-  background: #F5C842; color: #000;
-  font-size: 15px; font-weight: 700;
-  padding: 13px 28px; border-radius: 12px;
-  border: none; cursor: pointer;
-  font-family: inherit; text-decoration: none;
-  transition: background 0.12s;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--caramel);
+  border: 2px dashed var(--caramel);
+  padding: 5px 12px;
+  border-radius: 6px;
+  transform: rotate(-4deg);
+  background: rgba(255,255,255,0.4);
 }
-.btn-tally:hover { background: #FFD700; }
-.welcome-title { font-size: 40px; font-weight: 900; line-height: 1.1; margin-bottom: 10px; }
-.welcome-sub { font-size: 15px; color: #777; line-height: 1.6; margin-bottom: 24px; }
-.stats { display: flex; gap: 10px; margin-bottom: 24px; }
-.stat { flex: 1; background: #1A1A1A; border: 1px solid #252525; border-radius: 12px; padding: 14px; text-align: center; }
-.stat-n { font-size: 26px; font-weight: 800; color: #F5C842; }
-.stat-l { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-input[type=text] {
-  width: 100%; background: #222; border: 1.5px solid #2E2E2E;
-  border-radius: 10px; padding: 12px 16px;
-  color: #FFF; font-size: 16px; font-family: inherit;
+.card-ph .ph-note {
+  position: absolute;
+  bottom: 10px; left: 10px; right: 10px;
+  font-size: 10px;
+  color: var(--brown-soft);
+  font-family: 'Lexend', monospace;
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
-input[type=text]::placeholder { color: #444; }
-input[type=text]:focus { outline: none; border-color: #F5C842; }
-.result-family { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #F5C842; margin-bottom: 6px; }
-.result-name { font-size: 34px; font-weight: 900; margin-bottom: 4px; }
-.result-monieid { font-size: 13px; color: #666; margin-bottom: 22px; }
-.sec-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #444; margin-bottom: 5px; }
-.sec-body { font-size: 15px; color: #BBB; line-height: 1.65; margin-bottom: 18px; }
+
+/* Result body content (deeper written profile) */
+.result-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+.hook {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--caramel);
+  margin-bottom: 22px;
+  line-height: 1.4;
+  border-left: 3px solid var(--honey);
+  padding-left: 12px;
+}
+.sec-label {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin-bottom: 8px;
+}
+.res-section { margin-bottom: 22px; }
+.res-section:last-child { margin-bottom: 0; }
+.res-p {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+.res-p:last-child { margin-bottom: 0; }
+
+.fear-box {
+  background: #FFF1CE;
+  border: 1.5px solid var(--honey-deep);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  position: relative;
+}
+.fear-box::before {
+  content: "❝";
+  position: absolute;
+  top: -8px; left: 10px;
+  font-size: 28px;
+  color: var(--honey-deep);
+  background: var(--paper-light);
+  padding: 0 6px;
+  line-height: 1;
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+.fear-text {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 15px;
+  color: #8C6018;
+  line-height: 1.5;
+}
+
+.tend-list { list-style: none; padding: 0; margin: 0; }
+.tend-list li {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  padding: 9px 0 9px 22px;
+  position: relative;
+  border-bottom: 1px dashed #E0CA8E;
+}
+.tend-list li:last-child { border-bottom: none; }
+.tend-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--sage-deep);
+  font-weight: 800;
+}
+
+.shadow-text {
+  font-size: 13.5px;
+  color: var(--brown);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.shadow-text:last-child { margin-bottom: 0; }
+
 .flag {
-  background: #1A1500; border: 1px solid #3D3000;
-  border-radius: 10px; padding: 14px 16px;
-  font-size: 13px; color: #D4B840; line-height: 1.6; margin-top: 10px;
+  background: #FFF1CE;
+  border: 1.5px solid var(--honey-deep);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #6B3F22;
+  line-height: 1.55;
+  margin-top: 10px;
 }
-.scores-section { margin-top: 4px; }
+.flag::before { content: "⚑ "; color: var(--caramel); font-weight: 800; }
+
+/* ───────────────────────────────────────────────────────────
+   BRIDGE RESULT — two card thumbnails side by side
+   ─────────────────────────────────────────────────────────── */
+.bridge-cards {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.bridge-card-slot {
+  position: relative;
+  aspect-ratio: 948 / 1659;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+.bridge-card-slot img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.bridge-x {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--caramel);
+  text-align: center;
+}
+.bridge-pair {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-top: 14px;
+}
+.bridge-half {
+  background: var(--paper);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+.bridge-half-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.bridge-half-fam {
+  font-size: 10px; color: var(--brown-soft);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 8px; font-weight: 600;
+}
+.bridge-half-body {
+  font-size: 12.5px; color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ───────────────────────────────────────────────────────────
+   ACTION BUTTONS — WhatsApp, blog, etc.
+   ─────────────────────────────────────────────────────────── */
+.btn-blog {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  background: var(--paper-light);
+  color: var(--caramel);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: background 0.12s, border-color 0.12s;
+}
+.btn-blog:hover { background: #FFF1CE; border-color: var(--honey-deep); }
+
+.btn-whatsapp {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  background: #25D366;
+  color: #FFF;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid #1EAE52;
+  cursor: pointer;
+  margin-bottom: 10px;
+  box-shadow: 0 3px 0 #1EAE52, var(--shadow-card);
+  transition: transform 0.12s;
+}
+.btn-whatsapp:hover { transform: translateY(-1px); }
+.btn-whatsapp:active { transform: translateY(2px); box-shadow: 0 1px 0 #1EAE52; }
+
+.btn-tally-wrap {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  margin-bottom: 14px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.btn-tally-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--ink); margin-bottom: 6px;
+}
+.btn-tally-sub {
+  font-size: 13px;
+  color: var(--brown-soft);
+  margin-bottom: 14px; line-height: 1.5;
+}
+.btn-tally {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px; font-weight: 700;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 2px solid var(--honey-deep);
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 3px 0 var(--honey-deep);
+}
+
+/* Scores list */
+.scores-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 12px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
 .score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
-.score-name { font-size: 12px; width: 148px; color: #999; }
-.score-name.top { color: #F5C842; font-weight: 600; }
-.score-bg { flex: 1; height: 5px; background: #222; border-radius: 3px; }
-.score-bar { height: 100%; background: #F5C842; border-radius: 3px; }
-.score-bar.dim { background: #3A3A3A; }
-.score-val { font-size: 11px; color: #555; width: 30px; text-align: right; }
-.bridge-pair { display: flex; gap: 12px; margin-top: 14px; }
-.bridge-half { flex: 1; background: #1E1E1E; border: 1px solid #2A2A2A; border-radius: 10px; padding: 14px; }
-.bridge-half-name { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
-.bridge-half-fam { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.bridge-half-body { font-size: 12px; color: #888; line-height: 1.5; }
-.val-q { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #DDD; }
-.val-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.score-name { font-size: 12px; width: 132px; color: var(--brown); font-weight: 500; }
+.score-name.top { color: var(--honey-deep); font-weight: 700; }
+.score-bg { flex: 1; height: 8px; background: var(--paper-warm); border-radius: 4px; border: 1px solid var(--border-soft); overflow: hidden; }
+.score-bar { height: 100%; background: linear-gradient(90deg, var(--honey-light), var(--honey)); border-radius: 4px; }
+.score-bar.dim { background: var(--tan); opacity: 0.5; }
+.score-val { font-size: 11px; color: var(--brown-soft); width: 30px; text-align: right; font-weight: 600; }
+
+/* ───────────────────────────────────────────────────────────
+   VALIDATION SCREEN
+   ─────────────────────────────────────────────────────────── */
+.val-q {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.val-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
 .val-btn {
-  background: #222; border: 1.5px solid #2E2E2E;
-  border-radius: 10px; padding: 12px 16px;
-  color: #BBB; font-size: 14px; cursor: pointer;
-  text-align: left; font-family: inherit; transition: all 0.12s;
+  background: var(--paper);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all 0.12s;
 }
-.val-btn:hover { border-color: #F5C842; color: #FFF; }
-.val-btn.chosen { background: #261E00; border-color: #F5C842; color: #FFF; }
+.val-btn:hover { border-color: var(--honey); }
+.val-btn.chosen { background: #FFF6DC; border-color: var(--honey-deep); color: var(--ink); font-weight: 600; }
 .stars { display: flex; gap: 10px; margin-bottom: 24px; }
-.star { font-size: 30px; cursor: pointer; opacity: 0.25; transition: opacity 0.12s; }
-.star.on { opacity: 1; }
+.star { font-size: 32px; cursor: pointer; opacity: 0.3; color: var(--honey-deep); transition: opacity 0.12s, transform 0.12s; line-height: 1; }
+.star.on { opacity: 1; transform: scale(1.05); }
 textarea {
-  width: 100%; background: #1E1E1E; border: 1.5px solid #2A2A2A;
-  border-radius: 10px; padding: 12px; color: #BBB;
-  font-size: 14px; resize: vertical; min-height: 80px; font-family: inherit;
+  width: 100%;
+  background: var(--paper);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 12px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
 }
-textarea:focus { outline: none; border-color: #F5C842; }
+textarea:focus { outline: none; border-color: var(--honey-deep); }
 .export-box {
-  background: #111; border: 1px solid #222; border-radius: 8px;
-  padding: 12px; font-family: monospace; font-size: 11px; color: #777;
-  word-break: break-all; max-height: 200px; overflow-y: auto; margin-bottom: 8px; white-space: pre-wrap;
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: 'Lexend', monospace;
+  font-size: 11px;
+  color: var(--brown);
+  word-break: break-all;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
 }
 .btn-copy {
-  background: #222; border: 1px solid #333; border-radius: 8px;
-  padding: 10px 16px; color: #CCC; font-size: 13px; cursor: pointer;
-  font-family: inherit; width: 100%; transition: all 0.12s;
+  background: var(--sage-light);
+  border: 1.5px solid #B7C28A;
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: var(--sage-deep);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
 }
-.btn-copy:hover { border-color: #F5C842; color: #FFF; }
+.btn-copy:hover { background: #DAE3BC; }
 .btn-restart {
-  background: transparent; border: 1px solid #333;
-  border-radius: 8px; padding: 10px 16px;
-  color: #555; font-size: 13px; cursor: pointer;
-  font-family: inherit; width: 100%; margin-top: 8px; transition: all 0.12s;
+  background: transparent;
+  border: 1.5px dashed var(--tan);
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: var(--brown-soft);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+  margin-top: 8px;
 }
-.btn-restart:hover { color: #999; border-color: #555; }
-.pilot-note { font-size: 11px; color: #333; text-align: center; margin-top: 14px; }
-.hook { font-size: 17px; font-style: italic; color: #F5C842; margin-bottom: 22px; line-height: 1.55; }
-.res-section { margin-bottom: 22px; }
-.res-p { font-size: 15px; color: #C0C0C0; line-height: 1.7; margin-bottom: 10px; }
-.res-p:last-child { margin-bottom: 0; }
-.fear-box { background: #161616; border-left: 3px solid #F5C842; padding: 14px 16px; border-radius: 0 10px 10px 0; margin-bottom: 22px; }
-.fear-text { font-size: 15px; color: #D4AA40; line-height: 1.65; font-style: italic; }
-.tend-list { list-style: none; padding: 0; margin: 0; }
-.tend-list li { font-size: 14px; color: #B0B0B0; line-height: 1.6; padding: 8px 0 8px 20px; position: relative; border-bottom: 1px solid #1E1E1E; }
-.tend-list li:last-child { border-bottom: none; }
-.tend-list li::before { content: "—"; position: absolute; left: 0; color: #F5C842; }
-.shadow-text { font-size: 14px; color: #888; line-height: 1.7; margin-bottom: 8px; }
-.shadow-text:last-child { margin-bottom: 0; }
+.btn-restart:hover { color: var(--brown); border-color: var(--brown); }
+
+/* ───────────────────────────────────────────────────────────
+   ACCESSIBILITY — reduced motion, focus
+   ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+button { font-family: inherit; }
+button:focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 2px; }
+
+/* small screens */
+@media (max-width: 360px) {
+  .welcome-title, .intro-title, .loading-title { font-size: 30px; }
+  .result-name { font-size: 30px; }
+  .qcard .qtext { font-size: 20px; }
+  #app { padding: 18px 14px 90px; }
+  .coin { font-size: 18px; }
+}
 </style>
 </head>
 <body>
-<div id="app"></div>
+
+<div class="phone">
+  <div id="app"></div>
+</div>
+
 <script>
-// ─────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
+   DATA — unchanged from original quiz
+   ═══════════════════════════════════════════════════════════ */
 
 const ARC = {
   AB: {
@@ -538,6 +1656,38 @@ const SLUGS = {
   EE: "emotional-escapist", WN: "the-free-spirit"
 };
 
+/* ───────────────────────────────────────────────────────────
+   BEGA CARD ASSET MAPPING
+   Drop your final BEGA result-card PNGs into a `cards/` folder
+   alongside this HTML (or change the paths below). If a file is
+   missing or fails to load, a graceful placeholder shows instead.
+   ─────────────────────────────────────────────────────────── */
+const CARD_ASSETS = {
+  AB: "cards/AB.jpg",  // Aggressive Builder  (BLD-AB)
+  FC: "cards/FC.jpg",  // Freedom Chaser      (BLD-FC)
+  WA: "cards/WA.jpg",  // Wealth Architect    (BLD-WA)
+  ST: "cards/ST.jpg",  // The Optimizer       (BLD-OP)
+  SS: "cards/SS.jpg",  // Status Strategist   (EXP-SS)
+  LI: "cards/LI.jpg",  // Lifestyle Inflator  (EXP-LI)
+  LR: "cards/LR.jpg",  // Lifestyle Romantic  (EXP-LR)
+  SG: "cards/SG.jpg",  // Steady Guardian     (GRD-SG)
+  AX: "cards/AX.jpg",  // Anxious Achiever    (GRD-AA)
+  EE: "cards/EE.jpg",  // Emotional Escapist  (AVD-EE)
+  WN: "cards/WN.jpg"   // The Free Spirit     (AVD-WN)
+};
+
+/* Chapter capsule labels — friendlier than "Family Discrimination" etc.
+   These are display-only; the underlying data tags are untouched. */
+const CHAPTER_DISPLAY = {
+  "Family Discrimination": { label: "Money Meaning", theme: "money" },
+  "Archetype Separation":  { label: "Drive & Decisions", theme: "drive" }
+};
+function chapterFor(qIndex, isScale) {
+  if (isScale) return { label: "Reality Check", theme: "reality" };
+  const ph = MAIN_QS[qIndex].ph;
+  return CHAPTER_DISPLAY[ph] || { label: ph, theme: "drive" };
+}
+
 const MAIN_QS = [
   { id:"Q1",  ph:"Family Discrimination",   text:"What does money really mean to you?",
     ans:[{ t:"A way out. I never want to stay small forever.", p:"AB" },
@@ -608,7 +1758,6 @@ const SCALE_QS = [
   { id:"Q16", text:"Even when life gets hard, I usually stick to my plan.",                        lo:"Not me at all", hi:"Exactly me" }
 ];
 
-// Tie-breaker sets — key is sorted pair joined by "-"
 const TB = {
   "ST-WA": [
     { text:"Your financial plan runs perfectly for 2 years. What feels most satisfying?",
@@ -731,7 +1880,6 @@ const TB = {
       a:{ t:"'Complicated.' There's history here I'd rather not unpack.", c:"EE" },
       b:{ t:"'Non-existent.' I genuinely have not built one yet.", c:"WN" } }
   ],
-  // Cross-family
   "SG-WA": [
     { text:"What does your financial discipline ultimately serve?",
       a:{ t:"Hitting a specific goal I've been building toward. The discipline is the vehicle.", c:"WA" },
@@ -774,9 +1922,9 @@ const FAM_CHARS = {
   Avoiders:     "avoidance and disengagement from money"
 };
 
-// ─────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
+   STATE — unchanged
+   ═══════════════════════════════════════════════════════════ */
 
 var S = {
   screen: "welcome",
@@ -791,35 +1939,33 @@ var S = {
   bridge: null,
   flags: [],
   qi: 0,
-  val: {}
+  val: {},
+  loadingStep: 0  // VISUAL ONLY — drives loading animation
 };
 
 function resetState() {
-  S = { screen:"welcome", name:S.name, scores:{}, scaleAns:{}, mainAns:[], tbPair:null, tbQs:[], tbAns:[], result:null, bridge:null, flags:[], qi:0, val:{} };
+  S = { screen:"welcome", name:S.name, scores:{}, scaleAns:{}, mainAns:[], tbPair:null, tbQs:[], tbAns:[], result:null, bridge:null, flags:[], qi:0, val:{}, loadingStep:0 };
   Object.keys(ARC).forEach(k => S.scores[k] = 0);
 }
 resetState();
 
-// ─────────────────────────────────────────────
-// SCORING
-// ─────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
+   SCORING — unchanged from original
+   ═══════════════════════════════════════════════════════════ */
 
 function scoreChoice(primary) {
   S.scores[primary] += 2.0;
   const fam = ARC[primary].fam;
   FAM[fam].forEach(c => { if (c !== primary) S.scores[c] += 0.5; });
 }
-
 function unscoreChoice(primary) {
   S.scores[primary] -= 2.0;
   const fam = ARC[primary].fam;
   FAM[fam].forEach(c => { if (c !== primary) S.scores[c] -= 0.5; });
 }
-
 function topTwo() {
   return Object.entries(S.scores).sort((x,y) => y[1]-x[1]).slice(0,2);
 }
-
 function tbKey(a, b) { return [a,b].sort().join("-"); }
 
 function checkTB() {
@@ -857,9 +2003,30 @@ function resolveTBResult() {
   S.result = winner;
 }
 
-// ─────────────────────────────────────────────
-// RENDER
-// ─────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
+   AMBIENT DOODLES (SVG) — generic intake/finance icons
+   Drawn as inline SVGs and dropped behind content
+   ═══════════════════════════════════════════════════════════ */
+const DOODLES = {
+  paperclip: '<svg viewBox="0 0 50 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8 C12 4 18 2 22 6 L40 28 C44 32 44 40 38 44 C32 48 24 46 22 40 L10 26" stroke="#8A5A33" stroke-width="3" stroke-linecap="round"/><path d="M12 14 L12 50 C12 56 18 60 24 60 C30 60 34 56 34 50 L34 22" stroke="#8A5A33" stroke-width="3" stroke-linecap="round"/></svg>',
+  coin: '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="26" fill="#F6B638" stroke="#A66A2E" stroke-width="2.5"/><circle cx="30" cy="30" r="20" fill="none" stroke="#A66A2E" stroke-width="1.5" stroke-dasharray="2 2"/><text x="30" y="38" font-family="Bricolage Grotesque, sans-serif" font-size="22" font-weight="800" fill="#6B3F22" text-anchor="middle">$</text></svg>',
+  coinStack: '<svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="80" rx="34" ry="8" fill="#A66A2E" opacity="0.2"/><g><rect x="20" y="50" width="60" height="22" rx="11" fill="#F6B638" stroke="#A66A2E" stroke-width="2"/><rect x="20" y="32" width="60" height="22" rx="11" fill="#FFD56A" stroke="#A66A2E" stroke-width="2"/><rect x="20" y="14" width="60" height="22" rx="11" fill="#F6B638" stroke="#A66A2E" stroke-width="2"/><text x="50" y="30" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="800" fill="#6B3F22" text-anchor="middle">$</text></g></svg>',
+  receipt: '<svg viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 6 L62 6 L62 86 L56 92 L50 86 L44 92 L38 86 L32 92 L26 86 L20 92 L14 86 L8 92 Z" fill="#FFFBF3" stroke="#A66A2E" stroke-width="2"/><line x1="16" y1="22" x2="54" y2="22" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="34" x2="48" y2="34" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="46" x2="54" y2="46" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="58" x2="42" y2="58" stroke="#A66A2E" stroke-width="1.5"/><line x1="16" y1="70" x2="50" y2="70" stroke="#A66A2E" stroke-width="1.5"/></svg>',
+  calculator: '<svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="6" width="68" height="88" rx="8" fill="#7F8F5A" stroke="#5E6E3E" stroke-width="2"/><rect x="14" y="14" width="52" height="20" rx="3" fill="#E6EBD3" stroke="#5E6E3E" stroke-width="1.5"/><text x="60" y="28" font-family="Bricolage Grotesque, monospace" font-size="9" font-weight="700" fill="#5E6E3E" text-anchor="end">1230</text><g fill="#E6EBD3"><circle cx="20" cy="48" r="5"/><circle cx="34" cy="48" r="5"/><circle cx="48" cy="48" r="5"/><circle cx="62" cy="48" r="5"/><circle cx="20" cy="64" r="5"/><circle cx="34" cy="64" r="5"/><circle cx="48" cy="64" r="5"/><circle cx="62" cy="64" r="5"/><circle cx="20" cy="80" r="5"/><circle cx="34" cy="80" r="5"/><circle cx="48" cy="80" r="5"/><circle cx="62" cy="80" r="5"/></g></svg>',
+  wallet: '<svg viewBox="0 0 90 70" xmlns="http://www.w3.org/2000/svg"><path d="M6 18 C6 12 10 8 16 8 L74 8 C80 8 84 12 84 18 L84 56 C84 62 80 66 74 66 L16 66 C10 66 6 62 6 56 Z" fill="#6B3F22" stroke="#4A2E1A" stroke-width="2"/><rect x="6" y="22" width="78" height="32" fill="#8A5A33"/><circle cx="70" cy="38" r="4" fill="#F6B638" stroke="#4A2E1A" stroke-width="1.5"/><line x1="14" y1="14" x2="58" y2="14" stroke="#8A5A33" stroke-width="1.5"/></svg>',
+  stamp: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><g transform="rotate(-8 40 40)"><circle cx="40" cy="40" r="32" fill="none" stroke="#A66A2E" stroke-width="2.5"/><circle cx="40" cy="40" r="26" fill="none" stroke="#A66A2E" stroke-width="1.5" stroke-dasharray="2 3"/><text x="40" y="32" font-family="Bricolage Grotesque, sans-serif" font-size="8" font-weight="800" fill="#A66A2E" text-anchor="middle" letter-spacing="1">INTAKE</text><text x="40" y="52" font-family="Bricolage Grotesque, sans-serif" font-size="8" font-weight="800" fill="#A66A2E" text-anchor="middle" letter-spacing="1">IN PROGRESS</text><path d="M30 38 L38 46 L52 32" fill="none" stroke="#A66A2E" stroke-width="2" stroke-linecap="round"/></g></svg>',
+  sparkle: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z" fill="#F6B638"/></svg>',
+  folderBox: '<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid-fb" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M14 0 L0 0 0 14" fill="none" stroke="#D8B98230" stroke-width="0.5"/></pattern></defs><ellipse cx="120" cy="166" rx="100" ry="8" fill="#A66A2E" opacity="0.18"/><path d="M30 70 L30 160 C30 164 33 167 37 167 L203 167 C207 167 210 164 210 160 L210 70 Z" fill="#C9A36A" stroke="#8A5A33" stroke-width="2.5"/><path d="M30 70 L30 50 C30 46 33 43 37 43 L90 43 L100 55 L203 55 C207 55 210 58 210 62 L210 80 Z" fill="#D8B982" stroke="#8A5A33" stroke-width="2.5"/><g><rect x="60" y="64" width="120" height="80" rx="4" fill="#FFFBF3" stroke="#A66A2E" stroke-width="2"/><text x="70" y="84" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#6B3F22">MONIE ID FILE</text><g transform="rotate(-4 120 104)"><rect x="80" y="92" width="80" height="22" rx="3" fill="none" stroke="#5E6E3E" stroke-width="2" stroke-dasharray="4 3"/><text x="120" y="108" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#5E6E3E" text-anchor="middle" letter-spacing="2">IN PROGRESS</text></g><line x1="76" y1="124" x2="148" y2="124" stroke="#D8B982" stroke-width="2"/><circle cx="160" cy="136" r="6" fill="none" stroke="#A66A2E" stroke-width="1.5"/><rect x="156" y="133" width="8" height="6" rx="1" fill="#A66A2E"/></g></svg>',
+  bigStamp: '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><g transform="rotate(-6 60 60)"><circle cx="60" cy="60" r="50" fill="none" stroke="#7F8F5A" stroke-width="3"/><circle cx="60" cy="60" r="42" fill="none" stroke="#7F8F5A" stroke-width="1.5" stroke-dasharray="2 4"/><text x="60" y="50" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#5E6E3E" text-anchor="middle" letter-spacing="2">MONIE ID</text><path d="M48 60 L56 70 L74 54" fill="none" stroke="#5E6E3E" stroke-width="3" stroke-linecap="round"/><text x="60" y="86" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#5E6E3E" text-anchor="middle" letter-spacing="2">INTAKE</text></g></svg>'
+};
+
+function doodleHtml(kind, cls) {
+  return '<div class="doodle ' + cls + '">' + DOODLES[kind] + '</div>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════════════════ */
 
 function render() {
   var app = document.getElementById("app");
@@ -868,78 +2035,244 @@ function render() {
     case "main":      app.innerHTML = rMain(); break;
     case "scale":     app.innerHTML = rScale(); break;
     case "tb":        app.innerHTML = rTB(); break;
+    case "loading":   app.innerHTML = rLoading(); break;
     case "result":    app.innerHTML = rResult(); break;
     case "validate":  app.innerHTML = rValidate(); break;
   }
 }
 
-function prog(n, total, label) {
-  var pct = Math.round(n/total*100);
-  return '<div class="progress-wrap"><div class="progress-bg"><div class="progress-fill" style="width:'+pct+'%"></div></div><div class="progress-text">'+label+'</div></div>';
+/* COMMON: top brand pill */
+function topbar() {
+  return '<div class="topbar">' +
+    '<div class="brand-pill"><span class="brand-name">du<span class="ring">Ring</span>It</span><span class="dot"></span><span>Monie ID Intake</span></div>' +
+  '</div>';
 }
 
+/* COMMON: folder-tab progress (16 tabs total, condensed with ellipsis when needed) */
+function folderTabs(current, total, doneRange) {
+  // Show all 16 if total === 16 in two rows of 8.
+  // For tie-breaker (total=3) show a 3-tab condensed row.
+  if (total === 16) {
+    var rows = ['', ''];
+    for (var i = 1; i <= 16; i++) {
+      var row = i <= 8 ? 0 : 1;
+      var cls = 'tab';
+      if (i < current) cls += ' done';
+      else if (i === current) cls += ' current';
+      var inner = '<span>' + i + '</span>' +
+        (i < current ? '<span class="check">✓</span>' : '') +
+        (i === current ? '<span class="spark">✦</span>' : '');
+      rows[row] += '<div class="tab ' + (cls.replace('tab ', '')) + '">' + inner + '</div>';
+    }
+    return '<div class="tabs-wrap">' +
+      '<div class="tabs-row">' + rows[0] + '</div>' +
+      '<div class="tabs-row">' + rows[1] + '</div>' +
+      '<div class="progress-text">Question ' + current + ' of 16</div>' +
+    '</div>';
+  }
+  // condensed mode (3 cells)
+  var html = '<div class="tabs-wrap"><div class="tabs-row" style="grid-template-columns:repeat(' + total + ',1fr);">';
+  for (var j = 1; j <= total; j++) {
+    var c = 'tab';
+    if (j < current) c += ' done';
+    else if (j === current) c += ' current';
+    html += '<div class="' + c + '">' + j +
+      (j < current ? '<span class="check">✓</span>' : '') +
+      (j === current ? '<span class="spark">✦</span>' : '') +
+    '</div>';
+  }
+  html += '</div><div class="progress-text">Step ' + current + ' of ' + total + '</div></div>';
+  return html;
+}
+
+/* COMMON: chapter pill */
+function chapterPill(label, theme) {
+  return '<div class="chapter"><div class="chapter-pill chapter--' + theme + '"><span class="dot">✦</span>' + escHtml(label) + '<span class="dot">✦</span></div></div>';
+}
+
+/* COMMON: ambient doodles (corners) */
+function ambientDoodles(variant) {
+  variant = variant || 'a';
+  var html = doodleHtml('paperclip', 'doodle--clip') +
+             doodleHtml('stamp', 'doodle--stamp');
+  if (variant === 'a') {
+    html += doodleHtml('coinStack', 'doodle--coins') +
+            doodleHtml('receipt', 'doodle--receipt');
+  } else if (variant === 'b') {
+    html += doodleHtml('calculator', 'doodle--calc') +
+            doodleHtml('wallet', 'doodle--wallet');
+  }
+  return html;
+}
+
+/* ───────────────────────────────────────────────────────────
+   1. WELCOME SCREEN
+   ─────────────────────────────────────────────────────────── */
 function rWelcome() {
-  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
-    '<div class="welcome-title">What kind of money person are you?</div>'+
-    '<div class="welcome-sub">Not what you think you are. What you actually are.<br>16 questions. ~4 minutes.</div>'+
-    '<div class="stats">'+
-      '<div class="stat"><div class="stat-n">11</div><div class="stat-l">Archetypes</div></div>'+
-      '<div class="stat"><div class="stat-n">16</div><div class="stat-l">Questions</div></div>'+
-      '<div class="stat"><div class="stat-n">~91%</div><div class="stat-l">Accuracy</div></div>'+
-    '</div>'+
-    '<div class="card">'+
-      '<div style="font-size:13px;color:#666;margin-bottom:10px;">Your name (optional)</div>'+
-      '<input type="text" id="nameIn" placeholder="e.g. Sarah" value="'+escHtml(S.name)+'" autocomplete="off">'+
-    '</div>'+
-    '<button class="btn-primary" onclick="startQuiz()">Find My Monie ID →</button>'+
-    '<div class="pilot-note">Pilot v1.0 — Your answers help validate the quiz</div>';
+  return topbar() +
+    ambientDoodles('a') +
+    '<div style="position:relative;z-index:2;padding-top:8px;">' +
+      '<div class="welcome-tagline">your money intake file →</div>' +
+      '<div class="welcome-title">What kind of money person are you?</div>' +
+      '<div class="welcome-sub">Not what you think you are. What you actually are.<br>16 questions. ~4 minutes.</div>' +
+      '<div class="stats">' +
+        '<div class="stat"><div class="stat-n">11</div><div class="stat-l">Archetypes</div></div>' +
+        '<div class="stat"><div class="stat-n">16</div><div class="stat-l">Questions</div></div>' +
+        '<div class="stat"><div class="stat-n">~91%</div><div class="stat-l">Accuracy</div></div>' +
+      '</div>' +
+      '<div class="field-card">' +
+        '<label class="field-label" for="nameIn">Your name (optional)</label>' +
+        '<input type="text" id="nameIn" placeholder="e.g. Sarah" value="' + escHtml(S.name) + '" autocomplete="off">' +
+      '</div>' +
+      '<button class="btn-primary" onclick="startQuiz()">Open my intake file →</button>' +
+      '<div class="pilot-note">Pilot v1.0 — Your answers help validate the quiz</div>' +
+    '</div>';
 }
 
+/* ───────────────────────────────────────────────────────────
+   2. CHAPTER INTRO  (shown when entering scale block at Q13)
+   Implemented as a peek: we render it via "main" wrap when qi=0
+   of scale; here we use it lightly inside rScale's first call.
+   For a cleaner UX we keep it implicit (chapter pill conveys it).
+   ─────────────────────────────────────────────────────────── */
+
+/* ───────────────────────────────────────────────────────────
+   3. MAIN MULTIPLE-CHOICE QUESTION SCREEN
+   ─────────────────────────────────────────────────────────── */
 function rMain() {
   var q = MAIN_QS[S.qi];
   var n = S.qi + 1;
-  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
-    prog(n, 16, 'Question '+n+' of 16 &nbsp;·&nbsp; '+q.ph)+
-    '<div class="card" style="margin-top:16px;">'+
-      '<div class="q-label">'+q.id+'</div>'+
-      '<div class="q-text">'+escHtml(q.text)+'</div>'+
-      q.ans.map((a,i) => '<button class="ans-btn" id="ans'+i+'" onclick="pickMain('+i+')">'+escHtml(a.t)+'</button>').join('')+
-    '</div>'+
-    '<button class="btn-back" onclick="goBack()">← Back</button>';
+  var chap = chapterFor(S.qi, false);
+  var letters = ['A', 'B', 'C', 'D'];
+  var chosenIdx = S.mainAns[S.qi];
+
+  return topbar() +
+    ambientDoodles(n % 2 === 0 ? 'b' : 'a') +
+    folderTabs(n, 16) +
+    chapterPill(chap.label, chap.theme) +
+    '<div class="qcard">' +
+      '<div class="tape"></div>' +
+      '<div class="tape right"></div>' +
+      '<div class="qlabel">' + q.id + ' · Question ' + n + '</div>' +
+      '<div class="qtext">' + escHtml(q.text) + '</div>' +
+      '<span class="underline"></span>' +
+      '<div class="answers">' +
+        q.ans.map(function(a, i) {
+          var c = chosenIdx === i ? ' chosen' : '';
+          return '<button class="ans-btn' + c + '" id="ans' + i + '" onclick="pickMain(' + i + ')">' +
+            '<span class="badge">' + letters[i] + '</span>' +
+            '<span class="ans-text">' + escHtml(a.t) + '</span>' +
+          '</button>';
+        }).join('') +
+      '</div>' +
+    '</div>' +
+    '<div class="btn-row">' +
+      '<button class="btn-back" onclick="goBack()">← Back</button>' +
+    '</div>';
 }
 
+/* ───────────────────────────────────────────────────────────
+   4. SCALE QUESTION SCREEN (coin scale 1-5)
+   ─────────────────────────────────────────────────────────── */
 function rScale() {
   var q = SCALE_QS[S.qi];
   var n = 13 + S.qi;
-  var sel = S.scaleAns[q.id]||0;
-  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
-    prog(n, 16, 'Question '+n+' of 16')+
-    '<div class="card" style="margin-top:16px;">'+
-      '<div class="q-label">'+q.id+'</div>'+
-      '<div class="q-text">'+escHtml(q.text)+'</div>'+
-      '<div class="scale-poles"><span>'+escHtml(q.lo)+'</span><span>'+escHtml(q.hi)+'</span></div>'+
-      '<div class="dots-row">'+
-        [1,2,3,4,5].map(d => '<div class="dot'+(sel===d?' chosen':'')+'" onclick="pickScale(\''+q.id+'\','+d+')"></div>').join('')+
-      '</div>'+
-    '</div>'+
-    '<button class="btn-primary" onclick="nextScale()" '+(sel===0?'disabled':'')+'>'+
-      (S.qi < 3 ? 'Next →' : 'See My Result →')+
-    '</button>'+
+  var sel = S.scaleAns[q.id] || 0;
+
+  return topbar() +
+    ambientDoodles('b') +
+    folderTabs(n, 16) +
+    chapterPill('Reality Check', 'reality') +
+    '<div class="qcard">' +
+      '<div class="tape"></div>' +
+      '<div class="qlabel">' + q.id + ' · Question ' + n + '</div>' +
+      '<div class="qtext">' + escHtml(q.text) + '</div>' +
+      '<span class="underline"></span>' +
+      '<div class="scale-poles"><span>← ' + escHtml(q.lo) + '</span><span>' + escHtml(q.hi) + ' →</span></div>' +
+      '<div class="coins-row">' +
+        [1,2,3,4,5].map(function(d) {
+          return '<button class="coin' + (sel === d ? ' chosen' : '') + '" onclick="pickScale(\'' + q.id + '\',' + d + ')" aria-label="Rating ' + d + '">' + d + '</button>';
+        }).join('') +
+      '</div>' +
+    '</div>' +
+    '<button class="btn-primary" onclick="nextScale()" ' + (sel === 0 ? 'disabled' : '') + '>' +
+      (S.qi < 3 ? 'Next →' : 'See My Result →') +
+    '</button>' +
     '<button class="btn-back" onclick="goBack()">← Back</button>';
 }
 
+/* ───────────────────────────────────────────────────────────
+   5. TIE-BREAKER / IDENTITY CALIBRATION
+   ─────────────────────────────────────────────────────────── */
 function rTB() {
   var q = S.tbQs[S.qi];
-  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
-    prog(S.qi+1, 3, 'One more thing — tie-breaker '+(S.qi+1)+' of 3')+
-    '<div class="card" style="margin-top:16px;">'+
-      '<div class="q-label tb">Tie-breaker</div>'+
-      '<div class="q-text">'+escHtml(q.text)+'</div>'+
-      '<button class="ans-btn" onclick="pickTB(\''+q.a.c+'\')">'+escHtml(q.a.t)+'</button>'+
-      '<button class="ans-btn" onclick="pickTB(\''+q.b.c+'\')">'+escHtml(q.b.t)+'</button>'+
-    '</div>'+
+  return topbar() +
+    ambientDoodles('a') +
+    folderTabs(S.qi + 1, 3) +
+    '<div class="chapter"><div class="chapter-pill chapter--identity"><span class="dot">✦</span>Identity Calibration<span class="dot">✦</span></div></div>' +
+    '<div class="intro-card" style="padding:24px 20px 18px;margin-bottom:14px;">' +
+      '<div class="intro-eyebrow">Step ' + (S.qi + 1) + ' of 3</div>' +
+      '<div class="intro-title" style="font-size:28px;">Identity Calibration</div>' +
+      '<div class="intro-divider"></div>' +
+      '<div class="intro-body">Your file matched two patterns.<br>One more calibration helps us choose.</div>' +
+    '</div>' +
+    '<div class="qcard" style="padding:24px 20px;">' +
+      '<div class="tape"></div>' +
+      '<div class="qlabel tb">Tie-breaker · ' + (S.qi + 1) + '/3</div>' +
+      '<div class="qtext" style="font-size:20px;">' + escHtml(q.text) + '</div>' +
+      '<span class="underline"></span>' +
+      '<button class="tb-card honey" onclick="pickTB(\'' + q.a.c + '\')">' +
+        '<span class="tb-icon">📋</span>' +
+        '<span class="tb-text">' + escHtml(q.a.t) + '</span>' +
+        '<span class="tb-arrow">→</span>' +
+      '</button>' +
+      '<button class="tb-card sage" onclick="pickTB(\'' + q.b.c + '\')">' +
+        '<span class="tb-icon">🧭</span>' +
+        '<span class="tb-text">' + escHtml(q.b.t) + '</span>' +
+        '<span class="tb-arrow">→</span>' +
+      '</button>' +
+    '</div>' +
     '<button class="btn-back" onclick="goBack()">← Back</button>';
 }
+
+/* ───────────────────────────────────────────────────────────
+   6. LOADING / COMPILING SCREEN
+   ─────────────────────────────────────────────────────────── */
+const LOADING_STEPS = [
+  "Reading money meaning",
+  "Checking decision pattern",
+  "Matching stress behavior",
+  "Preparing your result card"
+];
+
+function rLoading() {
+  var step = S.loadingStep;
+  return topbar() +
+    ambientDoodles('a') +
+    '<div style="position:relative;z-index:2;">' +
+      '<div class="loading-title">Compiling your<br>Monie ID…</div>' +
+      '<div class="loading-sub">We\'re analyzing your answers<br>and preparing your result.</div>' +
+      '<div class="folder-illo">' +
+        '<div style="width:240px;">' + DOODLES.folderBox + '</div>' +
+      '</div>' +
+      '<div class="checklist">' +
+        LOADING_STEPS.map(function(label, i) {
+          var state = i < step ? 'done' : (i === step ? 'active' : 'pending');
+          var iconChar = state === 'done' ? '✓' : (state === 'active' ? '•••' : '○');
+          var stampLabel = state === 'done' ? 'DONE' : (state === 'active' ? 'IN PROGRESS' : 'PENDING');
+          return '<div class="check-row">' +
+            '<div class="cr-icon ' + state + '">' + iconChar + '</div>' +
+            '<div class="cr-label">' + escHtml(label) + '</div>' +
+            '<div class="cr-stamp ' + state + '">' + stampLabel + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+}
+
+/* ───────────────────────────────────────────────────────────
+   7+8. RESULT SCREEN (single archetype OR bridge)
+   ─────────────────────────────────────────────────────────── */
 
 var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
 var COMPAT_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/compatibility.html";
@@ -950,22 +2283,62 @@ var BEGA = {};
   Object.keys(m).forEach(function(cat){ m[cat].forEach(function(c){ BEGA[c]=cat; }); });
 })();
 
+function famClass(fam) {
+  return fam.toLowerCase();
+}
+
+/* Renders the BEGA result-card image with graceful placeholder fallback. */
+function cardSlotHtml(code, sizeClass) {
+  var a = ARC[code];
+  var src = CARD_ASSETS[code] || '';
+  var phHtml = '<div class="card-ph">' +
+    '<div class="ph-fam">' + escHtml(a.fam) + '</div>' +
+    '<div class="code">' + code + '</div>' +
+    '<div class="ph-name">' + escHtml(a.name) + '</div>' +
+    '<div class="ph-stamp">MONIE ID</div>' +
+    '<div class="ph-note">[ card asset: cards/' + code + '.png ]</div>' +
+  '</div>';
+  if (!src) return '<div class="card-slot ' + (sizeClass || '') + '">' + phHtml + '</div>';
+  // Image with fallback: if it fails, replace with placeholder
+  return '<div class="card-slot ' + (sizeClass || '') + '">' +
+    '<img src="' + escHtml(src) + '" alt="' + escHtml(a.name) + ' result card" ' +
+      'onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.card-ph\').style.display=\'flex\';">' +
+    phHtml.replace('<div class="card-ph">', '<div class="card-ph" style="display:none;">') +
+  '</div>';
+}
+
+function bridgeCardHtml(code) {
+  var a = ARC[code];
+  var src = CARD_ASSETS[code] || '';
+  var phHtml = '<div class="card-ph" style="padding:12px;">' +
+    '<div class="ph-fam" style="font-size:9px;">' + escHtml(a.fam) + '</div>' +
+    '<div class="code" style="font-size:44px;">' + code + '</div>' +
+    '<div class="ph-name" style="font-size:13px;">' + escHtml(a.name) + '</div>' +
+  '</div>';
+  if (!src) return '<div class="bridge-card-slot">' + phHtml + '</div>';
+  return '<div class="bridge-card-slot">' +
+    '<img src="' + escHtml(src) + '" alt="' + escHtml(a.name) + '" ' +
+      'onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.card-ph\').style.display=\'flex\';">' +
+    phHtml.replace('<div class="card-ph"', '<div class="card-ph" style="display:none;') +
+  '</div>';
+}
+
 function shareWhatsApp(code, bridgePair) {
   var text;
   if (bridgePair) {
     var n1 = ARC[bridgePair[0]].name, n2 = ARC[bridgePair[1]].name;
-    text = "I just did the duRingIt Monie ID quiz and I'm a Bridge between "+n1+" and "+n2+" 🔀\n\nWhat’s your money type? I bet I can guess yours 👀\n\nTake it here: "+QUIZ_URL;
+    text = "I just did the duRingIt Monie ID quiz and I'm a Bridge between " + n1 + " and " + n2 + " 🔀\n\nWhat's your money type? I bet I can guess yours 👀\n\nTake it here: " + QUIZ_URL;
   } else {
     var a = ARC[code];
     var cat = BEGA[code];
-    text = "I just found out I’m a "+a.name+" — the "+cat.slice(0,-1)+" type on the duRingIt Monie ID quiz 💡\n\n“"+a.hook+"”\n\nWhat’s your money type? Challenge me 👀\n\nTake the quiz: "+QUIZ_URL;
+    text = "I just found out I'm a " + a.name + " — the " + cat.slice(0, -1) + " type on the duRingIt Monie ID quiz 💡\n\n\"" + a.hook + "\"\n\nWhat's your money type? Challenge me 👀\n\nTake the quiz: " + QUIZ_URL;
   }
-  window.open("https://wa.me/?text="+encodeURIComponent(text), "_blank");
+  window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
 }
 
 function viewCompat(code, bridgePair) {
   var c1 = bridgePair ? bridgePair[0] : code;
-  var url = COMPAT_URL + "?a=" + c1 + (bridgePair ? "&b="+bridgePair[1] : "");
+  var url = COMPAT_URL + "?a=" + c1 + (bridgePair ? "&b=" + bridgePair[1] : "");
   window.open(url, "_blank");
 }
 
@@ -973,186 +2346,216 @@ function rResult() {
   if (S.result === "BRIDGE") return rBridge();
   var code = S.result;
   var a = ARC[code];
-  var sorted = Object.entries(S.scores).sort((x,y)=>y[1]-x[1]);
+  var sorted = Object.entries(S.scores).sort((x, y) => y[1] - x[1]);
   var maxS = sorted[0][1];
-  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
-    '<div class="card">'+
-      '<div class="result-family">'+escHtml(a.fam)+'</div>'+
-      '<div class="result-name">'+escHtml(a.name)+'</div>'+
-      '<div class="result-monieid">Your Monie ID</div>'+
-      '<div class="hook">'+escHtml(a.hook)+'</div>'+
 
-      '<div class="res-section">'+
-        '<div class="sec-label" style="margin-bottom:8px">Core Pattern</div>'+
-        a.identity.map(function(p){ return '<div class="res-p">'+escHtml(p)+'</div>'; }).join('')+
-      '</div>'+
+  return topbar() +
+    ambientDoodles('b') +
+    '<div style="position:relative;z-index:2;">' +
+      '<div style="text-align:center;margin-bottom:14px;">' +
+        '<div class="result-family-pill ' + famClass(a.fam) + '">' + escHtml(a.fam) + '</div>' +
+        '<div class="result-name">' + escHtml(a.name) + '</div>' +
+        '<div class="result-monieid">Your Monie ID ✦</div>' +
+      '</div>' +
+      /* RESULT CARD (BEGA image slot) */
+      cardSlotHtml(code) +
+      /* Deeper written profile — unchanged copy */
+      '<div class="result-card">' +
+        '<div class="hook">' + escHtml(a.hook) + '</div>' +
 
-      '<div class="res-section">'+
-        '<div class="sec-label" style="margin-bottom:8px">Under Stress</div>'+
-        a.stress.map(function(p){ return '<div class="res-p">'+escHtml(p)+'</div>'; }).join('')+
-      '</div>'+
+        '<div class="res-section">' +
+          '<div class="sec-label">Core Pattern</div>' +
+          a.identity.map(function(p) { return '<div class="res-p">' + escHtml(p) + '</div>'; }).join('') +
+        '</div>' +
 
-      '<div class="sec-label" style="margin-bottom:8px">Secret Fear</div>'+
-      '<div class="fear-box"><div class="fear-text">'+escHtml(a.fear)+'</div></div>'+
+        '<div class="res-section">' +
+          '<div class="sec-label">Under Stress</div>' +
+          a.stress.map(function(p) { return '<div class="res-p">' + escHtml(p) + '</div>'; }).join('') +
+        '</div>' +
 
-      '<div class="res-section">'+
-        '<div class="sec-label" style="margin-bottom:8px">You Tend To</div>'+
-        '<ul class="tend-list">'+
-          a.tendencies.map(function(t){ return '<li>'+escHtml(t)+'</li>'; }).join('')+
-        '</ul>'+
-      '</div>'+
+        '<div class="sec-label">Secret Fear</div>' +
+        '<div class="fear-box"><div class="fear-text">' + escHtml(a.fear) + '</div></div>' +
 
-      '<div class="res-section">'+
-        '<div class="sec-label" style="margin-bottom:8px">Blind Spot</div>'+
-        '<div class="res-p">'+escHtml(a.blindspot)+'</div>'+
-      '</div>'+
+        '<div class="res-section">' +
+          '<div class="sec-label">You Tend To</div>' +
+          '<ul class="tend-list">' +
+            a.tendencies.map(function(t) { return '<li>' + escHtml(t) + '</li>'; }).join('') +
+          '</ul>' +
+        '</div>' +
 
-      '<div class="res-section" style="margin-bottom:0">'+
-        '<div class="sec-label" style="margin-bottom:8px">Shadow</div>'+
-        a.shadow.map(function(p){ return '<div class="shadow-text">'+escHtml(p)+'</div>'; }).join('')+
-      '</div>'+
+        '<div class="res-section">' +
+          '<div class="sec-label">Blind Spot</div>' +
+          '<div class="res-p">' + escHtml(a.blindspot) + '</div>' +
+        '</div>' +
 
-      (S.flags.length ? '<div style="margin-top:18px">'+S.flags.map(f=>'<div class="flag">⚑ '+escHtml(f)+'</div>').join('')+'</div>' : '')+
-    '</div>'+
-    '<button class="btn-blog" onclick="navigateAway(\'./archetypes/'+SLUGS[code]+'.html\')">Read the full '+escHtml(a.name)+' profile →</button>'+
-    '<button class="btn-whatsapp" onclick="shareWhatsApp(\''+code+'\')">💬 Challenge a friend on WhatsApp</button>'+
-    '<button class="btn-blog" onclick="navigateAway(\''+COMPAT_URL+'?a='+code+'\')" style="margin-bottom:12px">🔁 See your compatibility with other types →</button>'+
-    '<div class="btn-tally-wrap">'+
-      '<div class="btn-tally-title">Want your personalised money report?</div>'+
-      '<div class="btn-tally-sub">Get a deeper breakdown of your '+escHtml(a.name)+' profile delivered to your inbox.</div>'+
-      '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>'+
-    '</div>'+
-    '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
-      '<div class="scores-section">'+
-        sorted.map(function(e){
-          var c=e[0],v=e[1];
-          var pct = maxS > 0 ? Math.round(v/maxS*100) : 0;
-          return '<div class="score-row">'+
-            '<div class="score-name'+(c===code?' top':'')+'">'+escHtml(ARC[c].name)+'</div>'+
-            '<div class="score-bg"><div class="score-bar'+(c===code?'':' dim')+'" style="width:'+pct+'%"></div></div>'+
-            '<div class="score-val">'+v.toFixed(1)+'</div>'+
+        '<div class="res-section">' +
+          '<div class="sec-label">Shadow</div>' +
+          a.shadow.map(function(p) { return '<div class="shadow-text">' + escHtml(p) + '</div>'; }).join('') +
+        '</div>' +
+
+        (S.flags.length ? '<div style="margin-top:18px">' + S.flags.map(f => '<div class="flag">' + escHtml(f) + '</div>').join('') + '</div>' : '') +
+      '</div>' +
+
+      '<button class="btn-blog" onclick="navigateAway(\'./archetypes/' + SLUGS[code] + '.html\')">📖 Read the full ' + escHtml(a.name) + ' profile →</button>' +
+      '<button class="btn-whatsapp" onclick="shareWhatsApp(\'' + code + '\')">💬 Challenge a friend on WhatsApp</button>' +
+      '<button class="btn-blog" onclick="navigateAway(\'' + COMPAT_URL + '?a=' + code + '\')">🔁 See your compatibility with other types →</button>' +
+
+      '<div class="btn-tally-wrap">' +
+        '<div class="btn-tally-title">Want your personalised money report?</div>' +
+        '<div class="btn-tally-sub">Get a deeper breakdown of your ' + escHtml(a.name) + ' profile delivered to your inbox.</div>' +
+        '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>' +
+      '</div>' +
+
+      '<div class="scores-card">' +
+        '<div class="sec-label" style="margin-bottom:14px">All 11 scores</div>' +
+        sorted.map(function(e) {
+          var c = e[0], v = e[1];
+          var pct = maxS > 0 ? Math.round(v / maxS * 100) : 0;
+          return '<div class="score-row">' +
+            '<div class="score-name' + (c === code ? ' top' : '') + '">' + escHtml(ARC[c].name) + '</div>' +
+            '<div class="score-bg"><div class="score-bar' + (c === code ? '' : ' dim') + '" style="width:' + Math.max(pct, 0) + '%"></div></div>' +
+            '<div class="score-val">' + v.toFixed(1) + '</div>' +
           '</div>';
-        }).join('')+
-      '</div>'+
-    '</div>'+
-    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>'+
-    '<button class="btn-back" onclick="goBack()">← Back to Q16</button>';
+        }).join('') +
+      '</div>' +
+
+      '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>' +
+      '<button class="btn-back" onclick="goBack()">← Back to Q16</button>' +
+    '</div>';
 }
 
 function rBridge() {
   var a = S.bridge[0], b = S.bridge[1];
-  var sorted = Object.entries(S.scores).sort((x,y)=>y[1]-x[1]);
+  var sorted = Object.entries(S.scores).sort((x, y) => y[1] - x[1]);
   var maxS = sorted[0][1];
-  var bridgeCopy = "You sit between two financial identities — "+ARC[a].name+" and "+ARC[b].name+
-    ". That's not a contradiction. It means your relationship with money operates on two tracks simultaneously: "+
-    FAM_CHARS[ARC[a].fam]+" and "+FAM_CHARS[ARC[b].fam]+". Most people are one. You're the rare case that's both.";
-  return '<div class="brand">du<span>Ring</span>It — Monie ID</div>'+
-    '<div class="card">'+
-      '<div class="result-family">Bridge Identity</div>'+
-      '<div class="result-name">'+escHtml(ARC[a].name)+' × '+escHtml(ARC[b].name)+'</div>'+
-      '<div class="result-monieid">Your Monie ID</div>'+
-      '<div class="sec-body">'+escHtml(bridgeCopy)+'</div>'+
-      '<div class="bridge-pair">'+
-        '<div class="bridge-half">'+
-          '<div class="bridge-half-name">'+escHtml(ARC[a].name)+'</div>'+
-          '<div class="bridge-half-fam">'+escHtml(ARC[a].fam)+'</div>'+
-          '<div class="bridge-half-body">'+escHtml(ARC[a].identity[0])+'</div>'+
-        '</div>'+
-        '<div class="bridge-half">'+
-          '<div class="bridge-half-name">'+escHtml(ARC[b].name)+'</div>'+
-          '<div class="bridge-half-fam">'+escHtml(ARC[b].fam)+'</div>'+
-          '<div class="bridge-half-body">'+escHtml(ARC[b].identity[0])+'</div>'+
-        '</div>'+
-      '</div>'+
-      '<div style="display:flex;gap:10px;margin-top:16px">'+
-        '<button class="btn-blog" onclick="navigateAway(\'./archetypes/'+SLUGS[a]+'.html\')" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[a].name)+' profile →</button>'+
-        '<button class="btn-blog" onclick="navigateAway(\'./archetypes/'+SLUGS[b]+'.html\')" style="margin-bottom:0;font-size:13px;padding:11px 10px">'+escHtml(ARC[b].name)+' profile →</button>'+
-      '</div>'+
-    '</div>'+
-    '<button class="btn-whatsapp" onclick="shareWhatsApp(null,[\''+a+'\',\''+b+'\'])">💬 Challenge a friend on WhatsApp</button>'+
-    '<button class="btn-blog" onclick="navigateAway(\''+COMPAT_URL+'?a='+a+'&b='+b+'\')" style="margin-bottom:12px">🔁 See your compatibility →</button>'+
-    '<div class="btn-tally-wrap">'+
-      '<div class="btn-tally-title">Want your personalised money report?</div>'+
-      '<div class="btn-tally-sub">Get a deeper breakdown of your Bridge identity delivered to your inbox.</div>'+
-      '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>'+
-    '</div>'+
-    '<div class="card"><div class="sec-label" style="margin-bottom:14px">All 11 scores</div>'+
-      '<div class="scores-section">'+
-        sorted.map(function(e){
-          var c=e[0],v=e[1];
-          var pct = maxS > 0 ? Math.round(v/maxS*100) : 0;
-          var isTop = (c===a||c===b);
-          return '<div class="score-row">'+
-            '<div class="score-name'+(isTop?' top':'')+'">'+escHtml(ARC[c].name)+'</div>'+
-            '<div class="score-bg"><div class="score-bar'+(isTop?'':' dim')+'" style="width:'+pct+'%"></div></div>'+
-            '<div class="score-val">'+v.toFixed(1)+'</div>'+
+  var bridgeCopy = "You sit between two financial identities — " + ARC[a].name + " and " + ARC[b].name +
+    ". That's not a contradiction. It means your relationship with money operates on two tracks simultaneously: " +
+    FAM_CHARS[ARC[a].fam] + " and " + FAM_CHARS[ARC[b].fam] + ". Most people are one. You're the rare case that's both.";
+
+  return topbar() +
+    ambientDoodles('a') +
+    '<div style="position:relative;z-index:2;">' +
+      '<div style="text-align:center;margin-bottom:14px;">' +
+        '<div class="result-family-pill" style="background:#EADFEC;border-color:#C5A8CA;color:#6A4275;">Bridge Identity</div>' +
+        '<div class="result-name">' + escHtml(ARC[a].name) + ' <span style="color:var(--caramel)">×</span> ' + escHtml(ARC[b].name) + '</div>' +
+        '<div class="result-monieid">Your Monie ID ✦</div>' +
+      '</div>' +
+      /* TWO BEGA CARD THUMBNAILS */
+      '<div class="bridge-cards">' +
+        bridgeCardHtml(a) +
+        '<div class="bridge-x">×</div>' +
+        bridgeCardHtml(b) +
+      '</div>' +
+      '<div class="result-card">' +
+        '<div class="res-p" style="font-size:15px;color:var(--ink-soft);margin-bottom:10px;">' + escHtml(bridgeCopy) + '</div>' +
+        '<div class="bridge-pair">' +
+          '<div class="bridge-half">' +
+            '<div class="bridge-half-name">' + escHtml(ARC[a].name) + '</div>' +
+            '<div class="bridge-half-fam">' + escHtml(ARC[a].fam) + '</div>' +
+            '<div class="bridge-half-body">' + escHtml(ARC[a].identity[0]) + '</div>' +
+          '</div>' +
+          '<div class="bridge-half">' +
+            '<div class="bridge-half-name">' + escHtml(ARC[b].name) + '</div>' +
+            '<div class="bridge-half-fam">' + escHtml(ARC[b].fam) + '</div>' +
+            '<div class="bridge-half-body">' + escHtml(ARC[b].identity[0]) + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;margin-top:16px">' +
+          '<button class="btn-blog" onclick="navigateAway(\'./archetypes/' + SLUGS[a] + '.html\')" style="margin-bottom:0;font-size:13px;padding:11px 10px">' + escHtml(ARC[a].name) + ' profile →</button>' +
+          '<button class="btn-blog" onclick="navigateAway(\'./archetypes/' + SLUGS[b] + '.html\')" style="margin-bottom:0;font-size:13px;padding:11px 10px">' + escHtml(ARC[b].name) + ' profile →</button>' +
+        '</div>' +
+      '</div>' +
+      '<button class="btn-whatsapp" onclick="shareWhatsApp(null,[\'' + a + '\',\'' + b + '\'])">💬 Challenge a friend on WhatsApp</button>' +
+      '<button class="btn-blog" onclick="navigateAway(\'' + COMPAT_URL + '?a=' + a + '&b=' + b + '\')">🔁 See your compatibility →</button>' +
+      '<div class="btn-tally-wrap">' +
+        '<div class="btn-tally-title">Want your personalised money report?</div>' +
+        '<div class="btn-tally-sub">Get a deeper breakdown of your Bridge identity delivered to your inbox.</div>' +
+        '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>' +
+      '</div>' +
+      '<div class="scores-card">' +
+        '<div class="sec-label" style="margin-bottom:14px">All 11 scores</div>' +
+        sorted.map(function(e) {
+          var c = e[0], v = e[1];
+          var pct = maxS > 0 ? Math.round(v / maxS * 100) : 0;
+          var isTop = (c === a || c === b);
+          return '<div class="score-row">' +
+            '<div class="score-name' + (isTop ? ' top' : '') + '">' + escHtml(ARC[c].name) + '</div>' +
+            '<div class="score-bg"><div class="score-bar' + (isTop ? '' : ' dim') + '" style="width:' + Math.max(pct, 0) + '%"></div></div>' +
+            '<div class="score-val">' + v.toFixed(1) + '</div>' +
           '</div>';
-        }).join('')+
-      '</div>'+
-    '</div>'+
-    '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>'+
-    '<button class="btn-back" onclick="goBack()">← Back to Q16</button>';
+        }).join('') +
+      '</div>' +
+      '<button class="btn-primary" onclick="goVal()">Continue to Feedback →</button>' +
+      '<button class="btn-back" onclick="goBack()">← Back to Q16</button>' +
+    '</div>';
 }
 
+/* ───────────────────────────────────────────────────────────
+   9. VALIDATION / FEEDBACK SCREEN
+   ─────────────────────────────────────────────────────────── */
 function rValidate() {
   var v = S.val;
-  var resOpts = ["Yes, that's me","Mostly yes","Somewhat","Not really","No, wrong"];
+  var resOpts = ["Yes, that's me", "Mostly yes", "Somewhat", "Not really", "No, wrong"];
   var canSub = (v.res !== undefined) && v.pick && v.rating;
-  return '<div class="brand">du<span>Ring</span>It — Pilot Validation</div>'+
-    '<div class="card">'+
-      '<div class="q-label">For the team</div>'+
-      '<div class="val-q">Does your result feel accurate?</div>'+
-      '<div class="val-opts">'+
-        resOpts.map(function(opt,i){
-          return '<button class="val-btn'+(v.res===i?' chosen':'')+'" onclick="setV(\'res\','+i+')">'+escHtml(opt)+'</button>';
-        }).join('')+
-      '</div>'+
-      '<div class="val-q">Which archetype actually feels most accurate to you?</div>'+
-      '<div class="val-opts">'+
-        Object.keys(ARC).map(function(code){
-          return '<button class="val-btn'+(v.pick===code?' chosen':'')+'" onclick="setV(\'pick\',\''+code+'\')">'+
-            escHtml(ARC[code].name)+'<span style="color:#555;font-size:12px"> — '+escHtml(ARC[code].fam)+'</span>'+
-          '</button>';
-        }).join('')+
-      '</div>'+
-      '<div class="val-q">How accurately does this describe your real money behavior? (1–5)</div>'+
-      '<div class="stars" style="margin-bottom:24px">'+
-        [1,2,3,4,5].map(n=>'<span class="star'+(( v.rating||0)>=n?' on':'')+'" onclick="setV(\'rating\','+n+')">★</span>').join('')+
-      '</div>'+
-      '<div class="val-q">Anything to add? (optional)</div>'+
-      '<textarea placeholder="What felt off? What resonated?" oninput="setV(\'note\',this.value)">'+escHtml(v.note||'')+'</textarea>'+
-    '</div>'+
-    '<button class="btn-primary" onclick="submitVal()" '+(canSub?'':'disabled')+'>Export My Data →</button>'+
-    (v.exported ? renderExport() : '')+
-    '<button class="btn-back" onclick="goBack()">← Back to result</button>'+
-    '<button class="btn-restart" onclick="restart()">↺ Start over</button>';
+  return topbar() +
+    ambientDoodles('b') +
+    '<div style="position:relative;z-index:2;">' +
+      '<div class="welcome-tagline">file feedback ↓</div>' +
+      '<div class="welcome-title" style="font-size:30px;margin-bottom:18px;">Help us calibrate</div>' +
+      '<div class="result-card">' +
+        '<div class="val-q">Does your result feel accurate?</div>' +
+        '<div class="val-opts">' +
+          resOpts.map(function(opt, i) {
+            return '<button class="val-btn' + (v.res === i ? ' chosen' : '') + '" onclick="setV(\'res\',' + i + ')">' + escHtml(opt) + '</button>';
+          }).join('') +
+        '</div>' +
+        '<div class="val-q">Which archetype actually feels most accurate to you?</div>' +
+        '<div class="val-opts">' +
+          Object.keys(ARC).map(function(code) {
+            return '<button class="val-btn' + (v.pick === code ? ' chosen' : '') + '" onclick="setV(\'pick\',\'' + code + '\')">' +
+              escHtml(ARC[code].name) + '<span style="color:var(--brown-soft);font-size:12px"> — ' + escHtml(ARC[code].fam) + '</span>' +
+            '</button>';
+          }).join('') +
+        '</div>' +
+        '<div class="val-q">How accurately does this describe your real money behavior? (1–5)</div>' +
+        '<div class="stars">' +
+          [1,2,3,4,5].map(n => '<span class="star' + ((v.rating || 0) >= n ? ' on' : '') + '" onclick="setV(\'rating\',' + n + ')" role="button" aria-label="' + n + ' stars">★</span>').join('') +
+        '</div>' +
+        '<div class="val-q">Anything to add? (optional)</div>' +
+        '<textarea placeholder="What felt off? What resonated?" oninput="setV(\'note\',this.value)">' + escHtml(v.note || '') + '</textarea>' +
+      '</div>' +
+      '<button class="btn-primary" onclick="submitVal()" ' + (canSub ? '' : 'disabled') + '>Export My Data →</button>' +
+      (v.exported ? renderExport() : '') +
+      '<button class="btn-back" onclick="goBack()">← Back to result</button>' +
+      '<button class="btn-restart" onclick="restart()">↺ Start over</button>' +
+    '</div>';
 }
 
 function renderExport() {
   var data = buildExport();
   var json = JSON.stringify(data, null, 2);
-  return '<div class="card" style="margin-top:16px">'+
-    '<div class="sec-label" style="margin-bottom:8px">Pilot data (copy and send to team)</div>'+
-    '<div class="export-box" id="expBox">'+escHtml(json)+'</div>'+
-    '<button class="btn-copy" onclick="doCopy()">📋 Copy to clipboard</button>'+
-    '<div style="font-size:12px;color:#444;text-align:center;margin-top:10px">Thank you for helping validate duRingIt 🙏</div>'+
+  return '<div class="result-card" style="margin-top:16px">' +
+    '<div class="sec-label" style="margin-bottom:8px">Pilot data (copy and send to team)</div>' +
+    '<div class="export-box" id="expBox">' + escHtml(json) + '</div>' +
+    '<button class="btn-copy" onclick="doCopy()">📋 Copy to clipboard</button>' +
+    '<div style="font-size:12px;color:var(--brown-soft);text-align:center;margin-top:10px">Thank you for helping validate duRingIt 🙏</div>' +
   '</div>';
 }
 
 function buildExport() {
-  var sorted = Object.entries(S.scores).sort((x,y)=>y[1]-x[1]);
+  var sorted = Object.entries(S.scores).sort((x, y) => y[1] - x[1]);
   var resLabel = S.result === "BRIDGE"
-    ? "Bridge: "+S.bridge.map(c=>ARC[c].name).join(" × ")
+    ? "Bridge: " + S.bridge.map(c => ARC[c].name).join(" × ")
     : ARC[S.result].name;
-  var resOpts = ["Yes, that's me","Mostly yes","Somewhat","Not really","No, wrong"];
+  var resOpts = ["Yes, that's me", "Mostly yes", "Somewhat", "Not really", "No, wrong"];
   return {
     timestamp: new Date().toISOString(),
     pilot: "v1.0",
     name: S.name || "anonymous",
-    scores: Object.fromEntries(sorted.map(function(e){ return [ARC[e[0]].name, +e[1].toFixed(1)]; })),
+    scores: Object.fromEntries(sorted.map(function(e) { return [ARC[e[0]].name, +e[1].toFixed(1)]; })),
     result: resLabel,
     tiebreaker_triggered: S.tbPair !== null,
-    tiebreaker_answers: S.tbAns.map(c=>ARC[c].name),
+    tiebreaker_answers: S.tbAns.map(c => ARC[c].name),
     contradiction_flags: S.flags,
     validation: {
       resonates: S.val.res !== undefined ? resOpts[S.val.res] : null,
@@ -1163,36 +2566,40 @@ function buildExport() {
   };
 }
 
-// ─────────────────────────────────────────────
-// HANDLERS
-// ─────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
+   HANDLERS — preserved logic from original
+   Only addition: loading screen between Q16 and result
+   ═══════════════════════════════════════════════════════════ */
 
 function goBack() {
   if (S.screen === 'validate') {
-    S.screen = 'result'; render(); scrollTo(0,0); return;
+    S.screen = 'result'; render(); scrollTo(0, 0); return;
   }
   if (S.screen === 'result') {
     // Clear result state; go back to Q16 (last scale question)
     S.result = null; S.bridge = null; S.flags = [];
     S.tbAns = []; S.tbQs = []; S.tbPair = null;
-    S.screen = 'scale'; S.qi = SCALE_QS.length - 1;  // always index 3 (Q16)
-    render(); scrollTo(0,0); return;
+    S.screen = 'scale'; S.qi = SCALE_QS.length - 1;
+    render(); scrollTo(0, 0); return;
+  }
+  if (S.screen === 'loading') {
+    // Cancel loading: go back to last scale question
+    S.loadingStep = 0;
+    S.screen = 'scale'; S.qi = SCALE_QS.length - 1;
+    render(); scrollTo(0, 0); return;
   }
   if (S.screen === 'tb') {
     if (S.qi === 0) {
-      // Back to last scale question
       S.tbAns = []; S.tbQs = []; S.tbPair = null;
       S.screen = 'scale'; S.qi = SCALE_QS.length - 1;
     } else {
       S.qi--;
       S.tbAns.pop();
     }
-    render(); scrollTo(0,0); return;
+    render(); scrollTo(0, 0); return;
   }
   if (S.screen === 'scale') {
     if (S.qi === 0) {
-      // Back to last main question — remove all scale contributions first,
-      // then unscore the last main question so user can re-pick
       removeScaleScores();
       S.scaleAns = {};
       var lastIdx = MAIN_QS.length - 1;
@@ -1205,22 +2612,21 @@ function goBack() {
     } else {
       S.qi--;
     }
-    render(); scrollTo(0,0); return;
+    render(); scrollTo(0, 0); return;
   }
   if (S.screen === 'main') {
     if (S.qi === 0) {
       S.screen = 'welcome';
     } else {
-      // Unscore the question we're going back to
       var prevQi = S.qi - 1;
-      var prevAns = S.mainAns[prevQi];
-      if (prevAns !== undefined) {
-        unscoreChoice(MAIN_QS[prevQi].ans[prevAns].p);
+      var prevAns2 = S.mainAns[prevQi];
+      if (prevAns2 !== undefined) {
+        unscoreChoice(MAIN_QS[prevQi].ans[prevAns2].p);
         S.mainAns.splice(prevQi, 1);
       }
       S.qi--;
     }
-    render(); scrollTo(0,0); return;
+    render(); scrollTo(0, 0); return;
   }
 }
 
@@ -1230,39 +2636,36 @@ function startQuiz() {
   S.screen = "main";
   S.qi = 0;
   render();
-  scrollTo(0,0);
+  scrollTo(0, 0);
 }
 
 function pickMain(idx) {
   var q = MAIN_QS[S.qi];
   var primary = q.ans[idx].p;
-  // Flash selected
   var btns = document.querySelectorAll(".ans-btn");
   if (btns[idx]) btns[idx].classList.add("chosen");
-  S.mainAns[S.qi] = idx;  // record for back-navigation
+  S.mainAns[S.qi] = idx;
   scoreChoice(primary);
-  setTimeout(function(){
+  setTimeout(function() {
     S.qi++;
     if (S.qi >= MAIN_QS.length) { S.screen = "scale"; S.qi = 0; }
-    render(); scrollTo(0,0);
-  }, 200);
+    render(); scrollTo(0, 0);
+  }, 260);
 }
 
-// Apply lightweight score contributions from scale questions (Option B).
-// Scale is 1–5; we center at 3 so middle answer is neutral.
-// Weight 0.3/pt → max ±0.6 per question (vs 2.0 for main Qs).
+/* Scale weighting — unchanged from original */
 var SCALE_WEIGHTS = {
-  Q13: { WA:0.3, SG:0.3, ST:0.3, EE:-0.3 },        // high=checks finances under stress
-  Q14: { AX:0.3, ST:0.2, AB:-0.3 },                 // high=overthinks decisions
-  Q15: { LR:0.3, LI:0.3, EE:0.3, WA:-0.3, FC:-0.2 }, // high=spends for mood boost
-  Q16: { WA:0.3, SG:0.3, FC:0.25, LR:-0.3, EE:-0.3, WN:-0.25 } // high=sticks to plan
+  Q13: { WA: 0.3, SG: 0.3, ST: 0.3, EE: -0.3 },
+  Q14: { AX: 0.3, ST: 0.2, AB: -0.3 },
+  Q15: { LR: 0.3, LI: 0.3, EE: 0.3, WA: -0.3, FC: -0.2 },
+  Q16: { WA: 0.3, SG: 0.3, FC: 0.25, LR: -0.3, EE: -0.3, WN: -0.25 }
 };
 
 function applyScaleScores() {
   Object.keys(SCALE_WEIGHTS).forEach(function(qid) {
     var val = S.scaleAns[qid] || 0;
-    if (!val) return; // unanswered
-    var delta = val - 3; // -2..+2
+    if (!val) return;
+    var delta = val - 3;
     var weights = SCALE_WEIGHTS[qid];
     Object.keys(weights).forEach(function(arc) {
       S.scores[arc] = (S.scores[arc] || 0) + delta * weights[arc];
@@ -1283,7 +2686,6 @@ function removeScaleScores() {
 }
 
 function pickScale(qid, dot) {
-  // Remove old contribution for this question before updating
   var oldVal = S.scaleAns[qid] || 0;
   if (oldVal) {
     var oldDelta = oldVal - 3;
@@ -1293,11 +2695,10 @@ function pickScale(qid, dot) {
     });
   }
   S.scaleAns[qid] = dot;
-  // Apply new contribution immediately
   var newDelta = dot - 3;
-  var weights = SCALE_WEIGHTS[qid];
-  Object.keys(weights).forEach(function(arc) {
-    S.scores[arc] = (S.scores[arc] || 0) + newDelta * weights[arc];
+  var weights2 = SCALE_WEIGHTS[qid];
+  Object.keys(weights2).forEach(function(arc) {
+    S.scores[arc] = (S.scores[arc] || 0) + newDelta * weights2[arc];
   });
   render();
 }
@@ -1305,39 +2706,85 @@ function pickScale(qid, dot) {
 function nextScale() {
   S.qi++;
   if (S.qi >= SCALE_QS.length) {
-    // All 16 done — compute
-    var tb = checkTB();
-    if (!tb) {
-      var winner = topTwo()[0][0];
-      calcFlags(winner);
-      S.result = winner;
-      S.screen = "result";
-    } else if (tb.bridge) {
-      S.result = "BRIDGE";
-      S.bridge = tb.pair;
-      S.screen = "result";
-    } else {
-      S.tbPair = tb.pair;
-      S.tbQs = tb.qs;
-      S.qi = 0;
-      S.screen = "tb";
-    }
+    // Show loading screen, then compute result
+    runLoading();
+  } else {
+    render(); scrollTo(0, 0);
   }
-  render(); scrollTo(0,0);
+}
+
+/* LOADING animation: 4 steps, ~600ms each, total ~2.4s, then resolve */
+function runLoading() {
+  S.screen = 'loading';
+  S.loadingStep = 0;
+  render(); scrollTo(0, 0);
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stepMs = prefersReduced ? 80 : 600;
+  function tick() {
+    S.loadingStep++;
+    if (S.loadingStep >= LOADING_STEPS.length) {
+      finishToResult();
+      return;
+    }
+    render();
+    setTimeout(tick, stepMs);
+  }
+  setTimeout(tick, stepMs);
+}
+
+function finishToResult() {
+  var tb = checkTB();
+  if (!tb) {
+    var winner = topTwo()[0][0];
+    calcFlags(winner);
+    S.result = winner;
+    S.screen = "result";
+  } else if (tb.bridge) {
+    S.result = "BRIDGE";
+    S.bridge = tb.pair;
+    S.screen = "result";
+  } else {
+    S.tbPair = tb.pair;
+    S.tbQs = tb.qs;
+    S.qi = 0;
+    S.screen = "tb";
+  }
+  render(); scrollTo(0, 0);
 }
 
 function pickTB(code) {
   S.tbAns.push(code);
-  var btns = document.querySelectorAll(".ans-btn");
-  btns.forEach(function(b){ if (b.textContent.trim() === (code === S.tbQs[S.qi].a.c ? S.tbQs[S.qi].a.t : S.tbQs[S.qi].b.t)) b.classList.add("chosen"); });
-  setTimeout(function(){
+  var btns = document.querySelectorAll(".tb-card");
+  btns.forEach(function(b) {
+    var labelText = code === S.tbQs[S.qi].a.c ? S.tbQs[S.qi].a.t : S.tbQs[S.qi].b.t;
+    if (b.textContent.indexOf(labelText) !== -1) b.classList.add("chosen");
+  });
+  setTimeout(function() {
     S.qi++;
-    if (S.qi >= 3) { resolveTBResult(); S.screen = "result"; }
-    render(); scrollTo(0,0);
-  }, 200);
+    if (S.qi >= 3) {
+      resolveTBResult();
+      // After tie-breaker, route through loading screen too
+      runLoading();
+    } else {
+      render(); scrollTo(0, 0);
+    }
+  }, 220);
 }
 
-function goVal() { S.screen = "validate"; render(); scrollTo(0,0); }
+/* After tie-breaker we set S.result already; runLoading -> finishToResult
+   would normally re-check TB and either present or branch. We need a small
+   adjustment: when S.result is set already, just go straight to result. */
+var _origFinishToResult = finishToResult;
+finishToResult = function() {
+  if (S.result) {
+    S.screen = "result";
+    render(); scrollTo(0, 0);
+    return;
+  }
+  _origFinishToResult();
+};
+
+function goVal() { S.screen = "validate"; render(); scrollTo(0, 0); }
 
 function setV(key, val) {
   S.val[key] = val;
@@ -1354,33 +2801,36 @@ function doCopy() {
   var text = JSON.stringify(buildExport(), null, 2);
   var btn = document.querySelector(".btn-copy");
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(function(){
-      if (btn) { btn.textContent = "✓ Copied!"; setTimeout(function(){ if(btn) btn.textContent = "📋 Copy to clipboard"; }, 2000); }
-    });
+    navigator.clipboard.writeText(text).then(function() {
+      if (btn) { btn.textContent = "✓ Copied!"; setTimeout(function() { if (btn) btn.textContent = "📋 Copy to clipboard"; }, 2000); }
+    }).catch(function() { fallbackCopy(text, btn); });
   } else {
-    var el = document.createElement("textarea");
-    el.value = text; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el);
-    if (btn) { btn.textContent = "✓ Copied!"; setTimeout(function(){ if(btn) btn.textContent = "📋 Copy to clipboard"; }, 2000); }
+    fallbackCopy(text, btn);
   }
+}
+
+function fallbackCopy(text, btn) {
+  var el = document.createElement("textarea");
+  el.value = text; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el);
+  if (btn) { btn.textContent = "✓ Copied!"; setTimeout(function() { if (btn) btn.textContent = "📋 Copy to clipboard"; }, 2000); }
 }
 
 function restart() {
   resetState();
-  render(); scrollTo(0,0);
+  render(); scrollTo(0, 0);
 }
 
 function escHtml(s) {
   if (!s) return "";
-  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-// ── State persistence: save result so browser back-button restores it ──────
+/* State persistence — unchanged */
 function navigateAway(url) {
-  try { sessionStorage.setItem('_quizState', JSON.stringify(S)); } catch(e) {}
+  try { sessionStorage.setItem('_quizState', JSON.stringify(S)); } catch (e) {}
   window.location.href = url;
 }
 
-// Boot: restore state if user navigated away from result/validate and came back
 (function() {
   try {
     var saved = sessionStorage.getItem('_quizState');
@@ -1389,7 +2839,6 @@ function navigateAway(url) {
       sessionStorage.removeItem('_quizState');
       if (parsed && (parsed.screen === 'result' || parsed.screen === 'validate')) {
         S = parsed;
-        // Re-initialise any missing fields that aren't serialisable
         if (!S.scores)    S.scores    = {};
         if (!S.flags)     S.flags     = [];
         if (!S.tbAns)     S.tbAns     = [];
@@ -1397,9 +2846,10 @@ function navigateAway(url) {
         if (!S.scaleAns)  S.scaleAns  = {};
         if (!S.mainAns)   S.mainAns   = [];
         if (!S.val)       S.val       = {};
+        if (S.loadingStep === undefined) S.loadingStep = 0;
       }
     }
-  } catch(e) {}
+  } catch (e) {}
 })();
 
 render();
