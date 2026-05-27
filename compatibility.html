@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>duRingIt — Monie Compatibility</title>
+<meta property="og:title" content="Monie Compatibility — duRingIt">
+<meta property="og:description" content="See how any two Monie ID archetypes interact — money chemistry, friction, and what you build best together.">
+<meta property="og:image" content="./og-cover.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./og-cover.png">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
@@ -762,6 +769,76 @@ body {
   color: var(--sage-deep);
 }
 
+/* ─── COMPATIBILITY MAP ─── */
+.map-center {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px;
+  margin: 8px 0 20px;
+  position: relative; z-index: 2;
+}
+.map-center .card-thumb { width: 140px; }
+.map-center-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 22px;
+  color: var(--ink); letter-spacing: -0.01em;
+  margin-top: 10px;
+}
+.map-center-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.18em; color: var(--brown-soft);
+}
+.map-bucket {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 16px 14px 14px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-card);
+  position: relative; z-index: 2;
+}
+.map-bucket-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.map-bucket-tag {
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
+  color: var(--brown-soft);
+  transform: rotate(-1deg);
+}
+.map-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+.map-card {
+  background: var(--paper);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 6px 6px 8px;
+  cursor: pointer;
+  text-align: center;
+  font-family: inherit;
+  transition: transform 0.12s, border-color 0.12s;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.map-card:hover { transform: translateY(-2px); border-color: var(--honey); }
+.map-card .card-thumb { border: none; box-shadow: none; }
+.map-card-meta { padding: 0 4px; }
+.map-card-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: 11px;
+  color: var(--ink); line-height: 1.15;
+}
+.map-card-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; color: var(--brown-soft);
+  margin-top: 3px;
+}
+
 /* ─── REDUCED MOTION ─── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -781,6 +858,47 @@ button:focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 2px
   .meter-row { grid-template-columns: 24px 80px 1fr 60px; }
   #app { padding: 18px 14px 90px; }
 }
+
+/* ─── PRINT STYLESHEET ─── */
+@media print {
+  html, body { background: #FFFFFF !important; }
+  body { padding: 0 !important; font-size: 12pt; line-height: 1.55; }
+  .phone, .sheet, .page {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    background: #FFFFFF !important;
+  }
+  #app { padding: 14px !important; }
+  /* hide navigational/interactive elements */
+  .topbar, .nav, .back-arrow, .share-coin, .btn-row, .btn, .btn-back, .btn-whatsapp,
+  .btn-blog, .btn-tally-wrap, .btn-tally, .doodle, .nav-prev, .toc {
+    display: none !important;
+  }
+  /* expand cards full-width with simple borders */
+  .qcard, .result-card, .scores-card, .paper-section, .section-card,
+  .meters-card, .you-hero, .pair-row, .bridge-cards, .bridge-pair {
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    background: #FFFFFF !important;
+    border: 1px solid #D8B982 !important;
+  }
+  .card-slot { max-height: 60vh !important; box-shadow: none !important; }
+  /* avoid splitting headings */
+  h1, h2, .hero-title, .ps-title, .result-name, .verdict-title { page-break-after: avoid; }
+  /* link URLs after each anchor (optional, low cost) */
+  a { color: #2A170D !important; text-decoration: none; }
+  /* keep grid backgrounds off for cleaner print */
+  .phone, .sheet, body {
+    background-image: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1122,8 +1240,19 @@ function getParams() {
 function render() {
   var app = document.getElementById('app');
   var p = getParams();
+  /* XSS fix: whitelist every URL param against known archetype codes.
+     Raw params are concatenated into onclick JS strings — any unknown
+     value must be rejected before it reaches HTML output. */
+  var valid = function(v) { return v && NAMES[v] ? v : null; };
+  p.a       = valid(p.a);
+  p.b       = valid(p.b);
+  p.compare = valid(p.compare);
+  p.from    = valid(p.from);
+  var view = new URLSearchParams(window.location.search).get('view');
 
-  if (p.a && p.b && p.a !== p.b) {
+  if (view === 'map' && p.a && NAMES[p.a]) {
+    app.innerHTML = renderMap(p.a, p.from);
+  } else if (p.a && p.b && p.a !== p.b) {
     app.innerHTML = renderBridge(p.a, p.b);
   } else if (p.a && p.compare && p.a !== p.compare) {
     app.innerHTML = renderPair(p.a, p.compare, p.from);
@@ -1133,6 +1262,78 @@ function render() {
     app.innerHTML = renderEmpty();
   }
   scrollTo(0, 0);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPATIBILITY MAP — groups all other 10 archetypes around the user
+   by compatibility label derived from existing pair scores.
+   ═══════════════════════════════════════════════════════════ */
+function renderMap(a, bridgePartner) {
+  var hasBridge = bridgePartner && NAMES[bridgePartner] && bridgePartner !== a;
+  /* Bucket every other type into one of the 5 labels */
+  var buckets = { es: [], gb: [], pt: [], nc: [], hf: [] };
+  ORDER.forEach(function(c){
+    if (c === a) return;
+    var pair = COMPAT[key(a, c)];
+    if (!pair) return;
+    var label = labelFor(pair.score);
+    buckets[label.code].push({ code: c, score: pair.score, verdict: pair.verdict });
+  });
+  /* Sort each bucket by score, high → low */
+  Object.keys(buckets).forEach(function(k){ buckets[k].sort(function(x, y){ return y.score - x.score; }); });
+
+  function bucketHtml(code, name, tagline, items) {
+    if (!items.length) return '';
+    var cards = items.map(function(it){
+      var clickFn = hasBridge
+        ? "goComparePicker('" + a + "','" + it.code + "','" + bridgePartner + "')"
+        : "goCompare('" + a + "','" + it.code + "')";
+      return '<button class="map-card" onclick="' + clickFn + '" aria-label="Compare with ' + escHtml(NAMES[it.code]) + '">' +
+        cardThumb(it.code) +
+        '<div class="map-card-meta">' +
+          '<div class="map-card-name">' + escHtml(NAMES[it.code]) + '</div>' +
+          '<div class="map-card-code">' + escHtml(TYPE_CODES[it.code]) + '</div>' +
+        '</div>' +
+      '</button>';
+    }).join('');
+    return '<div class="map-bucket map-bucket--' + code + '">' +
+      '<div class="map-bucket-header">' +
+        '<span class="compat-label compat-label--' + code + '">' + escHtml(name) + '</span>' +
+        '<span class="map-bucket-tag">' + escHtml(tagline) + '</span>' +
+      '</div>' +
+      '<div class="map-cards-row">' + cards + '</div>' +
+    '</div>';
+  }
+
+  var backCall = hasBridge
+    ? "backToMyResult('" + a + "','" + bridgePartner + "')"
+    : "backToMyResult('" + a + "')";
+  var pickerCall = hasBridge
+    ? "goPicker('" + a + "','" + bridgePartner + "')"
+    : "goPicker('" + a + "')";
+
+  return topbarChrome(backCall) +
+    ambient('a') +
+    '<div class="page-eyebrow">Your Compatibility Map</div>' +
+    '<div class="page-title">Where you sync<br>and where you clash</div>' +
+    '<div class="page-sub">See how your Monie ID lines up with all 10 other archetypes. Tap any card for the full pair read.</div>' +
+
+    '<div class="map-center">' +
+      cardThumb(a, 'you') +
+      '<div class="map-center-name">' + escHtml(NAMES[a]) + '</div>' +
+      '<div class="map-center-code">' + escHtml(TYPE_CODES[a]) + '</div>' +
+    '</div>' +
+
+    bucketHtml('es', 'Easy Sync',          'Aligned values, low friction.',          buckets.es) +
+    bucketHtml('gb', 'Good Balance',       'Different strengths, same direction.',   buckets.gb) +
+    bucketHtml('pt', 'Productive Tension', 'Healthy push and pull.',                  buckets.pt) +
+    bucketHtml('nc', 'Needs Care',         'Manageable, with intention.',             buckets.nc) +
+    bucketHtml('hf', 'High Friction',      'Real work required.',                     buckets.hf) +
+
+    '<div class="btn-row">' +
+      '<button class="btn btn-secondary" onclick="' + pickerCall + '">View as picker</button>' +
+      '<button class="btn btn-primary" onclick="' + backCall + '">← Back to my result</button>' +
+    '</div>';
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1492,40 +1693,18 @@ function goComparePicker(a, b, bridgePartner) {
   window.location.href = COMPAT_URL + '?a=' + a + '&compare=' + b + '&from=' + bridgePartner;
 }
 
-/* Seed quiz sessionStorage with the user's result so the quiz lands
-   on their result screen instead of the welcome page when they click
-   "Back to my result". Works whether they got here via the quiz
-   originally or directly via a shared URL. */
+/* Smart back navigation:
+   - If there's a real history entry to go back to (came from landing, archetype, quiz, etc.),
+     use history.back() — this naturally restores whatever page they were on, including a real
+     quiz result via the quiz's own sessionStorage restore.
+   - If they arrived directly (e.g. shared link, fresh tab with no history), fall back to landing.
+   The `a`/`b` parameters are kept for callsite compatibility but no longer seed fake state. */
 function backToMyResult(a, b) {
-  try {
-    var state = {
-      screen: 'result',
-      name: '',
-      scores: {},
-      scaleAns: {},
-      mainAns: [],
-      tbPair: null,
-      tbQs: [],
-      tbAns: [],
-      flags: [],
-      qi: 0,
-      val: {},
-      loadingStep: 0
-    };
-    // give every archetype a baseline score so the bars look reasonable
-    Object.keys(NAMES).forEach(function(k){ state.scores[k] = 4.0; });
-    if (b && b !== a) {
-      state.result = 'BRIDGE';
-      state.bridge = [a, b];
-      state.scores[a] = 8.5;
-      state.scores[b] = 8.5;
-    } else {
-      state.result = a;
-      state.scores[a] = 9.0;
-    }
-    sessionStorage.setItem('_quizState', JSON.stringify(state));
-  } catch (e) {}
-  window.location.href = QUIZ_URL;
+  if (window.history.length > 1 && document.referrer && document.referrer !== window.location.href) {
+    window.history.back();
+  } else {
+    window.location.href = './index.html';
+  }
 }
 function sharePair(a, b, isBridge) {
   var text;

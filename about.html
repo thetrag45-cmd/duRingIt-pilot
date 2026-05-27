@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>About — duRingIt Monie ID</title>
+<meta name="description" content="Who built duRingIt, why the Monie ID exists, and how we handle your data.">
+<meta property="og:title" content="About — duRingIt Monie ID">
+<meta property="og:description" content="The story behind the 11 Monie ID archetypes — and how we handle your data.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="./og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./og-cover.png">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-cream:#FFF7EA;--paper-light:#FFFBF3;--paper-warm:#FAE7C5;--ink:#2A170D;--ink-soft:#4A2E1A;
+  --brown:#6B3F22;--brown-soft:#8A5A33;--caramel:#A66A2E;--honey:#F6B638;--honey-light:#FFD56A;
+  --honey-deep:#D89724;--sage-deep:#5E6E3E;--border:#D8B982;--border-soft:#E8D4A4;--tan:#C9A36A;
+  --shadow:rgba(91,55,20,0.16);--tape:#F1E2BD;
+  --radius-md:14px;--radius-lg:22px;
+  --shadow-card:0 2px 0 var(--border-soft),0 8px 18px -6px var(--shadow);
+  --shadow-paper:0 1px 0 #fff inset,0 2px 0 var(--border-soft),0 14px 24px -10px var(--shadow);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:#E8D8B8}
+body{
+  font-family:'Lexend',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:var(--ink);line-height:1.65;font-size:16.5px;
+  background:
+    repeating-linear-gradient(0deg,rgba(168,130,72,0.05) 0 1px,transparent 1px 28px),
+    repeating-linear-gradient(90deg,rgba(168,130,72,0.05) 0 1px,transparent 1px 28px),
+    radial-gradient(120% 60% at 50% 0%,#FFF9EC 0%,var(--bg-cream) 50%,#F0DDB7 100%);
+  -webkit-font-smoothing:antialiased;min-height:100vh;
+}
+.page{max-width:760px;margin:0 auto;padding:22px 22px 80px;position:relative}
+@media(min-width:820px){
+  body{padding:28px 16px}
+  .page{border-radius:26px;box-shadow:0 2px 0 var(--border-soft),0 30px 60px -20px rgba(0,0,0,0.18);overflow:hidden;min-height:calc(100vh - 56px)}
+}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:8px 0;margin-bottom:28px}
+.brand-pill{display:inline-flex;align-items:center;gap:8px;background:var(--paper-light);border:1.5px solid var(--border);border-radius:999px;padding:9px 18px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:14px;color:var(--ink);box-shadow:var(--shadow-card);text-decoration:none}
+.brand-pill .dot{width:4px;height:4px;border-radius:50%;background:var(--brown);flex:0 0 auto}
+.brand-pill .ring{color:var(--honey-deep);font-weight:700}
+.back-link{font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:600;color:var(--brown);text-decoration:none;border-bottom:1.5px dotted var(--tan);padding-bottom:1px}
+.back-link:hover{color:var(--honey-deep);border-color:var(--honey-deep)}
+
+.header{margin:18px 0 24px}
+.eyebrow{font-family:'Caveat',cursive;font-size:22px;color:var(--sage-deep);transform:rotate(-1deg);display:inline-block;margin-bottom:6px}
+.title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(36px,5vw,54px);line-height:1.02;letter-spacing:-0.025em;color:var(--ink);margin-bottom:8px;text-wrap:balance}
+.sub{font-size:17px;color:var(--brown-soft);font-weight:500}
+
+.toc{background:var(--paper-light);border:1.5px dashed var(--tan);border-radius:var(--radius-md);padding:14px 16px;margin:18px 0 28px}
+.toc-label{font-family:'Bricolage Grotesque',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--brown-soft);margin-bottom:8px}
+.toc ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:4px 14px}
+.toc li{font-size:13.5px;padding:4px 0}
+.toc a{color:var(--brown);text-decoration:none;border-bottom:1px dotted var(--tan);padding-bottom:1px}
+.toc a:hover{color:var(--honey-deep);border-color:var(--honey-deep)}
+
+.paper{position:relative;background:var(--paper-light);border:1.5px solid var(--border-soft);border-radius:var(--radius-lg);padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow-card)}
+.paper::after{content:"";position:absolute;bottom:-1px;right:-1px;width:22px;height:22px;background:linear-gradient(135deg,transparent 50%,var(--border-soft) 50%,var(--border-soft) 56%,var(--paper-warm) 56%);border-bottom-right-radius:var(--radius-lg)}
+.paper-eyebrow{font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--honey-deep);margin-bottom:6px}
+.paper h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;line-height:1.1;color:var(--ink);margin-bottom:12px;letter-spacing:-0.015em}
+.paper p{margin-bottom:14px;color:var(--ink-soft);font-size:16px}
+.paper p:last-child{margin-bottom:0}
+.paper strong{color:var(--ink);font-weight:700}
+.paper a{color:var(--honey-deep);text-decoration:none;border-bottom:1.5px dotted var(--honey-deep)}
+.paper a:hover{color:var(--caramel);border-color:var(--caramel)}
+.paper ul{margin:6px 0 14px 0;padding:0;list-style:none}
+.paper ul li{position:relative;padding:6px 0 6px 22px;color:var(--ink-soft);font-size:15.5px;line-height:1.6}
+.paper ul li::before{content:"";position:absolute;left:6px;top:14px;width:6px;height:6px;border-radius:50%;background:var(--honey);border:1.5px solid var(--honey-deep)}
+.callout{background:#FFF6DC;border:1.5px solid var(--honey-deep);border-radius:var(--radius-md);padding:14px 16px;margin:14px 0;font-family:'Bricolage Grotesque',sans-serif;font-style:italic;font-size:15.5px;color:#8C5614;line-height:1.55}
+
+.post-footer{margin-top:48px;padding:26px 24px;background:var(--paper-light);border:1.5px solid var(--border-soft);border-radius:var(--radius-lg);box-shadow:var(--shadow-paper);text-align:center}
+.post-footer .ftag{font-family:'Caveat',cursive;font-size:22px;color:var(--sage-deep);transform:rotate(-1deg);display:inline-block}
+.post-footer .ftitle{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;color:var(--ink);margin-bottom:8px}
+.post-footer .fsub{font-size:14.5px;color:var(--brown-soft);margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;padding:12px 20px;border-radius:999px;text-decoration:none;border:2px solid}
+.btn-primary{background:linear-gradient(180deg,var(--honey-light),var(--honey));color:var(--ink);border-color:var(--honey-deep);box-shadow:0 3px 0 var(--honey-deep)}
+.btn-primary:hover{transform:translateY(-1px)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="brand-pill" href="./index.html">
+      <span class="brand-name">du<span class="ring">Ring</span>It</span>
+      <span class="dot"></span>
+      <span>Monie ID</span>
+    </a>
+    <a class="back-link" href="./index.html">← Home</a>
+  </nav>
+
+  <header class="header">
+    <div class="eyebrow">our story ✦</div>
+    <h1 class="title">About duRingIt</h1>
+    <p class="sub">A behavioural lens on the way you actually move with money.</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-label">In this file</div>
+    <ul>
+      <li><a href="#what">What duRingIt is</a></li>
+      <li><a href="#why">Why we built it</a></li>
+      <li><a href="#how">How the quiz works</a></li>
+      <li><a href="#science">Is this science?</a></li>
+      <li><a href="#privacy">Privacy &amp; data</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="paper" id="what">
+    <div class="paper-eyebrow">§ 1 — What it is</div>
+    <h2>duRingIt is a self-knowledge tool, not a financial advisor.</h2>
+    <p>We help you understand how you actually behave with money — through one short quiz and 11 distinct <strong>Monie ID</strong> archetypes. We don't tell you what to invest in, what to save, or what to spend on. We hand you a mirror, and the rest is up to you.</p>
+    <p>The Monie ID system describes patterns you already have. Drive, restraint, optimism, vigilance, avoidance. Built well, it shows you where your strengths quietly come from — and where the same instincts can quietly cost you.</p>
+  </section>
+
+  <section class="paper" id="why">
+    <div class="paper-eyebrow">§ 2 — Why we built it</div>
+    <h2>Most money advice ignores the human in the equation.</h2>
+    <p>You can read a thousand articles about index funds, emergency funds, and 4% withdrawal rates, and still not act on a single one. Knowledge isn't the bottleneck — behaviour is.</p>
+    <p>We built duRingIt because the questions we most wanted answered were never <em>what should I do</em>, but <em>why do I keep doing this</em>. Why does one person fear running out of money even with millions saved, while another keeps spending in their 40s the way they did in their 20s? The Monie ID system is one small attempt to make those patterns legible.</p>
+  </section>
+
+  <section class="paper" id="how">
+    <div class="paper-eyebrow">§ 3 — How the quiz works</div>
+    <h2>16 questions. ~4 minutes. No spreadsheets.</h2>
+    <p>The quiz has three short stages:</p>
+    <ul>
+      <li><strong>12 multiple-choice questions</strong> — about how you think and decide.</li>
+      <li><strong>4 quick 1-to-5 scales</strong> — about how you actually behave under pressure.</li>
+      <li><strong>An optional tie-breaker</strong> — if your top two scores are close, three quick prompts disambiguate.</li>
+    </ul>
+    <p>If two archetypes still tie after the tie-breaker, you become a <strong>Bridge</strong> — a rare reading where two patterns genuinely co-exist in you.</p>
+  </section>
+
+  <section class="paper" id="science">
+    <div class="paper-eyebrow">§ 4 — Is this science?</div>
+    <h2>Honest answer: it's a pilot framework.</h2>
+    <p>The Monie ID system draws on patterns from behavioural finance and personality research — but it isn't peer-reviewed, it isn't a medical instrument, and it isn't a diagnosis. Treat your result as a <strong>mirror, not a verdict</strong>.</p>
+    <div class="callout">If something resonates, sit with it. If something feels off, that itself is useful information about how you see yourself.</div>
+    <p>We're actively validating the framework. The feedback screen at the end of the quiz lets you rate accuracy and add notes — that data helps us improve.</p>
+  </section>
+
+  <section class="paper" id="privacy">
+    <div class="paper-eyebrow">§ 5 — Privacy &amp; data</div>
+    <h2>What we collect, what we don't.</h2>
+    <p><strong>No accounts. No tracking pixels. No third-party analytics.</strong></p>
+    <p>Your quiz answers and result live only in your browser, in <code>sessionStorage</code>. Closing the tab usually clears them. We don't have a server-side database storing your responses.</p>
+    <p>On the feedback screen at the end of the quiz, you can manually copy your pilot data as JSON and send it to the team. That export only happens when <em>you</em> copy and paste it — we don't pull it automatically.</p>
+    <p>If you decide to provide your email through a future report form, we'll store only what's needed to send you that report. We won't sell it, ever.</p>
+    <p>Fonts are loaded from Google Fonts. Their servers may log your IP as part of standard CDN delivery. We don't access those logs.</p>
+  </section>
+
+  <section class="paper" id="contact">
+    <div class="paper-eyebrow">§ 6 — Contact</div>
+    <h2>Get in touch.</h2>
+    <p>Questions, feedback, archetype-pair requests, or general kvetching — drop us a line. We genuinely read replies during the pilot phase.</p>
+    <ul>
+      <li>Take the quiz: <a href="./duRingIt-pilot-quiz.html">duRingIt-pilot-quiz.html</a></li>
+      <li>Read the blog: <a href="./blog/index.html">The Journal</a></li>
+      <li>Compatibility: <a href="./compatibility.html">compatibility.html</a></li>
+    </ul>
+  </section>
+
+  <div class="post-footer">
+    <div class="ftag">your turn ✦</div>
+    <div class="ftitle">Ready to find your Monie ID?</div>
+    <div class="fsub">16 questions. ~4 minutes. No sign-up.</div>
+    <a class="btn btn-primary" href="./duRingIt-pilot-quiz.html">Open my intake file →</a>
+  </div>
+
+</div>
+</body>
+</html>

@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Free Spirit — duRingIt Monie ID</title>
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <meta name="description" content="The Free Spirit — one of 11 Monie ID financial archetypes. I’m not terrible with money… I just never really had a clear direction.">
 <meta property="og:title" content="The Free Spirit — duRingIt Monie ID">
 <meta property="og:description" content="I’m not terrible with money… I just never really had a clear direction.">
@@ -451,6 +453,47 @@ body {
   .sheet { padding: 22px 16px 60px; }
   .btn-row { grid-template-columns: 1fr; }
 }
+
+/* ─── PRINT STYLESHEET ─── */
+@media print {
+  html, body { background: #FFFFFF !important; }
+  body { padding: 0 !important; font-size: 12pt; line-height: 1.55; }
+  .phone, .sheet, .page {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    background: #FFFFFF !important;
+  }
+  #app { padding: 14px !important; }
+  /* hide navigational/interactive elements */
+  .topbar, .nav, .back-arrow, .share-coin, .btn-row, .btn, .btn-back, .btn-whatsapp,
+  .btn-blog, .btn-tally-wrap, .btn-tally, .doodle, .nav-prev, .toc {
+    display: none !important;
+  }
+  /* expand cards full-width with simple borders */
+  .qcard, .result-card, .scores-card, .paper-section, .section-card,
+  .meters-card, .you-hero, .pair-row, .bridge-cards, .bridge-pair {
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    background: #FFFFFF !important;
+    border: 1px solid #D8B982 !important;
+  }
+  .card-slot { max-height: 60vh !important; box-shadow: none !important; }
+  /* avoid splitting headings */
+  h1, h2, .hero-title, .ps-title, .result-name, .verdict-title { page-break-after: avoid; }
+  /* link URLs after each anchor (optional, low cost) */
+  a { color: #2A170D !important; text-decoration: none; }
+  /* keep grid backgrounds off for cleaner print */
+  .phone, .sheet, body {
+    background-image: none !important;
+  }
+}
+
 </style>
 </head>
 <body data-archetype="WN">
@@ -746,27 +789,19 @@ body {
 
 </div>
 
+
+
 <script>
 (function(){
-  function backToMyResult() {
-    try {
-      var code = document.body.getAttribute('data-archetype') || '';
-      if (!code) { window.location.href = '../duRingIt-pilot-quiz.html'; return; }
-      var NAMES_ALL = ['AB','FC','WA','ST','SS','LI','LR','SG','AX','EE','WN'];
-      var state = {
-        screen: 'result', name: '', scores: {}, scaleAns: {}, mainAns: [],
-        tbPair: null, tbQs: [], tbAns: [], flags: [], qi: 0, val: {}, loadingStep: 0,
-        result: code, bridge: null
-      };
-      NAMES_ALL.forEach(function(k){ state.scores[k] = 4.0; });
-      state.scores[code] = 9.0;
-      sessionStorage.setItem('_quizState', JSON.stringify(state));
-    } catch (e) {}
-    window.location.href = '../duRingIt-pilot-quiz.html';
+  function smartBack() {
+    if (window.history.length > 1 && document.referrer && document.referrer !== window.location.href) {
+      window.history.back();
+    } else {
+      window.location.href = '../index.html';
+    }
   }
-  // Wire up all back-to-result links/buttons
   document.querySelectorAll('[data-back-to-result]').forEach(function(el){
-    el.addEventListener('click', function(ev){ ev.preventDefault(); backToMyResult(); });
+    el.addEventListener('click', function(ev){ ev.preventDefault(); smartBack(); });
   });
 })();
 </script>
