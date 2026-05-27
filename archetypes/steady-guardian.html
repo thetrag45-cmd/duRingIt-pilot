@@ -2,108 +2,517 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Steady Guardian &mdash; duRingIt Monie ID</title>
-<meta name="description" content="Steady Guardian &mdash; one of 11 Monie ID financial archetypes. Wealth doesn’t need to announce itself.">
-<meta property="og:title" content="Steady Guardian &mdash; duRingIt Monie ID">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Steady Guardian — duRingIt Monie ID</title>
+<meta name="description" content="Steady Guardian — one of 11 Monie ID financial archetypes. Wealth doesn’t need to announce itself.">
+<meta property="og:title" content="Steady Guardian — duRingIt Monie ID">
 <meta property="og:description" content="Wealth doesn’t need to announce itself.">
 <meta property="og:type" content="article">
+<meta property="og:image" content="../cards/SG.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── TOKENS (shared Monie ID Intake system) ─── */
+:root {
+  --bg-cream:    #FFF7EA;
+  --paper:       #FFF2D9;
+  --paper-light: #FFFBF3;
+  --paper-warm:  #FAE7C5;
+  --ink:         #2A170D;
+  --ink-soft:    #4A2E1A;
+  --brown:       #6B3F22;
+  --brown-soft:  #8A5A33;
+  --caramel:     #A66A2E;
+  --honey:       #F6B638;
+  --honey-light: #FFD56A;
+  --honey-deep:  #D89724;
+  --sage:        #7F8F5A;
+  --sage-light:  #E6EBD3;
+  --sage-deep:   #5E6E3E;
+  --border:      #D8B982;
+  --border-soft: #E8D4A4;
+  --tan:         #C9A36A;
+  --shadow:      rgba(91, 55, 20, 0.16);
+  --shadow-soft: rgba(91, 55, 20, 0.08);
+  --tape:        #F1E2BD;
+
+  --fam-bg:  #E6EBD3;
+  --fam-bd:  #B7C28A;
+  --fam-ink: #5E6E3E;
+
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-card: 0 2px 0 var(--border-soft), 0 8px 18px -6px var(--shadow);
+  --shadow-paper: 0 1px 0 #fff inset, 0 2px 0 var(--border-soft), 0 14px 24px -10px var(--shadow);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: #E8D8B8; }
 body {
-  background: #0D0D0D; color: #E8E8E8;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.6;
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink); line-height: 1.6; font-size: 16px;
+  background: radial-gradient(circle at 20% 10%, #F0E0BE 0%, #E8D8B8 60%, #DCC89A 100%);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
-.wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
-.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 32px; }
-.brand span { color: #F5C842; }
-.brand a { color: inherit; text-decoration: none; }
-.fam { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
-h1 {
-  font-size: 44px; font-weight: 900; line-height: 1.05;
-  margin-bottom: 14px; letter-spacing: -0.02em;
+
+/* paper sheet container — wider than phone, single-column long-form */
+.sheet {
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background:
+    repeating-linear-gradient(0deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    radial-gradient(120% 80% at 50% 0%, #FFF9EC 0%, var(--bg-cream) 60%, #F8EAD0 100%);
+  padding: 28px 22px 80px;
+  position: relative;
 }
-.tagline {
-  font-size: 19px; font-style: italic; color: #F5C842;
-  border-left: 3px solid #F5C842; padding: 4px 0 4px 16px;
-  margin-bottom: 40px; line-height: 1.5;
+@media (min-width: 820px) {
+  body { padding: 28px 16px; }
+  .sheet {
+    margin: 0 auto;
+    min-height: calc(100vh - 56px);
+    border-radius: 26px;
+    box-shadow:
+      0 2px 0 var(--border-soft),
+      0 30px 60px -20px rgba(0,0,0,0.25),
+      0 50px 100px -30px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
 }
-.section {
-  margin-bottom: 44px;
+
+/* ─── BRAND PILL + BACK ─── */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; position: relative; z-index: 2; }
+.back-arrow {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brown); font-size: 18px; font-weight: 800;
+  text-decoration: none; box-shadow: var(--shadow-card);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  transition: transform 0.12s;
 }
-.section h2 {
-  font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: #F5C842; margin-bottom: 16px; font-weight: 700;
-  padding-bottom: 8px; border-bottom: 1px solid #2A2A2A;
+.back-arrow:hover { transform: translateY(-2px); }
+.brand-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
 }
-.sub-h {
-  font-size: 17px; font-weight: 700; color: #FFFFFF;
-  margin-top: 22px; margin-bottom: 8px;
+.brand-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown); flex: 0 0 auto; }
+.brand-pill .brand-name { white-space: nowrap; }
+.brand-pill .ring { color: var(--honey-deep); font-weight: 700; }
+.share-coin {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--shadow-card);
+  font-size: 16px; color: var(--brown);
+  font-family: inherit;
 }
-.prose {
-  font-size: 16px; color: #C8C8C8; margin-bottom: 14px; line-height: 1.7;
+
+/* ─── HERO ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  margin: 12px 0 28px;
+  align-items: start;
+  position: relative;
+  z-index: 2;
 }
-.b-list {
-  list-style: none; padding: 0; margin: 0 0 16px 0;
+.card-slot {
+  position: relative;
+  aspect-ratio: 948 / 1659;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-paper);
 }
-.b-list li {
-  font-size: 15px; color: #B0B0B0; line-height: 1.6;
-  padding: 6px 0 6px 22px; position: relative;
+.card-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-ph {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(168,130,72,0.06) 0 2px, transparent 2px 14px),
+    radial-gradient(circle at 30% 20%, #FFF6DC 0%, var(--paper-warm) 50%, #E8C879 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 18px; text-align: center;
 }
-.b-list li::before {
-  content: "—"; position: absolute; left: 0; color: #F5C842;
+.card-ph .code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 60px; font-weight: 800; color: var(--ink); line-height: 1;
+  text-shadow: 2px 2px 0 #FFE7A4;
 }
-.pull-q {
-  font-size: 18px; font-style: italic; color: #D4AA40;
-  background: #161616; border-left: 3px solid #F5C842;
-  padding: 14px 18px; border-radius: 0 10px 10px 0;
-  margin: 18px 0;
+.card-ph .ph-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 18px; line-height: 1.1;
+  color: var(--ink); margin-top: 8px;
 }
-hr.divider {
-  border: 0; border-top: 1px solid #2A2A2A; margin: 28px 0;
+
+.hero-meta { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+.fam-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--fam-bg);
+  border: 1.5px solid var(--fam-bd);
+  color: var(--fam-ink);
+  padding: 5px 14px; border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  align-self: flex-start;
 }
-.foot-card {
-  background: #1A1A1A; border: 1px solid #2A2A2A; border-radius: 14px;
-  padding: 24px; margin-top: 48px; text-align: center;
+.hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 48px;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--ink); text-wrap: balance;
 }
-.foot-card h3 {
-  font-size: 22px; font-weight: 800; margin-bottom: 8px; color: #FFF;
+.hero-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--brown);
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  padding: 4px 12px; border-radius: 6px;
+  align-self: flex-start;
 }
-.foot-card p { color: #888; font-size: 14px; margin-bottom: 16px; }
-.cta {
-  display: inline-block;
-  background: #F5C842; color: #000; text-decoration: none;
-  padding: 14px 24px; border-radius: 10px;
-  font-weight: 700; font-size: 15px;
-  transition: background 0.12s;
+.hero-quote {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--caramel);
+  line-height: 1.4;
+  padding: 14px 16px 14px 22px;
+  background: var(--paper-light);
+  border-left: 4px solid var(--honey);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+  margin-top: 2px;
+  text-wrap: pretty;
 }
-.cta:hover { background: #FFD700; }
-.nav-prev {
-  display: flex; justify-content: space-between; gap: 12px; margin-top: 24px;
+.hero-quote::before {
+  content: '\201C';
+  position: absolute;
+  left: 4px; top: 0;
+  color: var(--honey-deep);
+  font-size: 38px;
+  line-height: 1;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .hero { grid-template-columns: 1fr; gap: 18px; }
+  .card-slot { max-width: 220px; margin: 0 auto; width: 100%; }
+  .hero-title { font-size: 36px; text-align: center; }
+  .fam-pill, .hero-code { align-self: center; }
+}
+
+/* ─── TABLE OF CONTENTS ─── */
+.toc {
+  background: var(--paper-light);
+  border: 1.5px dashed var(--tan);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 28px;
+  position: relative; z-index: 2;
+}
+.toc-label {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--brown-soft); margin-bottom: 8px;
+}
+.toc ul {
+  list-style: none; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 4px 14px;
+}
+.toc li {
   font-size: 13px;
+  padding: 4px 0;
+  position: relative;
 }
-.nav-prev a { color: #666; text-decoration: none; padding: 8px 12px; border: 1px solid #2A2A2A; border-radius: 8px; }
-.nav-prev a:hover { color: #F5C842; border-color: #F5C842; }
-@media (max-width: 520px) {
-  h1 { font-size: 34px; }
-  .tagline { font-size: 17px; }
-  .wrap { padding: 20px 16px 60px; }
+.toc a {
+  color: var(--brown);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--tan);
+  padding-bottom: 1px;
+  transition: color 0.12s, border-color 0.12s;
+}
+.toc a:hover { color: var(--honey-deep); border-color: var(--honey-deep); }
+
+/* ─── PAPER SECTIONS ─── */
+.paper-section {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 26px 22px 22px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-card);
+  background-image:
+    radial-gradient(circle at 14% 10%, rgba(168,130,72,0.04) 0 1px, transparent 1px),
+    radial-gradient(circle at 78% 70%, rgba(168,130,72,0.05) 0 1px, transparent 1px);
+  background-size: 12px 12px, 16px 16px;
+  z-index: 2;
+}
+.paper-section::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, transparent 50%, var(--border-soft) 50%, var(--border-soft) 56%, var(--paper-warm) 56%);
+  border-bottom-right-radius: var(--radius-lg);
+}
+.tape {
+  position: absolute;
+  top: -10px; left: 24px;
+  width: 64px; height: 20px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+  opacity: 0.95;
+}
+.tape--right { left: auto; right: 24px; transform: rotate(3deg); }
+
+.ps-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--honey-deep); margin-bottom: 6px;
+}
+.ps-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 26px; font-weight: 800;
+  line-height: 1.05; letter-spacing: -0.015em;
+  color: var(--ink); margin-bottom: 14px;
+  text-wrap: balance;
+}
+
+/* Preserve original content classes — restyle to paper aesthetic */
+.ps-body .sub-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--brown); margin-top: 18px; margin-bottom: 6px;
+  letter-spacing: -0.005em;
+}
+.ps-body .prose {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  line-height: 1.65;
+}
+.ps-body .b-list {
+  list-style: none; padding: 0; margin: 4px 0 14px;
+}
+.ps-body .b-list li {
+  position: relative;
+  padding: 5px 0 5px 22px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.ps-body .b-list li::before {
+  content: "";
+  position: absolute;
+  left: 8px; top: 13px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--honey);
+  border: 1.5px solid var(--honey-deep);
+}
+.ps-body .pull-q {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--caramel);
+  background: #FFF6DC;
+  border: 1.5px solid var(--honey-deep);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin: 14px 0;
+  line-height: 1.5;
+}
+
+/* ─── FOOTER CTAs ─── */
+.foot-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  margin: 28px 0 14px;
+  text-align: center;
+  box-shadow: var(--shadow-paper);
+  position: relative; z-index: 2;
+}
+.foot-tag {
+  display: inline-block;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--sage-deep);
+  margin-bottom: 4px;
+  transform: rotate(-1deg);
+}
+.foot-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--ink); margin-bottom: 6px;
+}
+.foot-sub {
+  font-size: 14px;
+  color: var(--brown-soft);
+  margin-bottom: 16px;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  position: relative; z-index: 2;
+}
+.btn-row.single { grid-template-columns: 1fr; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px; font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 999px;
+  cursor: pointer; text-decoration: none;
+  border: 2px solid;
+  transition: transform 0.12s, box-shadow 0.12s;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  border-color: var(--honey-deep);
+  box-shadow: 0 3px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--honey-deep), 0 14px 22px -6px var(--shadow); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--honey-deep); }
+
+.btn-secondary {
+  background: var(--paper-light);
+  color: var(--brown);
+  border-color: var(--tan);
+  border-style: dashed;
+  box-shadow: var(--shadow-card);
+}
+.btn-secondary:hover { border-color: var(--brown); color: var(--ink); }
+
+.nav-prev {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-top: 24px; font-size: 13px;
+  position: relative; z-index: 2;
+}
+.nav-prev a {
+  color: var(--brown);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px dashed var(--tan);
+  border-radius: 8px;
+  background: var(--paper-light);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+}
+.nav-prev a:hover { color: var(--ink); border-color: var(--brown); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 30px; }
+  .ps-title { font-size: 22px; }
+  .sheet { padding: 22px 16px 60px; }
+  .btn-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
-<body>
-<div class="wrap">
+<body data-archetype="SG">
 
-<div class="brand"><a href="../duRingIt-pilot-quiz.html">du<span>Ring</span>It &mdash; Monie ID</a></div>
+<div class="sheet">
 
-<div class="fam">Guardians</div>
-<h1>Steady Guardian</h1>
-<div class="tagline">&ldquo;Wealth doesn’t need to announce itself.&rdquo;</div>
+  <!-- ─── TOPBAR ─── -->
+  <div class="topbar">
+    <a class="back-arrow" data-back-to-result href="../duRingIt-pilot-quiz.html" aria-label="Back to my result">&larr;</a>
+    <a class="brand-pill" href="../duRingIt-pilot-quiz.html">
+      <span class="brand-name">du<span class="ring">Ring</span>It</span>
+      <span class="dot"></span>
+      <span>Monie ID Profile</span>
+    </a>
+    <button class="share-coin" onclick="navigator.share ? navigator.share({title: document.title, url: location.href}) : (navigator.clipboard && navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!')))" aria-label="Share">⇪</button>
+  </div>
 
-<section class="section" id="archetype-overview">
-  <h2>Archetype Overview</h2>
-  <p class="prose">Steady Guardian is one of the most financially underestimated archetypes. They are rarely flashy, loud, or performative about money. In fact, many people around them may not even realize they are financially stable or quietly building meaningful wealth over time. Unlike status-driven archetypes who want visible success, Steady Guardian values:</p>
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div class="card-slot">
+      <img src="../cards/SG.jpg" alt="Steady Guardian BEGA card" onerror="this.style.display='none';this.parentNode.querySelector('.card-ph').style.display='flex';">
+      <div class="card-ph" style="display:none;">
+        <div class="code">SG</div>
+        <div class="ph-name">Steady Guardian</div>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span class="fam-pill">Guardians</span>
+      <h1 class="hero-title">Steady Guardian</h1>
+      <span class="hero-code">GRD-SG</span>
+      <div class="hero-quote">Wealth doesn’t need to announce itself.</div>
+    </div>
+  </header>
+
+  <!-- ─── TABLE OF CONTENTS ─── -->
+  <nav class="toc" aria-label="On this page">
+    <div class="toc-label">In this file</div>
+    <ul>
+      <li><a href="#archetype-overview">Archetype Overview</a></li>
+      <li><a href="#core-strengths">Core Strengths</a></li>
+      <li><a href="#core-weaknesses">Core Weaknesses</a></li>
+      <li><a href="#spending-habits">Spending Habits</a></li>
+      <li><a href="#investing-style">Investing Style</a></li>
+      <li><a href="#relationship-with-money">Relationship With Money</a></li>
+      <li><a href="#career-behavior">Career Behavior</a></li>
+      <li><a href="#emotional-triggers">Emotional Triggers</a></li>
+      <li><a href="#common-mistakes">Common Mistakes</a></li>
+      <li><a href="#growth-path">Growth Path</a></li>
+      <li><a href="#ideal-partner">Ideal Partner</a></li>
+      <li><a href="#stress-behavior">Stress Behavior</a></li>
+      <li><a href="#financial-fear">Financial Fear</a></li>
+      <li><a href="#financial-superpower">Financial Superpower</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── BODY SECTIONS ─── -->
+
+  <section class="paper-section" id="archetype-overview">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 1</div>
+    <h2 class="ps-title">Archetype Overview</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian is one of the most financially underestimated archetypes. They are rarely flashy, loud, or performative about money. In fact, many people around them may not even realize they are financially stable or quietly building meaningful wealth over time. Unlike status-driven archetypes who want visible success, Steady Guardian values:</p>
       <ul class="b-list"><li>stability</li><li>peace of mind</li><li>simplicity</li><li>quiet financial progress</li></ul>
       <p class="prose">They are usually:</p>
       <ul class="b-list"><li>patient</li><li>grounded</li><li>disciplined</li><li>emotionally cautious with money</li></ul>
@@ -113,12 +522,14 @@ hr.divider {
       <ul class="b-list"><li>saves regularly</li><li>avoids unnecessary debt</li><li>quietly invests</li><li>lives below their means for years without seeking recognition</li></ul>
       <p class="prose">To outsiders, they may appear:</p>
       <ul class="b-list"><li>overly modest</li><li>boring</li><li>“too safe.”</li></ul>
-      <p class="prose">But internally, they often possess a deep understanding that: financial peace is more valuable than financial performance.</p>
-</section>
+      <p class="prose">But internally, they often possess a deep understanding that: financial peace is more valuable than financial performance.</p></div>
+  </section>
 
-<section class="section" id="core-strengths">
-  <h2>Core Strengths</h2>
-  <h3 class="sub-h">1. Consistency</h3>
+  <section class="paper-section" id="core-strengths">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 2</div>
+    <h2 class="ps-title">Core Strengths</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Consistency</h3>
       <p class="prose">Steady Guardian excels at repetitive financial discipline. They are highly capable of:</p>
       <ul class="b-list"><li>saving monthly</li><li>contributing consistently</li><li>staying committed to long-term habits</li></ul>
       <p class="prose">They understand that wealth is often built quietly over time.</p>
@@ -136,12 +547,14 @@ hr.divider {
       <h3 class="sub-h">5. Patience</h3>
       <p class="prose">They are willing to wait. This gives them an advantage in:</p>
       <ul class="b-list"><li>investing</li><li>career progression</li><li>wealth accumulation</li></ul>
-      <p class="prose">They understand: not everything valuable happens quickly.</p>
-</section>
+      <p class="prose">They understand: not everything valuable happens quickly.</p></div>
+  </section>
 
-<section class="section" id="core-weaknesses">
-  <h2>Core Weaknesses</h2>
-  <h3 class="sub-h">1. Over-Conservatism</h3>
+  <section class="paper-section" id="core-weaknesses">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 3</div>
+    <h2 class="ps-title">Core Weaknesses</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Over-Conservatism</h3>
       <p class="prose">Steady Guardian can become too cautious. They may:</p>
       <ul class="b-list"><li>avoid calculated opportunities</li><li>under-invest</li><li>hold too much cash out of fear</li></ul>
       <p class="prose">Sometimes their desire for safety limits their long-term upside.</p>
@@ -156,12 +569,14 @@ hr.divider {
       <p class="prose">They may underprice themselves or avoid pursuing bigger ambitions.</p>
       <h3 class="sub-h">5. Passive Wealth Building</h3>
       <p class="prose">While stable, they may become too passive:</p>
-      <ul class="b-list"><li>sticking only to safe systems</li><li>avoiding innovation</li><li>delaying growth decisions</li></ul>
-</section>
+      <ul class="b-list"><li>sticking only to safe systems</li><li>avoiding innovation</li><li>delaying growth decisions</li></ul></div>
+  </section>
 
-<section class="section" id="spending-habits">
-  <h2>Spending Habits</h2>
-  <p class="prose">Steady Guardian spends cautiously and intentionally. They dislike:</p>
+  <section class="paper-section" id="spending-habits">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 4</div>
+    <h2 class="ps-title">Spending Habits</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian spends cautiously and intentionally. They dislike:</p>
       <ul class="b-list"><li>waste</li><li>unnecessary luxury</li><li>impulsive consumption</li></ul>
       <p class="prose">Their purchases are usually:</p>
       <ul class="b-list"><li>practical</li><li>researched</li><li>durable</li><li>value-oriented</li></ul>
@@ -169,35 +584,41 @@ hr.divider {
       <ul class="b-list"><li>reliability over trendiness</li><li>utility over attention</li><li>financial comfort over appearance</li></ul>
       <p class="prose">Typical spending patterns:</p>
       <ul class="b-list"><li>modest lifestyle</li><li>stable recurring routines</li><li>low financial drama</li><li>quiet upgrades over flashy purchases</li></ul>
-      <p class="prose">They often ask themselves: “Do I actually need this?” before spending.</p>
-</section>
+      <p class="prose">They often ask themselves: “Do I actually need this?” before spending.</p></div>
+  </section>
 
-<section class="section" id="investing-style">
-  <h2>Investing Style</h2>
-  <p class="prose">Steady Guardian prefers:</p>
+  <section class="paper-section" id="investing-style">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 5</div>
+    <h2 class="ps-title">Investing Style</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian prefers:</p>
       <ul class="b-list"><li>stability</li><li>predictability</li><li>gradual growth</li></ul>
       <p class="prose">They are commonly drawn toward:</p>
       <ul class="b-list"><li>index funds</li><li>dividend investing</li><li>retirement accounts</li><li>blue-chip stocks</li><li>conservative portfolios</li></ul>
       <p class="prose">They usually avoid:</p>
       <ul class="b-list"><li>speculative hype</li><li>excessive leverage</li><li>emotionally reactive investing</li></ul>
-      <p class="prose">Their approach is: “Protect downside first, grow steadily second.” However, they may sometimes become too risk-averse and miss larger wealth-building opportunities.</p>
-</section>
+      <p class="prose">Their approach is: “Protect downside first, grow steadily second.” However, they may sometimes become too risk-averse and miss larger wealth-building opportunities.</p></div>
+  </section>
 
-<section class="section" id="relationship-with-money">
-  <h2>Relationship With Money</h2>
-  <p class="prose">To Steady Guardian, money represents:</p>
+  <section class="paper-section" id="relationship-with-money">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 6</div>
+    <h2 class="ps-title">Relationship With Money</h2>
+    <div class="ps-body"><p class="prose">To Steady Guardian, money represents:</p>
       <ul class="b-list"><li>safety</li><li>peace</li><li>preparedness</li><li>independence from financial stress</li></ul>
       <p class="prose">Money is not primarily emotional status. It is:</p>
       <ul class="b-list"><li>protection</li><li>stability</li><li>relief from uncertainty</li></ul>
       <p class="prose">They often associate financial responsibility with:</p>
       <ul class="b-list"><li>maturity</li><li>self-control</li><li>personal dignity</li></ul>
       <p class="prose">Their deepest satisfaction usually comes from:</p>
-      <ul class="b-list"><li>knowing bills are covered</li><li>having savings</li><li>feeling financially secure</li></ul>
-</section>
+      <ul class="b-list"><li>knowing bills are covered</li><li>having savings</li><li>feeling financially secure</li></ul></div>
+  </section>
 
-<section class="section" id="career-behavior">
-  <h2>Career Behavior</h2>
-  <p class="prose">Steady Guardian tends to prefer:</p>
+  <section class="paper-section" id="career-behavior">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 7</div>
+    <h2 class="ps-title">Career Behavior</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian tends to prefer:</p>
       <ul class="b-list"><li>stability</li><li>sustainable growth</li><li>dependable income paths</li></ul>
       <p class="prose">They often excel in environments requiring:</p>
       <ul class="b-list"><li>consistency</li><li>reliability</li><li>patience</li><li>long-term trust</li></ul>
@@ -206,12 +627,14 @@ hr.divider {
       <p class="prose">They are less attracted to:</p>
       <ul class="b-list"><li>high-risk career swings</li><li>extreme entrepreneurship</li><li>chaotic work cultures</li></ul>
       <p class="prose">At work, they value:</p>
-      <ul class="b-list"><li>security</li><li>predictability</li><li>respectful leadership</li><li>sustainable progression</li></ul>
-</section>
+      <ul class="b-list"><li>security</li><li>predictability</li><li>respectful leadership</li><li>sustainable progression</li></ul></div>
+  </section>
 
-<section class="section" id="emotional-triggers">
-  <h2>Emotional Triggers</h2>
-  <p class="prose">Steady Guardian becomes emotionally triggered by:</p>
+  <section class="paper-section" id="emotional-triggers">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 8</div>
+    <h2 class="ps-title">Emotional Triggers</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian becomes emotionally triggered by:</p>
       <h3 class="sub-h">Financial Instability</h3>
       <ul class="b-list"><li>sudden emergencies</li><li>unstable income</li><li>debt pressure</li><li>economic uncertainty</li></ul>
       <h3 class="sub-h">Wastefulness</h3>
@@ -221,12 +644,14 @@ hr.divider {
       <p class="prose">Having insufficient savings or safety buffers creates significant internal stress.</p>
       <h3 class="sub-h">Loss of Security</h3>
       <p class="prose">Anything threatening stability can trigger anxiety:</p>
-      <ul class="b-list"><li>layoffs</li><li>medical emergencies</li><li>market crashes</li><li>unexpected obligations</li></ul>
-</section>
+      <ul class="b-list"><li>layoffs</li><li>medical emergencies</li><li>market crashes</li><li>unexpected obligations</li></ul></div>
+  </section>
 
-<section class="section" id="common-mistakes">
-  <h2>Common Mistakes</h2>
-  <h3 class="sub-h">1. Saving Without Living</h3>
+  <section class="paper-section" id="common-mistakes">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 9</div>
+    <h2 class="ps-title">Common Mistakes</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Saving Without Living</h3>
       <p class="prose">Some Steady Guardians become so focused on preparing for the future that they forget to enjoy the present.</p>
       <h3 class="sub-h">2. Under-Investing</h3>
       <p class="prose">They may stay overly defensive:</p>
@@ -237,68 +662,110 @@ hr.divider {
       <p class="prose">Sometimes they choose safety over potential growth repeatedly. This protects them —​ but can also limit them.</p>
       <h3 class="sub-h">5. Staying Invisible</h3>
       <p class="prose">They may:</p>
-      <ul class="b-list"><li>avoid negotiating</li><li>avoid taking credit</li><li>avoid stepping into larger opportunities</li></ul>
-</section>
+      <ul class="b-list"><li>avoid negotiating</li><li>avoid taking credit</li><li>avoid stepping into larger opportunities</li></ul></div>
+  </section>
 
-<section class="section" id="growth-path">
-  <h2>Growth Path</h2>
-  <p class="prose">Steady Guardian evolves when they realize:</p>
+  <section class="paper-section" id="growth-path">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 10</div>
+    <h2 class="ps-title">Growth Path</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian evolves when they realize:</p>
       <p class="prose">security and expansion can coexist. Their next stage of growth is learning:</p>
       <ul class="b-list"><li>calculated risk</li><li>self-worth</li><li>confident financial growth</li></ul>
       <p class="prose">They do not need to abandon caution. They simply need to understand: protecting your future should not prevent you from building a bigger one. Healthy Steady Guardians eventually learn:</p>
-      <ul class="b-list"><li>how to spend intentionally without guilt</li><li>invest more confidently</li><li>pursue opportunities without feeling unsafe</li></ul>
-</section>
+      <ul class="b-list"><li>how to spend intentionally without guilt</li><li>invest more confidently</li><li>pursue opportunities without feeling unsafe</li></ul></div>
+  </section>
 
-<section class="section" id="ideal-partner">
-  <h2>Ideal Partner</h2>
-  <p class="prose">Steady Guardian thrives with partners who are:</p>
+  <section class="paper-section" id="ideal-partner">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 11</div>
+    <h2 class="ps-title">Ideal Partner</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian thrives with partners who are:</p>
       <ul class="b-list"><li>emotionally grounded</li><li>financially responsible</li><li>low-drama</li><li>trustworthy</li></ul>
       <p class="prose">They value:</p>
       <ul class="b-list"><li>consistency</li><li>honesty</li><li>shared financial values</li></ul>
       <p class="prose">They struggle most with partners who are:</p>
       <ul class="b-list"><li>impulsive</li><li>financially reckless</li><li>highly status-driven</li><li>emotionally unstable with money</li></ul>
       <p class="prose">Their ideal relationship feels:</p>
-      <ul class="b-list"><li>calm</li><li>secure</li><li>sustainable</li></ul>
-</section>
+      <ul class="b-list"><li>calm</li><li>secure</li><li>sustainable</li></ul></div>
+  </section>
 
-<section class="section" id="stress-behavior">
-  <h2>Stress Behavior</h2>
-  <p class="prose">Under stress, Steady Guardian tends to:</p>
+  <section class="paper-section" id="stress-behavior">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 12</div>
+    <h2 class="ps-title">Stress Behavior</h2>
+    <div class="ps-body"><p class="prose">Under stress, Steady Guardian tends to:</p>
       <ul class="b-list"><li>tighten spending</li><li>retreat emotionally</li><li>over-save</li><li>reduce risk exposure aggressively</li></ul>
       <p class="prose">They may:</p>
       <ul class="b-list"><li>obsess over financial buffers</li><li>cancel non-essential spending</li><li>become extremely cautious</li></ul>
-      <p class="prose">Their stress response is usually: “I need to protect what I have.”</p>
-</section>
+      <p class="prose">Their stress response is usually: “I need to protect what I have.”</p></div>
+  </section>
 
-<section class="section" id="financial-fear">
-  <h2>Financial Fear</h2>
-  <p class="prose">Steady Guardian’s deepest fear is:</p>
+  <section class="paper-section" id="financial-fear">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 13</div>
+    <h2 class="ps-title">Financial Fear</h2>
+    <div class="ps-body"><p class="prose">Steady Guardian’s deepest fear is:</p>
       <p class="prose">losing stability after years of discipline. They fear:</p>
       <ul class="b-list"><li>financial emergencies</li><li>dependency</li><li>instability</li><li>losing control over their security</li></ul>
-      <p class="prose">More than becoming rich,​ they primarily want: to never feel financially unsafe again.</p>
-</section>
+      <p class="prose">More than becoming rich,​ they primarily want: to never feel financially unsafe again.</p></div>
+  </section>
 
-<section class="section" id="financial-superpower">
-  <h2>Financial Superpower</h2>
-  <h3 class="sub-h">Quiet Compounding</h3>
+  <section class="paper-section" id="financial-superpower">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 14</div>
+    <h2 class="ps-title">Financial Superpower</h2>
+    <div class="ps-body"><h3 class="sub-h">Quiet Compounding</h3>
       <p class="prose">Steady Guardian’s greatest strength is their ability to:</p>
       <ul class="b-list"><li>remain consistent</li><li>avoid destructive mistakes</li><li>steadily build wealth without needing attention or validation</li></ul>
       <p class="prose">They understand something many people don’t: wealth is often built silently long before it becomes visible. Their superpower is not aggressive growth. It is:</p>
       <p class="prose">disciplined stability sustained over long periods of time.</p>
-      <h3 class="sub-h">The Lifestyle Inflator</h3>
-</section>
+      <h3 class="sub-h">The Lifestyle Inflator</h3></div>
+  </section>
 
-<div class="foot-card">
-  <h3>Don&rsquo;t know your Monie ID yet?</h3>
-  <p>Take the 4-minute quiz to discover which of 11 archetypes you are.</p>
-  <a class="cta" href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  <!-- ─── FOOTER CTA ─── -->
+  <div class="foot-card">
+    <div class="foot-tag">your monie id file →</div>
+    <div class="foot-title">Want the full picture?</div>
+    <div class="foot-sub">See how the Steady Guardian works with the other 10 Monie IDs, or retake the quiz.</div>
+    <div class="btn-row">
+      <a class="btn btn-secondary" data-back-to-result href="../duRingIt-pilot-quiz.html">&larr; Back to my result</a>
+      <a class="btn btn-primary" href="../compatibility.html?a=SG">🔁 See your compatibility</a>
+    </div>
+  </div>
+
+  <!-- ─── PREV / NEXT NAV ─── -->
+  <nav class="nav-prev" aria-label="Browse">
+    <a href="./index.html">&larr; All archetypes</a>
+    <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  </nav>
+
 </div>
 
-<div class="nav-prev">
-  <a href="./index.html">&larr; All archetypes</a>
-  <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
-</div>
+<script>
+(function(){
+  function backToMyResult() {
+    try {
+      var code = document.body.getAttribute('data-archetype') || '';
+      if (!code) { window.location.href = '../duRingIt-pilot-quiz.html'; return; }
+      var NAMES_ALL = ['AB','FC','WA','ST','SS','LI','LR','SG','AX','EE','WN'];
+      var state = {
+        screen: 'result', name: '', scores: {}, scaleAns: {}, mainAns: [],
+        tbPair: null, tbQs: [], tbAns: [], flags: [], qi: 0, val: {}, loadingStep: 0,
+        result: code, bridge: null
+      };
+      NAMES_ALL.forEach(function(k){ state.scores[k] = 4.0; });
+      state.scores[code] = 9.0;
+      sessionStorage.setItem('_quizState', JSON.stringify(state));
+    } catch (e) {}
+    window.location.href = '../duRingIt-pilot-quiz.html';
+  }
+  // Wire up all back-to-result links/buttons
+  document.querySelectorAll('[data-back-to-result]').forEach(function(el){
+    el.addEventListener('click', function(ev){ ev.preventDefault(); backToMyResult(); });
+  });
+})();
+</script>
 
-</div>
 </body>
 </html>

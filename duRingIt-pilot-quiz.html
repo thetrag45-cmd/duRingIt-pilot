@@ -2277,6 +2277,13 @@ function rLoading() {
 var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
 var COMPAT_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/compatibility.html";
 
+/* ───────────────────────────────────────────────────────────
+   Personalised report link (Tally form, Typeform, Google Form, …)
+   Set TALLY_FORM_URL to your real URL to show the "Get my report"
+   CTA on result screens. Leave as "" to hide the block entirely.
+   ─────────────────────────────────────────────────────────── */
+var TALLY_FORM_URL = "";
+
 var BEGA = {};
 (function(){
   var m = { Builders:["AB","FC","WA","ST"], Experiencers:["SS","LI","LR"], Guardians:["SG","AX"], Avoiders:["EE","WN"] };
@@ -2400,11 +2407,11 @@ function rResult() {
       '<button class="btn-whatsapp" onclick="shareWhatsApp(\'' + code + '\')">💬 Challenge a friend on WhatsApp</button>' +
       '<button class="btn-blog" onclick="navigateAway(\'' + COMPAT_URL + '?a=' + code + '\')">🔁 See your compatibility with other types →</button>' +
 
-      '<div class="btn-tally-wrap">' +
+      (TALLY_FORM_URL ? '<div class="btn-tally-wrap">' +
         '<div class="btn-tally-title">Want your personalised money report?</div>' +
         '<div class="btn-tally-sub">Get a deeper breakdown of your ' + escHtml(a.name) + ' profile delivered to your inbox.</div>' +
-        '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>' +
-      '</div>' +
+        '<a class="btn-tally" href="' + escHtml(TALLY_FORM_URL) + '" target="_blank" rel="noopener">Get my report →</a>' +
+      '</div>' : '') +
 
       '<div class="scores-card">' +
         '<div class="sec-label" style="margin-bottom:14px">All 11 scores</div>' +
@@ -2467,11 +2474,11 @@ function rBridge() {
       '</div>' +
       '<button class="btn-whatsapp" onclick="shareWhatsApp(null,[\'' + a + '\',\'' + b + '\'])">💬 Challenge a friend on WhatsApp</button>' +
       '<button class="btn-blog" onclick="navigateAway(\'' + COMPAT_URL + '?a=' + a + '&b=' + b + '\')">🔁 See your compatibility →</button>' +
-      '<div class="btn-tally-wrap">' +
+      (TALLY_FORM_URL ? '<div class="btn-tally-wrap">' +
         '<div class="btn-tally-title">Want your personalised money report?</div>' +
         '<div class="btn-tally-sub">Get a deeper breakdown of your Bridge identity delivered to your inbox.</div>' +
-        '<a class="btn-tally" href="TALLY_FORM_URL" target="_blank" data-tally-open="TALLY_FORM_ID">Get my report →</a>' +
-      '</div>' +
+        '<a class="btn-tally" href="' + escHtml(TALLY_FORM_URL) + '" target="_blank" rel="noopener">Get my report →</a>' +
+      '</div>' : '') +
       '<div class="scores-card">' +
         '<div class="sec-label" style="margin-bottom:14px">All 11 scores</div>' +
         sorted.map(function(e) {

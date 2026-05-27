@@ -2,108 +2,517 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Status Strategist &mdash; duRingIt Monie ID</title>
-<meta name="description" content="Status Strategist &mdash; one of 11 Monie ID financial archetypes. Perception opens doors before reality catches up.">
-<meta property="og:title" content="Status Strategist &mdash; duRingIt Monie ID">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Status Strategist — duRingIt Monie ID</title>
+<meta name="description" content="Status Strategist — one of 11 Monie ID financial archetypes. Perception opens doors before reality catches up.">
+<meta property="og:title" content="Status Strategist — duRingIt Monie ID">
 <meta property="og:description" content="Perception opens doors before reality catches up.">
 <meta property="og:type" content="article">
+<meta property="og:image" content="../cards/SS.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── TOKENS (shared Monie ID Intake system) ─── */
+:root {
+  --bg-cream:    #FFF7EA;
+  --paper:       #FFF2D9;
+  --paper-light: #FFFBF3;
+  --paper-warm:  #FAE7C5;
+  --ink:         #2A170D;
+  --ink-soft:    #4A2E1A;
+  --brown:       #6B3F22;
+  --brown-soft:  #8A5A33;
+  --caramel:     #A66A2E;
+  --honey:       #F6B638;
+  --honey-light: #FFD56A;
+  --honey-deep:  #D89724;
+  --sage:        #7F8F5A;
+  --sage-light:  #E6EBD3;
+  --sage-deep:   #5E6E3E;
+  --border:      #D8B982;
+  --border-soft: #E8D4A4;
+  --tan:         #C9A36A;
+  --shadow:      rgba(91, 55, 20, 0.16);
+  --shadow-soft: rgba(91, 55, 20, 0.08);
+  --tape:        #F1E2BD;
+
+  --fam-bg:  #F8D7C2;
+  --fam-bd:  #E8B58E;
+  --fam-ink: #8C4626;
+
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-card: 0 2px 0 var(--border-soft), 0 8px 18px -6px var(--shadow);
+  --shadow-paper: 0 1px 0 #fff inset, 0 2px 0 var(--border-soft), 0 14px 24px -10px var(--shadow);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: #E8D8B8; }
 body {
-  background: #0D0D0D; color: #E8E8E8;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.6;
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink); line-height: 1.6; font-size: 16px;
+  background: radial-gradient(circle at 20% 10%, #F0E0BE 0%, #E8D8B8 60%, #DCC89A 100%);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
-.wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
-.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 32px; }
-.brand span { color: #F5C842; }
-.brand a { color: inherit; text-decoration: none; }
-.fam { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
-h1 {
-  font-size: 44px; font-weight: 900; line-height: 1.05;
-  margin-bottom: 14px; letter-spacing: -0.02em;
+
+/* paper sheet container — wider than phone, single-column long-form */
+.sheet {
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background:
+    repeating-linear-gradient(0deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    radial-gradient(120% 80% at 50% 0%, #FFF9EC 0%, var(--bg-cream) 60%, #F8EAD0 100%);
+  padding: 28px 22px 80px;
+  position: relative;
 }
-.tagline {
-  font-size: 19px; font-style: italic; color: #F5C842;
-  border-left: 3px solid #F5C842; padding: 4px 0 4px 16px;
-  margin-bottom: 40px; line-height: 1.5;
+@media (min-width: 820px) {
+  body { padding: 28px 16px; }
+  .sheet {
+    margin: 0 auto;
+    min-height: calc(100vh - 56px);
+    border-radius: 26px;
+    box-shadow:
+      0 2px 0 var(--border-soft),
+      0 30px 60px -20px rgba(0,0,0,0.25),
+      0 50px 100px -30px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
 }
-.section {
-  margin-bottom: 44px;
+
+/* ─── BRAND PILL + BACK ─── */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; position: relative; z-index: 2; }
+.back-arrow {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brown); font-size: 18px; font-weight: 800;
+  text-decoration: none; box-shadow: var(--shadow-card);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  transition: transform 0.12s;
 }
-.section h2 {
-  font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: #F5C842; margin-bottom: 16px; font-weight: 700;
-  padding-bottom: 8px; border-bottom: 1px solid #2A2A2A;
+.back-arrow:hover { transform: translateY(-2px); }
+.brand-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
 }
-.sub-h {
-  font-size: 17px; font-weight: 700; color: #FFFFFF;
-  margin-top: 22px; margin-bottom: 8px;
+.brand-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown); flex: 0 0 auto; }
+.brand-pill .brand-name { white-space: nowrap; }
+.brand-pill .ring { color: var(--honey-deep); font-weight: 700; }
+.share-coin {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--shadow-card);
+  font-size: 16px; color: var(--brown);
+  font-family: inherit;
 }
-.prose {
-  font-size: 16px; color: #C8C8C8; margin-bottom: 14px; line-height: 1.7;
+
+/* ─── HERO ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  margin: 12px 0 28px;
+  align-items: start;
+  position: relative;
+  z-index: 2;
 }
-.b-list {
-  list-style: none; padding: 0; margin: 0 0 16px 0;
+.card-slot {
+  position: relative;
+  aspect-ratio: 948 / 1659;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-paper);
 }
-.b-list li {
-  font-size: 15px; color: #B0B0B0; line-height: 1.6;
-  padding: 6px 0 6px 22px; position: relative;
+.card-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-ph {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(168,130,72,0.06) 0 2px, transparent 2px 14px),
+    radial-gradient(circle at 30% 20%, #FFF6DC 0%, var(--paper-warm) 50%, #E8C879 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 18px; text-align: center;
 }
-.b-list li::before {
-  content: "—"; position: absolute; left: 0; color: #F5C842;
+.card-ph .code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 60px; font-weight: 800; color: var(--ink); line-height: 1;
+  text-shadow: 2px 2px 0 #FFE7A4;
 }
-.pull-q {
-  font-size: 18px; font-style: italic; color: #D4AA40;
-  background: #161616; border-left: 3px solid #F5C842;
-  padding: 14px 18px; border-radius: 0 10px 10px 0;
-  margin: 18px 0;
+.card-ph .ph-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 18px; line-height: 1.1;
+  color: var(--ink); margin-top: 8px;
 }
-hr.divider {
-  border: 0; border-top: 1px solid #2A2A2A; margin: 28px 0;
+
+.hero-meta { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+.fam-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--fam-bg);
+  border: 1.5px solid var(--fam-bd);
+  color: var(--fam-ink);
+  padding: 5px 14px; border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  align-self: flex-start;
 }
-.foot-card {
-  background: #1A1A1A; border: 1px solid #2A2A2A; border-radius: 14px;
-  padding: 24px; margin-top: 48px; text-align: center;
+.hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 48px;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--ink); text-wrap: balance;
 }
-.foot-card h3 {
-  font-size: 22px; font-weight: 800; margin-bottom: 8px; color: #FFF;
+.hero-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--brown);
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  padding: 4px 12px; border-radius: 6px;
+  align-self: flex-start;
 }
-.foot-card p { color: #888; font-size: 14px; margin-bottom: 16px; }
-.cta {
-  display: inline-block;
-  background: #F5C842; color: #000; text-decoration: none;
-  padding: 14px 24px; border-radius: 10px;
-  font-weight: 700; font-size: 15px;
-  transition: background 0.12s;
+.hero-quote {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--caramel);
+  line-height: 1.4;
+  padding: 14px 16px 14px 22px;
+  background: var(--paper-light);
+  border-left: 4px solid var(--honey);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+  margin-top: 2px;
+  text-wrap: pretty;
 }
-.cta:hover { background: #FFD700; }
-.nav-prev {
-  display: flex; justify-content: space-between; gap: 12px; margin-top: 24px;
+.hero-quote::before {
+  content: '\201C';
+  position: absolute;
+  left: 4px; top: 0;
+  color: var(--honey-deep);
+  font-size: 38px;
+  line-height: 1;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .hero { grid-template-columns: 1fr; gap: 18px; }
+  .card-slot { max-width: 220px; margin: 0 auto; width: 100%; }
+  .hero-title { font-size: 36px; text-align: center; }
+  .fam-pill, .hero-code { align-self: center; }
+}
+
+/* ─── TABLE OF CONTENTS ─── */
+.toc {
+  background: var(--paper-light);
+  border: 1.5px dashed var(--tan);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 28px;
+  position: relative; z-index: 2;
+}
+.toc-label {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--brown-soft); margin-bottom: 8px;
+}
+.toc ul {
+  list-style: none; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 4px 14px;
+}
+.toc li {
   font-size: 13px;
+  padding: 4px 0;
+  position: relative;
 }
-.nav-prev a { color: #666; text-decoration: none; padding: 8px 12px; border: 1px solid #2A2A2A; border-radius: 8px; }
-.nav-prev a:hover { color: #F5C842; border-color: #F5C842; }
-@media (max-width: 520px) {
-  h1 { font-size: 34px; }
-  .tagline { font-size: 17px; }
-  .wrap { padding: 20px 16px 60px; }
+.toc a {
+  color: var(--brown);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--tan);
+  padding-bottom: 1px;
+  transition: color 0.12s, border-color 0.12s;
+}
+.toc a:hover { color: var(--honey-deep); border-color: var(--honey-deep); }
+
+/* ─── PAPER SECTIONS ─── */
+.paper-section {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 26px 22px 22px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-card);
+  background-image:
+    radial-gradient(circle at 14% 10%, rgba(168,130,72,0.04) 0 1px, transparent 1px),
+    radial-gradient(circle at 78% 70%, rgba(168,130,72,0.05) 0 1px, transparent 1px);
+  background-size: 12px 12px, 16px 16px;
+  z-index: 2;
+}
+.paper-section::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, transparent 50%, var(--border-soft) 50%, var(--border-soft) 56%, var(--paper-warm) 56%);
+  border-bottom-right-radius: var(--radius-lg);
+}
+.tape {
+  position: absolute;
+  top: -10px; left: 24px;
+  width: 64px; height: 20px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+  opacity: 0.95;
+}
+.tape--right { left: auto; right: 24px; transform: rotate(3deg); }
+
+.ps-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--honey-deep); margin-bottom: 6px;
+}
+.ps-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 26px; font-weight: 800;
+  line-height: 1.05; letter-spacing: -0.015em;
+  color: var(--ink); margin-bottom: 14px;
+  text-wrap: balance;
+}
+
+/* Preserve original content classes — restyle to paper aesthetic */
+.ps-body .sub-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--brown); margin-top: 18px; margin-bottom: 6px;
+  letter-spacing: -0.005em;
+}
+.ps-body .prose {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  line-height: 1.65;
+}
+.ps-body .b-list {
+  list-style: none; padding: 0; margin: 4px 0 14px;
+}
+.ps-body .b-list li {
+  position: relative;
+  padding: 5px 0 5px 22px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.ps-body .b-list li::before {
+  content: "";
+  position: absolute;
+  left: 8px; top: 13px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--honey);
+  border: 1.5px solid var(--honey-deep);
+}
+.ps-body .pull-q {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--caramel);
+  background: #FFF6DC;
+  border: 1.5px solid var(--honey-deep);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin: 14px 0;
+  line-height: 1.5;
+}
+
+/* ─── FOOTER CTAs ─── */
+.foot-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  margin: 28px 0 14px;
+  text-align: center;
+  box-shadow: var(--shadow-paper);
+  position: relative; z-index: 2;
+}
+.foot-tag {
+  display: inline-block;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--sage-deep);
+  margin-bottom: 4px;
+  transform: rotate(-1deg);
+}
+.foot-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--ink); margin-bottom: 6px;
+}
+.foot-sub {
+  font-size: 14px;
+  color: var(--brown-soft);
+  margin-bottom: 16px;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  position: relative; z-index: 2;
+}
+.btn-row.single { grid-template-columns: 1fr; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px; font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 999px;
+  cursor: pointer; text-decoration: none;
+  border: 2px solid;
+  transition: transform 0.12s, box-shadow 0.12s;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  border-color: var(--honey-deep);
+  box-shadow: 0 3px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--honey-deep), 0 14px 22px -6px var(--shadow); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--honey-deep); }
+
+.btn-secondary {
+  background: var(--paper-light);
+  color: var(--brown);
+  border-color: var(--tan);
+  border-style: dashed;
+  box-shadow: var(--shadow-card);
+}
+.btn-secondary:hover { border-color: var(--brown); color: var(--ink); }
+
+.nav-prev {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-top: 24px; font-size: 13px;
+  position: relative; z-index: 2;
+}
+.nav-prev a {
+  color: var(--brown);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px dashed var(--tan);
+  border-radius: 8px;
+  background: var(--paper-light);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+}
+.nav-prev a:hover { color: var(--ink); border-color: var(--brown); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 30px; }
+  .ps-title { font-size: 22px; }
+  .sheet { padding: 22px 16px 60px; }
+  .btn-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
-<body>
-<div class="wrap">
+<body data-archetype="SS">
 
-<div class="brand"><a href="../duRingIt-pilot-quiz.html">du<span>Ring</span>It &mdash; Monie ID</a></div>
+<div class="sheet">
 
-<div class="fam">Experiencers</div>
-<h1>Status Strategist</h1>
-<div class="tagline">&ldquo;Perception opens doors before reality catches up.&rdquo;</div>
+  <!-- ─── TOPBAR ─── -->
+  <div class="topbar">
+    <a class="back-arrow" data-back-to-result href="../duRingIt-pilot-quiz.html" aria-label="Back to my result">&larr;</a>
+    <a class="brand-pill" href="../duRingIt-pilot-quiz.html">
+      <span class="brand-name">du<span class="ring">Ring</span>It</span>
+      <span class="dot"></span>
+      <span>Monie ID Profile</span>
+    </a>
+    <button class="share-coin" onclick="navigator.share ? navigator.share({title: document.title, url: location.href}) : (navigator.clipboard && navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!')))" aria-label="Share">⇪</button>
+  </div>
 
-<section class="section" id="archetype-overview">
-  <h2>Archetype Overview</h2>
-  <p class="prose">The Status Strategist views money as a tool for positioning, influence, and social leverage. To them, financial success is not only about survival or security —​ it is also about:</p>
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div class="card-slot">
+      <img src="../cards/SS.jpg" alt="Status Strategist BEGA card" onerror="this.style.display='none';this.parentNode.querySelector('.card-ph').style.display='flex';">
+      <div class="card-ph" style="display:none;">
+        <div class="code">SS</div>
+        <div class="ph-name">Status Strategist</div>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span class="fam-pill">Experiencers</span>
+      <h1 class="hero-title">Status Strategist</h1>
+      <span class="hero-code">EXP-SS</span>
+      <div class="hero-quote">Perception opens doors before reality catches up.</div>
+    </div>
+  </header>
+
+  <!-- ─── TABLE OF CONTENTS ─── -->
+  <nav class="toc" aria-label="On this page">
+    <div class="toc-label">In this file</div>
+    <ul>
+      <li><a href="#archetype-overview">Archetype Overview</a></li>
+      <li><a href="#core-strengths">Core Strengths</a></li>
+      <li><a href="#core-weaknesses">Core Weaknesses</a></li>
+      <li><a href="#spending-habits">Spending Habits</a></li>
+      <li><a href="#investing-style">Investing Style</a></li>
+      <li><a href="#relationship-with-money">Relationship With Money</a></li>
+      <li><a href="#career-behavior">Career Behavior</a></li>
+      <li><a href="#emotional-triggers">Emotional Triggers</a></li>
+      <li><a href="#common-mistakes">Common Mistakes</a></li>
+      <li><a href="#growth-path">Growth Path</a></li>
+      <li><a href="#ideal-partner">Ideal Partner</a></li>
+      <li><a href="#stress-behavior">Stress Behavior</a></li>
+      <li><a href="#financial-fear">Financial Fear</a></li>
+      <li><a href="#financial-superpower">Financial Superpower</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── BODY SECTIONS ─── -->
+
+  <section class="paper-section" id="archetype-overview">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 1</div>
+    <h2 class="ps-title">Archetype Overview</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist views money as a tool for positioning, influence, and social leverage. To them, financial success is not only about survival or security —​ it is also about:</p>
       <ul class="b-list"><li>reputation</li><li>presentation</li><li>network</li><li>access</li><li>perceived competence</li></ul>
       <p class="prose">Unlike the Lifestyle Inflator, who spends mainly for enjoyment and emotional reward, the Status Strategist spends more intentionally around:</p>
       <ul class="b-list"><li>image</li><li>signaling</li><li>identity construction</li></ul>
@@ -115,12 +524,14 @@ hr.divider {
       <ul class="b-list"><li>entrepreneurs</li><li>creators</li><li>consultants</li><li>executives</li><li>luxury sales professionals</li><li>finance professionals</li><li>socially ambitious individuals</li></ul>
       <p class="prose">To outsiders, they may appear:</p>
       <ul class="b-list"><li>materialistic</li><li>performative</li><li>overly image-conscious</li></ul>
-      <p class="prose">But internally, many Status Strategists genuinely believe: “How people perceive you changes your opportunities.” And to be fair —​ they are often right.</p>
-</section>
+      <p class="prose">But internally, many Status Strategists genuinely believe: “How people perceive you changes your opportunities.” And to be fair —​ they are often right.</p></div>
+  </section>
 
-<section class="section" id="core-strengths">
-  <h2>Core Strengths</h2>
-  <h3 class="sub-h">1. High Social Intelligence</h3>
+  <section class="paper-section" id="core-strengths">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 2</div>
+    <h2 class="ps-title">Core Strengths</h2>
+    <div class="ps-body"><h3 class="sub-h">1. High Social Intelligence</h3>
       <p class="prose">Status Strategists understand:</p>
       <ul class="b-list"><li>presentation</li><li>optics</li><li>social dynamics</li><li>professional positioning extremely well</li></ul>
       <p class="prose">They know:</p>
@@ -142,12 +553,14 @@ hr.divider {
       <h3 class="sub-h">5. Strong Taste &amp; Environmental Awareness</h3>
       <p class="prose">Status Strategists are highly aware of:</p>
       <ul class="b-list"><li>aesthetics</li><li>quality</li><li>social context</li><li>cultural perception</li></ul>
-      <p class="prose">They often understand: environments influence outcomes.</p>
-</section>
+      <p class="prose">They often understand: environments influence outcomes.</p></div>
+  </section>
 
-<section class="section" id="core-weaknesses">
-  <h2>Core Weaknesses</h2>
-  <h3 class="sub-h">1. Identity Tied To External Validation</h3>
+  <section class="paper-section" id="core-weaknesses">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 3</div>
+    <h2 class="ps-title">Core Weaknesses</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Identity Tied To External Validation</h3>
       <p class="prose">The biggest weakness of the Status Strategist is that:</p>
       <ul class="b-list"><li>image</li><li>success</li><li>self-worth</li></ul>
       <p class="prose">can become dangerously interconnected. They may subconsciously rely on external recognition to feel valuable.</p>
@@ -168,21 +581,25 @@ hr.divider {
       <h3 class="sub-h">5. Difficulty Being Vulnerable</h3>
       <p class="prose">They may avoid:</p>
       <ul class="b-list"><li>appearing weak</li><li>looking unsuccessful</li><li>showing uncertainty</li></ul>
-      <p class="prose">This can create emotional isolation.</p>
-</section>
+      <p class="prose">This can create emotional isolation.</p></div>
+  </section>
 
-<section class="section" id="spending-habits">
-  <h2>Spending Habits</h2>
-  <p class="prose">The Status Strategist spends strategically. Their purchases are rarely random. They spend heavily on:</p>
+  <section class="paper-section" id="spending-habits">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 4</div>
+    <h2 class="ps-title">Spending Habits</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist spends strategically. Their purchases are rarely random. They spend heavily on:</p>
       <ul class="b-list"><li>appearance</li><li>premium environments</li><li>luxury signaling</li><li>hospitality</li><li>networking</li><li>social positioning</li></ul>
       <p class="prose">Typical spending categories:</p>
       <ul class="b-list"><li>watches</li><li>fashion</li><li>dining</li><li>business-class experiences</li><li>aesthetic workspaces</li><li>upscale cafés</li><li>luxury fitness</li><li>premium memberships</li><li>curated lifestyle experiences</li></ul>
-      <p class="prose">Their internal logic is: “Certain environments create better opportunities.” And often:​ they genuinely believe the spending is an investment.</p>
-</section>
+      <p class="prose">Their internal logic is: “Certain environments create better opportunities.” And often:​ they genuinely believe the spending is an investment.</p></div>
+  </section>
 
-<section class="section" id="investing-style">
-  <h2>Investing Style</h2>
-  <p class="prose">The Status Strategist prefers investments that:</p>
+  <section class="paper-section" id="investing-style">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 5</div>
+    <h2 class="ps-title">Investing Style</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist prefers investments that:</p>
       <ul class="b-list"><li>increase leverage</li><li>increase prestige</li><li>align with high-status narratives</li></ul>
       <p class="prose">They are often drawn toward:</p>
       <ul class="b-list"><li>growth investing</li><li>business ownership</li><li>premium assets</li><li>real estate</li><li>private deals</li><li>investments associated with sophistication</li></ul>
@@ -190,34 +607,40 @@ hr.divider {
       <ul class="b-list"><li>the appearance of investing</li></ul>
       <p class="prose">rather than disciplined fundamentals. They may also pursue:</p>
       <ul class="b-list"><li>high-risk opportunities</li></ul>
-      <p class="prose">if those opportunities are associated with elite positioning.</p>
-</section>
+      <p class="prose">if those opportunities are associated with elite positioning.</p></div>
+  </section>
 
-<section class="section" id="relationship-with-money">
-  <h2>Relationship With Money</h2>
-  <p class="prose">To the Status Strategist, money represents:</p>
+  <section class="paper-section" id="relationship-with-money">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 6</div>
+    <h2 class="ps-title">Relationship With Money</h2>
+    <div class="ps-body"><p class="prose">To the Status Strategist, money represents:</p>
       <ul class="b-list"><li>influence</li><li>access</li><li>positioning</li><li>social mobility</li></ul>
       <p class="prose">Money is deeply connected to:</p>
       <ul class="b-list"><li>identity</li><li>perception</li><li>personal worth</li></ul>
       <p class="prose">They often believe: “Your financial presentation shapes how seriously the world takes you.” Unlike the Steady Guardian, who values quiet stability,​ the Status Strategist values:</p>
-      <ul class="b-list"><li>visibility</li><li>positioning</li><li>symbolic success</li></ul>
-</section>
+      <ul class="b-list"><li>visibility</li><li>positioning</li><li>symbolic success</li></ul></div>
+  </section>
 
-<section class="section" id="career-behavior">
-  <h2>Career Behavior</h2>
-  <p class="prose">The Status Strategist is often highly career-oriented. They thrive in environments involving:</p>
+  <section class="paper-section" id="career-behavior">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 7</div>
+    <h2 class="ps-title">Career Behavior</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist is often highly career-oriented. They thrive in environments involving:</p>
       <ul class="b-list"><li>prestige</li><li>influence</li><li>visibility</li><li>competition</li></ul>
       <p class="prose">Typical tendencies:</p>
       <ul class="b-list"><li>networking aggressively</li><li>optimizing LinkedIn/profile presence</li><li>building personal brands</li><li>pursuing elite institutions</li></ul>
       <ul class="b-list"><li>entering high-status industries</li></ul>
       <p class="prose">Common fields:</p>
       <ul class="b-list"><li>consulting</li><li>finance</li><li>entrepreneurship</li><li>luxury sales</li><li>media</li><li>law</li><li>personal branding</li><li>executive leadership</li><li>high-end client work</li></ul>
-      <p class="prose">They usually understand: perception affects opportunity. better than most people.</p>
-</section>
+      <p class="prose">They usually understand: perception affects opportunity. better than most people.</p></div>
+  </section>
 
-<section class="section" id="emotional-triggers">
-  <h2>Emotional Triggers</h2>
-  <p class="prose">The Status Strategist becomes emotionally triggered by:</p>
+  <section class="paper-section" id="emotional-triggers">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 8</div>
+    <h2 class="ps-title">Emotional Triggers</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist becomes emotionally triggered by:</p>
       <h3 class="sub-h">Social Downgrading</h3>
       <p class="prose">Anything that threatens image or perceived success can feel emotionally destabilizing.</p>
       <h3 class="sub-h">Feeling Inferior</h3>
@@ -226,12 +649,14 @@ hr.divider {
       <h3 class="sub-h">Public Failure</h3>
       <p class="prose">Failure itself hurts —​ but visible failure hurts even more.</p>
       <h3 class="sub-h">Lack of Recognition</h3>
-      <p class="prose">Working hard without acknowledgment can create deep frustration.</p>
-</section>
+      <p class="prose">Working hard without acknowledgment can create deep frustration.</p></div>
+  </section>
 
-<section class="section" id="common-mistakes">
-  <h2>Common Mistakes</h2>
-  <h3 class="sub-h">1. Spending To Sustain Identity</h3>
+  <section class="paper-section" id="common-mistakes">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 9</div>
+    <h2 class="ps-title">Common Mistakes</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Spending To Sustain Identity</h3>
       <p class="prose">Some Status Strategists trap themselves in expensive lifestyles they cannot comfortably sustain.</p>
       <h3 class="sub-h">2. Optimizing Appearance Over Fundamentals</h3>
       <p class="prose">They may focus too heavily on:</p>
@@ -246,23 +671,27 @@ hr.divider {
       <ul class="b-list"><li>overleveraged</li><li>underinvested</li><li>financially stressed</li></ul>
       <h3 class="sub-h">5. Externalizing Self-Worth</h3>
       <p class="prose">Their emotional state may become too dependent on:</p>
-      <ul class="b-list"><li>validation</li><li>perception</li><li>visible success markers</li></ul>
-</section>
+      <ul class="b-list"><li>validation</li><li>perception</li><li>visible success markers</li></ul></div>
+  </section>
 
-<section class="section" id="growth-path">
-  <h2>Growth Path</h2>
-  <p class="prose">The Status Strategist evolves when they realize:</p>
+  <section class="paper-section" id="growth-path">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 10</div>
+    <h2 class="ps-title">Growth Path</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist evolves when they realize:</p>
       <p class="prose">true status comes from stability, not performance. Their next stage of growth is learning:</p>
       <ul class="b-list"><li>internal confidence</li><li>financial grounding</li><li>identity independent of external validation</li></ul>
       <p class="prose">They do NOT need to stop appreciating:</p>
       <ul class="b-list"><li>beauty</li><li>quality</li><li>ambition</li></ul>
       <p class="prose">Instead, they must learn: wealth should support identity — not replace it. Healthy Status Strategists eventually become:</p>
-      <ul class="b-list"><li>highly polished</li><li>highly capable</li><li>financially secure beneath the surface</li></ul>
-</section>
+      <ul class="b-list"><li>highly polished</li><li>highly capable</li><li>financially secure beneath the surface</li></ul></div>
+  </section>
 
-<section class="section" id="ideal-partner">
-  <h2>Ideal Partner</h2>
-  <p class="prose">The Status Strategist thrives with partners who:</p>
+  <section class="paper-section" id="ideal-partner">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 11</div>
+    <h2 class="ps-title">Ideal Partner</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist thrives with partners who:</p>
       <ul class="b-list"><li>are emotionally secure</li><li>socially intelligent</li><li>ambitious</li><li>financially grounded</li></ul>
       <p class="prose">They value:</p>
       <ul class="b-list"><li>presentation</li><li>chemistry</li><li>shared standards</li><li>mutual growth</li></ul>
@@ -271,48 +700,86 @@ hr.divider {
       <p class="prose">Their ideal partner helps them:</p>
       <ul class="b-list"><li>maintain ambition</li></ul>
       <p class="prose">while</p>
-      <ul class="b-list"><li>staying emotionally authentic</li></ul>
-</section>
+      <ul class="b-list"><li>staying emotionally authentic</li></ul></div>
+  </section>
 
-<section class="section" id="stress-behavior">
-  <h2>Stress Behavior</h2>
-  <p class="prose">Under stress, the Status Strategist may:</p>
+  <section class="paper-section" id="stress-behavior">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 12</div>
+    <h2 class="ps-title">Stress Behavior</h2>
+    <div class="ps-body"><p class="prose">Under stress, the Status Strategist may:</p>
       <ul class="b-list"><li>overwork</li><li>over-spend</li><li>become image-obsessed</li><li>seek validation through visible success</li></ul>
       <p class="prose">They may:</p>
       <ul class="b-list"><li>upgrade lifestyle impulsively</li><li>double down on appearances</li><li>avoid admitting financial pressure</li></ul>
-      <p class="prose">Their stress response is often: “I cannot afford to look like I’m losing.”</p>
-</section>
+      <p class="prose">Their stress response is often: “I cannot afford to look like I’m losing.”</p></div>
+  </section>
 
-<section class="section" id="financial-fear">
-  <h2>Financial Fear</h2>
-  <p class="prose">The Status Strategist’s deepest fear is:</p>
+  <section class="paper-section" id="financial-fear">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 13</div>
+    <h2 class="ps-title">Financial Fear</h2>
+    <div class="ps-body"><p class="prose">The Status Strategist’s deepest fear is:</p>
       <p class="prose">losing relevance, status, or perceived success. They fear:</p>
       <ul class="b-list"><li>social decline</li><li>public embarrassment</li><li>invisibility</li><li>being perceived as unsuccessful</li></ul>
-      <p class="prose">More than poverty itself,​ they fear: losing the identity they built around achievement and positioning.</p>
-</section>
+      <p class="prose">More than poverty itself,​ they fear: losing the identity they built around achievement and positioning.</p></div>
+  </section>
 
-<section class="section" id="financial-superpower">
-  <h2>Financial Superpower</h2>
-  <h3 class="sub-h">Social Leverage</h3>
+  <section class="paper-section" id="financial-superpower">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 14</div>
+    <h2 class="ps-title">Financial Superpower</h2>
+    <div class="ps-body"><h3 class="sub-h">Social Leverage</h3>
       <p class="prose">The Status Strategist’s greatest strength is their ability to:</p>
       <ul class="b-list"><li>turn perception into opportunity</li><li>build influence</li><li>strategically position themselves in environments that accelerate success</li></ul>
       <p class="prose">They understand something many people underestimate: money is not only financial — it is social.</p>
       <p class="prose">Their superpower is not quiet accumulation. It is:</p>
       <p class="prose">transforming image, positioning, and influence into upward mobility.</p>
-      <h3 class="sub-h">The Freedom Chaser</h3>
-</section>
+      <h3 class="sub-h">The Freedom Chaser</h3></div>
+  </section>
 
-<div class="foot-card">
-  <h3>Don&rsquo;t know your Monie ID yet?</h3>
-  <p>Take the 4-minute quiz to discover which of 11 archetypes you are.</p>
-  <a class="cta" href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  <!-- ─── FOOTER CTA ─── -->
+  <div class="foot-card">
+    <div class="foot-tag">your monie id file →</div>
+    <div class="foot-title">Want the full picture?</div>
+    <div class="foot-sub">See how the Status Strategist works with the other 10 Monie IDs, or retake the quiz.</div>
+    <div class="btn-row">
+      <a class="btn btn-secondary" data-back-to-result href="../duRingIt-pilot-quiz.html">&larr; Back to my result</a>
+      <a class="btn btn-primary" href="../compatibility.html?a=SS">🔁 See your compatibility</a>
+    </div>
+  </div>
+
+  <!-- ─── PREV / NEXT NAV ─── -->
+  <nav class="nav-prev" aria-label="Browse">
+    <a href="./index.html">&larr; All archetypes</a>
+    <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  </nav>
+
 </div>
 
-<div class="nav-prev">
-  <a href="./index.html">&larr; All archetypes</a>
-  <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
-</div>
+<script>
+(function(){
+  function backToMyResult() {
+    try {
+      var code = document.body.getAttribute('data-archetype') || '';
+      if (!code) { window.location.href = '../duRingIt-pilot-quiz.html'; return; }
+      var NAMES_ALL = ['AB','FC','WA','ST','SS','LI','LR','SG','AX','EE','WN'];
+      var state = {
+        screen: 'result', name: '', scores: {}, scaleAns: {}, mainAns: [],
+        tbPair: null, tbQs: [], tbAns: [], flags: [], qi: 0, val: {}, loadingStep: 0,
+        result: code, bridge: null
+      };
+      NAMES_ALL.forEach(function(k){ state.scores[k] = 4.0; });
+      state.scores[code] = 9.0;
+      sessionStorage.setItem('_quizState', JSON.stringify(state));
+    } catch (e) {}
+    window.location.href = '../duRingIt-pilot-quiz.html';
+  }
+  // Wire up all back-to-result links/buttons
+  document.querySelectorAll('[data-back-to-result]').forEach(function(el){
+    el.addEventListener('click', function(ev){ ev.preventDefault(); backToMyResult(); });
+  });
+})();
+</script>
 
-</div>
 </body>
 </html>

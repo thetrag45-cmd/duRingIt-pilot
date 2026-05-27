@@ -2,108 +2,517 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Optimizer &mdash; duRingIt Monie ID</title>
-<meta name="description" content="The Optimizer &mdash; one of 11 Monie ID financial archetypes. There’s probably a more efficient way to do this.">
-<meta property="og:title" content="The Optimizer &mdash; duRingIt Monie ID">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Optimizer — duRingIt Monie ID</title>
+<meta name="description" content="The Optimizer — one of 11 Monie ID financial archetypes. There’s probably a more efficient way to do this.">
+<meta property="og:title" content="The Optimizer — duRingIt Monie ID">
 <meta property="og:description" content="There’s probably a more efficient way to do this.">
 <meta property="og:type" content="article">
+<meta property="og:image" content="../cards/ST.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── TOKENS (shared Monie ID Intake system) ─── */
+:root {
+  --bg-cream:    #FFF7EA;
+  --paper:       #FFF2D9;
+  --paper-light: #FFFBF3;
+  --paper-warm:  #FAE7C5;
+  --ink:         #2A170D;
+  --ink-soft:    #4A2E1A;
+  --brown:       #6B3F22;
+  --brown-soft:  #8A5A33;
+  --caramel:     #A66A2E;
+  --honey:       #F6B638;
+  --honey-light: #FFD56A;
+  --honey-deep:  #D89724;
+  --sage:        #7F8F5A;
+  --sage-light:  #E6EBD3;
+  --sage-deep:   #5E6E3E;
+  --border:      #D8B982;
+  --border-soft: #E8D4A4;
+  --tan:         #C9A36A;
+  --shadow:      rgba(91, 55, 20, 0.16);
+  --shadow-soft: rgba(91, 55, 20, 0.08);
+  --tape:        #F1E2BD;
+
+  --fam-bg:  #F6E2C2;
+  --fam-bd:  #E2BE7B;
+  --fam-ink: #7A4B1C;
+
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-card: 0 2px 0 var(--border-soft), 0 8px 18px -6px var(--shadow);
+  --shadow-paper: 0 1px 0 #fff inset, 0 2px 0 var(--border-soft), 0 14px 24px -10px var(--shadow);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: #E8D8B8; }
 body {
-  background: #0D0D0D; color: #E8E8E8;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.6;
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink); line-height: 1.6; font-size: 16px;
+  background: radial-gradient(circle at 20% 10%, #F0E0BE 0%, #E8D8B8 60%, #DCC89A 100%);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
-.wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
-.brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 32px; }
-.brand span { color: #F5C842; }
-.brand a { color: inherit; text-decoration: none; }
-.fam { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #F5C842; margin-bottom: 10px; }
-h1 {
-  font-size: 44px; font-weight: 900; line-height: 1.05;
-  margin-bottom: 14px; letter-spacing: -0.02em;
+
+/* paper sheet container — wider than phone, single-column long-form */
+.sheet {
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background:
+    repeating-linear-gradient(0deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(168,130,72,0.06) 0 1px, transparent 1px 24px),
+    radial-gradient(120% 80% at 50% 0%, #FFF9EC 0%, var(--bg-cream) 60%, #F8EAD0 100%);
+  padding: 28px 22px 80px;
+  position: relative;
 }
-.tagline {
-  font-size: 19px; font-style: italic; color: #F5C842;
-  border-left: 3px solid #F5C842; padding: 4px 0 4px 16px;
-  margin-bottom: 40px; line-height: 1.5;
+@media (min-width: 820px) {
+  body { padding: 28px 16px; }
+  .sheet {
+    margin: 0 auto;
+    min-height: calc(100vh - 56px);
+    border-radius: 26px;
+    box-shadow:
+      0 2px 0 var(--border-soft),
+      0 30px 60px -20px rgba(0,0,0,0.25),
+      0 50px 100px -30px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
 }
-.section {
-  margin-bottom: 44px;
+
+/* ─── BRAND PILL + BACK ─── */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; position: relative; z-index: 2; }
+.back-arrow {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brown); font-size: 18px; font-weight: 800;
+  text-decoration: none; box-shadow: var(--shadow-card);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  transition: transform 0.12s;
 }
-.section h2 {
-  font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: #F5C842; margin-bottom: 16px; font-weight: 700;
-  padding-bottom: 8px; border-bottom: 1px solid #2A2A2A;
+.back-arrow:hover { transform: translateY(-2px); }
+.brand-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
 }
-.sub-h {
-  font-size: 17px; font-weight: 700; color: #FFFFFF;
-  margin-top: 22px; margin-bottom: 8px;
+.brand-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown); flex: 0 0 auto; }
+.brand-pill .brand-name { white-space: nowrap; }
+.brand-pill .ring { color: var(--honey-deep); font-weight: 700; }
+.share-coin {
+  width: 38px; height: 38px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--shadow-card);
+  font-size: 16px; color: var(--brown);
+  font-family: inherit;
 }
-.prose {
-  font-size: 16px; color: #C8C8C8; margin-bottom: 14px; line-height: 1.7;
+
+/* ─── HERO ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  margin: 12px 0 28px;
+  align-items: start;
+  position: relative;
+  z-index: 2;
 }
-.b-list {
-  list-style: none; padding: 0; margin: 0 0 16px 0;
+.card-slot {
+  position: relative;
+  aspect-ratio: 948 / 1659;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-paper);
 }
-.b-list li {
-  font-size: 15px; color: #B0B0B0; line-height: 1.6;
-  padding: 6px 0 6px 22px; position: relative;
+.card-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-ph {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(168,130,72,0.06) 0 2px, transparent 2px 14px),
+    radial-gradient(circle at 30% 20%, #FFF6DC 0%, var(--paper-warm) 50%, #E8C879 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 18px; text-align: center;
 }
-.b-list li::before {
-  content: "—"; position: absolute; left: 0; color: #F5C842;
+.card-ph .code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 60px; font-weight: 800; color: var(--ink); line-height: 1;
+  text-shadow: 2px 2px 0 #FFE7A4;
 }
-.pull-q {
-  font-size: 18px; font-style: italic; color: #D4AA40;
-  background: #161616; border-left: 3px solid #F5C842;
-  padding: 14px 18px; border-radius: 0 10px 10px 0;
-  margin: 18px 0;
+.card-ph .ph-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 18px; line-height: 1.1;
+  color: var(--ink); margin-top: 8px;
 }
-hr.divider {
-  border: 0; border-top: 1px solid #2A2A2A; margin: 28px 0;
+
+.hero-meta { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+.fam-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--fam-bg);
+  border: 1.5px solid var(--fam-bd);
+  color: var(--fam-ink);
+  padding: 5px 14px; border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  align-self: flex-start;
 }
-.foot-card {
-  background: #1A1A1A; border: 1px solid #2A2A2A; border-radius: 14px;
-  padding: 24px; margin-top: 48px; text-align: center;
+.hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 48px;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--ink); text-wrap: balance;
 }
-.foot-card h3 {
-  font-size: 22px; font-weight: 800; margin-bottom: 8px; color: #FFF;
+.hero-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--brown);
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  padding: 4px 12px; border-radius: 6px;
+  align-self: flex-start;
 }
-.foot-card p { color: #888; font-size: 14px; margin-bottom: 16px; }
-.cta {
-  display: inline-block;
-  background: #F5C842; color: #000; text-decoration: none;
-  padding: 14px 24px; border-radius: 10px;
-  font-weight: 700; font-size: 15px;
-  transition: background 0.12s;
+.hero-quote {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--caramel);
+  line-height: 1.4;
+  padding: 14px 16px 14px 22px;
+  background: var(--paper-light);
+  border-left: 4px solid var(--honey);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+  margin-top: 2px;
+  text-wrap: pretty;
 }
-.cta:hover { background: #FFD700; }
-.nav-prev {
-  display: flex; justify-content: space-between; gap: 12px; margin-top: 24px;
+.hero-quote::before {
+  content: '\201C';
+  position: absolute;
+  left: 4px; top: 0;
+  color: var(--honey-deep);
+  font-size: 38px;
+  line-height: 1;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .hero { grid-template-columns: 1fr; gap: 18px; }
+  .card-slot { max-width: 220px; margin: 0 auto; width: 100%; }
+  .hero-title { font-size: 36px; text-align: center; }
+  .fam-pill, .hero-code { align-self: center; }
+}
+
+/* ─── TABLE OF CONTENTS ─── */
+.toc {
+  background: var(--paper-light);
+  border: 1.5px dashed var(--tan);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 28px;
+  position: relative; z-index: 2;
+}
+.toc-label {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--brown-soft); margin-bottom: 8px;
+}
+.toc ul {
+  list-style: none; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 4px 14px;
+}
+.toc li {
   font-size: 13px;
+  padding: 4px 0;
+  position: relative;
 }
-.nav-prev a { color: #666; text-decoration: none; padding: 8px 12px; border: 1px solid #2A2A2A; border-radius: 8px; }
-.nav-prev a:hover { color: #F5C842; border-color: #F5C842; }
-@media (max-width: 520px) {
-  h1 { font-size: 34px; }
-  .tagline { font-size: 17px; }
-  .wrap { padding: 20px 16px 60px; }
+.toc a {
+  color: var(--brown);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--tan);
+  padding-bottom: 1px;
+  transition: color 0.12s, border-color 0.12s;
+}
+.toc a:hover { color: var(--honey-deep); border-color: var(--honey-deep); }
+
+/* ─── PAPER SECTIONS ─── */
+.paper-section {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 26px 22px 22px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-card);
+  background-image:
+    radial-gradient(circle at 14% 10%, rgba(168,130,72,0.04) 0 1px, transparent 1px),
+    radial-gradient(circle at 78% 70%, rgba(168,130,72,0.05) 0 1px, transparent 1px);
+  background-size: 12px 12px, 16px 16px;
+  z-index: 2;
+}
+.paper-section::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, transparent 50%, var(--border-soft) 50%, var(--border-soft) 56%, var(--paper-warm) 56%);
+  border-bottom-right-radius: var(--radius-lg);
+}
+.tape {
+  position: absolute;
+  top: -10px; left: 24px;
+  width: 64px; height: 20px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+  opacity: 0.95;
+}
+.tape--right { left: auto; right: 24px; transform: rotate(3deg); }
+
+.ps-eyebrow {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--honey-deep); margin-bottom: 6px;
+}
+.ps-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 26px; font-weight: 800;
+  line-height: 1.05; letter-spacing: -0.015em;
+  color: var(--ink); margin-bottom: 14px;
+  text-wrap: balance;
+}
+
+/* Preserve original content classes — restyle to paper aesthetic */
+.ps-body .sub-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--brown); margin-top: 18px; margin-bottom: 6px;
+  letter-spacing: -0.005em;
+}
+.ps-body .prose {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  line-height: 1.65;
+}
+.ps-body .b-list {
+  list-style: none; padding: 0; margin: 4px 0 14px;
+}
+.ps-body .b-list li {
+  position: relative;
+  padding: 5px 0 5px 22px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.ps-body .b-list li::before {
+  content: "";
+  position: absolute;
+  left: 8px; top: 13px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--honey);
+  border: 1.5px solid var(--honey-deep);
+}
+.ps-body .pull-q {
+  position: relative;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--caramel);
+  background: #FFF6DC;
+  border: 1.5px solid var(--honey-deep);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin: 14px 0;
+  line-height: 1.5;
+}
+
+/* ─── FOOTER CTAs ─── */
+.foot-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  margin: 28px 0 14px;
+  text-align: center;
+  box-shadow: var(--shadow-paper);
+  position: relative; z-index: 2;
+}
+.foot-tag {
+  display: inline-block;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--sage-deep);
+  margin-bottom: 4px;
+  transform: rotate(-1deg);
+}
+.foot-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--ink); margin-bottom: 6px;
+}
+.foot-sub {
+  font-size: 14px;
+  color: var(--brown-soft);
+  margin-bottom: 16px;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  position: relative; z-index: 2;
+}
+.btn-row.single { grid-template-columns: 1fr; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px; font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 999px;
+  cursor: pointer; text-decoration: none;
+  border: 2px solid;
+  transition: transform 0.12s, box-shadow 0.12s;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  border-color: var(--honey-deep);
+  box-shadow: 0 3px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--honey-deep), 0 14px 22px -6px var(--shadow); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--honey-deep); }
+
+.btn-secondary {
+  background: var(--paper-light);
+  color: var(--brown);
+  border-color: var(--tan);
+  border-style: dashed;
+  box-shadow: var(--shadow-card);
+}
+.btn-secondary:hover { border-color: var(--brown); color: var(--ink); }
+
+.nav-prev {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-top: 24px; font-size: 13px;
+  position: relative; z-index: 2;
+}
+.nav-prev a {
+  color: var(--brown);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px dashed var(--tan);
+  border-radius: 8px;
+  background: var(--paper-light);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+}
+.nav-prev a:hover { color: var(--ink); border-color: var(--brown); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 30px; }
+  .ps-title { font-size: 22px; }
+  .sheet { padding: 22px 16px 60px; }
+  .btn-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
-<body>
-<div class="wrap">
+<body data-archetype="ST">
 
-<div class="brand"><a href="../duRingIt-pilot-quiz.html">du<span>Ring</span>It &mdash; Monie ID</a></div>
+<div class="sheet">
 
-<div class="fam">Builders</div>
-<h1>The Optimizer</h1>
-<div class="tagline">&ldquo;There’s probably a more efficient way to do this.&rdquo;</div>
+  <!-- ─── TOPBAR ─── -->
+  <div class="topbar">
+    <a class="back-arrow" data-back-to-result href="../duRingIt-pilot-quiz.html" aria-label="Back to my result">&larr;</a>
+    <a class="brand-pill" href="../duRingIt-pilot-quiz.html">
+      <span class="brand-name">du<span class="ring">Ring</span>It</span>
+      <span class="dot"></span>
+      <span>Monie ID Profile</span>
+    </a>
+    <button class="share-coin" onclick="navigator.share ? navigator.share({title: document.title, url: location.href}) : (navigator.clipboard && navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!')))" aria-label="Share">⇪</button>
+  </div>
 
-<section class="section" id="archetype-overview">
-  <h2>Archetype Overview</h2>
-  <p class="prose">The Optimizer approaches money like a system to refine, optimize, and strategically engineer. They are highly analytical individuals who naturally think in:</p>
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div class="card-slot">
+      <img src="../cards/ST.jpg" alt="The Optimizer BEGA card" onerror="this.style.display='none';this.parentNode.querySelector('.card-ph').style.display='flex';">
+      <div class="card-ph" style="display:none;">
+        <div class="code">ST</div>
+        <div class="ph-name">The Optimizer</div>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span class="fam-pill">Builders</span>
+      <h1 class="hero-title">The Optimizer</h1>
+      <span class="hero-code">BLD-OP</span>
+      <div class="hero-quote">There’s probably a more efficient way to do this.</div>
+    </div>
+  </header>
+
+  <!-- ─── TABLE OF CONTENTS ─── -->
+  <nav class="toc" aria-label="On this page">
+    <div class="toc-label">In this file</div>
+    <ul>
+      <li><a href="#archetype-overview">Archetype Overview</a></li>
+      <li><a href="#core-strengths">Core Strengths</a></li>
+      <li><a href="#core-weaknesses">Core Weaknesses</a></li>
+      <li><a href="#spending-habits">Spending Habits</a></li>
+      <li><a href="#investing-style">Investing Style</a></li>
+      <li><a href="#relationship-with-money">Relationship With Money</a></li>
+      <li><a href="#career-behavior">Career Behavior</a></li>
+      <li><a href="#emotional-triggers">Emotional Triggers</a></li>
+      <li><a href="#common-mistakes">Common Mistakes</a></li>
+      <li><a href="#growth-path">Growth Path</a></li>
+      <li><a href="#ideal-partner">Ideal Partner</a></li>
+      <li><a href="#stress-behavior">Stress Behavior</a></li>
+      <li><a href="#financial-fear">Financial Fear</a></li>
+      <li><a href="#financial-superpower">Financial Superpower</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── BODY SECTIONS ─── -->
+
+  <section class="paper-section" id="archetype-overview">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 1</div>
+    <h2 class="ps-title">Archetype Overview</h2>
+    <div class="ps-body"><p class="prose">The Optimizer approaches money like a system to refine, optimize, and strategically engineer. They are highly analytical individuals who naturally think in:</p>
       <ul class="b-list"><li>efficiency</li><li>probabilities</li><li>trade-offs</li><li>long-term outcomes</li><li>return on investment</li></ul>
       <p class="prose">Unlike the Wealth Architect, who focuses on disciplined long-term building, the Optimizer becomes deeply interested in:</p>
       <ul class="b-list"><li>optimization itself</li></ul>
@@ -119,12 +528,14 @@ hr.divider {
       <p class="prose">To outsiders, they may appear:</p>
       <ul class="b-list"><li>overly analytical</li><li>emotionally detached</li><li>hyper-rational</li><li>exhausting around details</li></ul>
       <p class="prose">But internally, they are usually trying to solve one problem:</p>
-      <p class="prose">“How do I design the most intelligent financial life possible?”</p>
-</section>
+      <p class="prose">“How do I design the most intelligent financial life possible?”</p></div>
+  </section>
 
-<section class="section" id="core-strengths">
-  <h2>Core Strengths</h2>
-  <h3 class="sub-h">1. Strong Analytical Thinking</h3>
+  <section class="paper-section" id="core-strengths">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 2</div>
+    <h2 class="ps-title">Core Strengths</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Strong Analytical Thinking</h3>
       <p class="prose">Optimizers naturally understand:</p>
       <ul class="b-list"><li>numbers</li><li>systems</li><li>probabilities</li><li>trade-offs</li></ul>
       <p class="prose">They are highly capable of making:</p>
@@ -141,12 +552,14 @@ hr.divider {
       <ul class="b-list"><li>structured financial systems</li><li>organized tracking</li><li>long-term planning</li></ul>
       <h3 class="sub-h">5. High Financial Capability</h3>
       <p class="prose">Given enough time, they often become financially competent because they:</p>
-      <ul class="b-list"><li>learn continuously</li><li>refine strategies</li><li>avoid emotionally reckless behavior</li></ul>
-</section>
+      <ul class="b-list"><li>learn continuously</li><li>refine strategies</li><li>avoid emotionally reckless behavior</li></ul></div>
+  </section>
 
-<section class="section" id="core-weaknesses">
-  <h2>Core Weaknesses</h2>
-  <h3 class="sub-h">1. Overthinking</h3>
+  <section class="paper-section" id="core-weaknesses">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 3</div>
+    <h2 class="ps-title">Core Weaknesses</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Overthinking</h3>
       <p class="prose">This is their defining weakness. They can become trapped in:</p>
       <ul class="b-list"><li>endless comparison</li><li>excessive analysis</li><li>decision paralysis</li></ul>
       <p class="prose">Sometimes they optimize decisions more than they execute them.</p>
@@ -162,12 +575,14 @@ hr.divider {
       <p class="prose">Constant optimization can become mentally exhausting.</p>
       <p class="prose">Small inefficiencies may bother them disproportionately.</p>
       <h3 class="sub-h">5. Perfectionism</h3>
-      <p class="prose">They may delay investing, starting businesses, or taking action because: “The system isn’t optimized enough yet.”</p>
-</section>
+      <p class="prose">They may delay investing, starting businesses, or taking action because: “The system isn’t optimized enough yet.”</p></div>
+  </section>
 
-<section class="section" id="spending-habits">
-  <h2>Spending Habits</h2>
-  <p class="prose">The Optimizer spends strategically and analytically. Their spending decisions usually involve:</p>
+  <section class="paper-section" id="spending-habits">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 4</div>
+    <h2 class="ps-title">Spending Habits</h2>
+    <div class="ps-body"><p class="prose">The Optimizer spends strategically and analytically. Their spending decisions usually involve:</p>
       <ul class="b-list"><li>comparison</li><li>research</li><li>utility evaluation</li><li>cost-benefit thinking</li></ul>
       <p class="prose">Typical behaviors:</p>
       <ul class="b-list"><li>maximizing rewards programs</li><li>comparing credit cards</li><li>tracking subscriptions</li><li>calculating ROI</li><li>evaluating value deeply before purchasing</li></ul>
@@ -175,45 +590,53 @@ hr.divider {
       <ul class="b-list"><li>inefficiency</li><li>overpaying</li><li>impulsive spending</li><li>financially irrational behavior</li></ul>
       <p class="prose">However, they are often willing to spend aggressively on things that:</p>
       <ul class="b-list"><li>improve efficiency</li><li>save time</li><li>increase productivity</li><li>provide measurable value</li></ul>
-      <p class="prose">Their internal logic is: “If this generates enough value, the spending is justified.”</p>
-</section>
+      <p class="prose">Their internal logic is: “If this generates enough value, the spending is justified.”</p></div>
+  </section>
 
-<section class="section" id="investing-style">
-  <h2>Investing Style</h2>
-  <p class="prose">Optimizers are usually highly involved investors. They enjoy:</p>
+  <section class="paper-section" id="investing-style">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 5</div>
+    <h2 class="ps-title">Investing Style</h2>
+    <div class="ps-body"><p class="prose">Optimizers are usually highly involved investors. They enjoy:</p>
       <ul class="b-list"><li>research</li><li>portfolio strategy</li><li>macroeconomics</li><li>optimization models</li><li>investment frameworks</li></ul>
       <p class="prose">Common tendencies:</p>
       <ul class="b-list"><li>diversified portfolios</li><li>strategic allocations</li><li>tax optimization</li><li>factor investing</li><li>quantitative thinking</li><li>performance analysis</li></ul>
       <p class="prose">Some become excellent investors. Others become trapped in:</p>
       <ul class="b-list"><li>over-analysis</li><li>excessive portfolio tinkering</li><li>constantly changing strategies</li></ul>
-      <p class="prose">Their investing philosophy is often: “Better decisions compound.”</p>
-</section>
+      <p class="prose">Their investing philosophy is often: “Better decisions compound.”</p></div>
+  </section>
 
-<section class="section" id="relationship-with-money">
-  <h2>Relationship With Money</h2>
-  <p class="prose">To the Optimizer, money represents:</p>
+  <section class="paper-section" id="relationship-with-money">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 6</div>
+    <h2 class="ps-title">Relationship With Money</h2>
+    <div class="ps-body"><p class="prose">To the Optimizer, money represents:</p>
       <ul class="b-list"><li>leverage</li><li>efficiency</li><li>optionality</li><li>strategic capability</li></ul>
       <p class="prose">Money is viewed intellectually rather than emotionally.</p>
       <p class="prose">They often associate financial intelligence with:</p>
       <ul class="b-list"><li>competence</li><li>self-respect</li><li>control</li></ul>
-      <p class="prose">Their core belief is usually: “Good systems create good outcomes.” Unlike the YOLO Spender who uses money emotionally,​ the Optimizer uses money strategically.</p>
-</section>
+      <p class="prose">Their core belief is usually: “Good systems create good outcomes.” Unlike the YOLO Spender who uses money emotionally,​ the Optimizer uses money strategically.</p></div>
+  </section>
 
-<section class="section" id="career-behavior">
-  <h2>Career Behavior</h2>
-  <p class="prose">Optimizers thrive in careers involving:</p>
+  <section class="paper-section" id="career-behavior">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 7</div>
+    <h2 class="ps-title">Career Behavior</h2>
+    <div class="ps-body"><p class="prose">Optimizers thrive in careers involving:</p>
       <ul class="b-list"><li>systems</li><li>analysis</li><li>optimization</li><li>strategic thinking</li></ul>
       <p class="prose">Common fields:</p>
       <ul class="b-list"><li>finance</li><li>consulting</li><li>engineering</li><li>operations</li><li>data analytics</li><li>investing</li><li>product management</li><li>technology</li></ul>
       <p class="prose">At work, they are often:</p>
       <ul class="b-list"><li>detail-oriented</li><li>process-driven</li><li>intellectually curious</li><li>highly improvement-focused</li></ul>
       <p class="prose">They dislike:</p>
-      <ul class="b-list"><li>inefficiency</li><li>emotional decision-making</li><li>poorly designed systems</li><li>vague thinking</li></ul>
-</section>
+      <ul class="b-list"><li>inefficiency</li><li>emotional decision-making</li><li>poorly designed systems</li><li>vague thinking</li></ul></div>
+  </section>
 
-<section class="section" id="emotional-triggers">
-  <h2>Emotional Triggers</h2>
-  <p class="prose">The Optimizer becomes emotionally triggered by:</p>
+  <section class="paper-section" id="emotional-triggers">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 8</div>
+    <h2 class="ps-title">Emotional Triggers</h2>
+    <div class="ps-body"><p class="prose">The Optimizer becomes emotionally triggered by:</p>
       <h3 class="sub-h">Inefficiency</h3>
       <p class="prose">Waste deeply frustrates them:</p>
       <ul class="b-list"><li>wasted money</li><li>wasted time</li><li>wasted effort</li><li>poorly designed systems</li></ul>
@@ -224,12 +647,14 @@ hr.divider {
       <p class="prose">Unexpected chaos or poor planning creates discomfort.</p>
       <h3 class="sub-h">Feeling Outperformed</h3>
       <p class="prose">They can become competitive when seeing others:</p>
-      <ul class="b-list"><li>achieving better outcomes</li><li>generating higher returns</li><li>operating more effectively</li></ul>
-</section>
+      <ul class="b-list"><li>achieving better outcomes</li><li>generating higher returns</li><li>operating more effectively</li></ul></div>
+  </section>
 
-<section class="section" id="common-mistakes">
-  <h2>Common Mistakes</h2>
-  <h3 class="sub-h">1. Analysis Paralysis</h3>
+  <section class="paper-section" id="common-mistakes">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 9</div>
+    <h2 class="ps-title">Common Mistakes</h2>
+    <div class="ps-body"><h3 class="sub-h">1. Analysis Paralysis</h3>
       <p class="prose">They may spend too much time:</p>
       <ul class="b-list"><li>researching</li><li>optimizing</li><li>comparing</li></ul>
       <p class="prose">instead of acting.</p>
@@ -246,21 +671,25 @@ hr.divider {
       <p class="prose">instead of committing long enough for systems to compound.</p>
       <h3 class="sub-h">5. Turning Life Into A Spreadsheet</h3>
       <p class="prose">They may unintentionally reduce:</p>
-      <ul class="b-list"><li>spontaneity</li><li>emotional enjoyment</li><li>flexibility</li></ul>
-</section>
+      <ul class="b-list"><li>spontaneity</li><li>emotional enjoyment</li><li>flexibility</li></ul></div>
+  </section>
 
-<section class="section" id="growth-path">
-  <h2>Growth Path</h2>
-  <p class="prose">The Optimizer evolves when they realize:</p>
+  <section class="paper-section" id="growth-path">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 10</div>
+    <h2 class="ps-title">Growth Path</h2>
+    <div class="ps-body"><p class="prose">The Optimizer evolves when they realize:</p>
       <p class="prose">optimization is only valuable if it supports a meaningful life. Their next stage of growth is learning:</p>
       <ul class="b-list"><li>simplicity</li><li>emotional balance</li><li>strategic imperfection</li></ul>
       <p class="prose">They do NOT need to stop being analytical. Their analytical ability is a gift. Instead, they must understand: the goal is not perfect optimization — it is sustainable effectiveness. Healthy Optimizers eventually combine:</p>
-      <ul class="b-list"><li>intelligence</li><li>execution</li><li>emotional awareness</li></ul>
-</section>
+      <ul class="b-list"><li>intelligence</li><li>execution</li><li>emotional awareness</li></ul></div>
+  </section>
 
-<section class="section" id="ideal-partner">
-  <h2>Ideal Partner</h2>
-  <p class="prose">The Optimizer thrives with partners who are:</p>
+  <section class="paper-section" id="ideal-partner">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 11</div>
+    <h2 class="ps-title">Ideal Partner</h2>
+    <div class="ps-body"><p class="prose">The Optimizer thrives with partners who are:</p>
       <ul class="b-list"><li>emotionally intelligent</li><li>grounded</li><li>intellectually curious</li><li>financially responsible</li></ul>
       <p class="prose">They value:</p>
       <ul class="b-list"><li>competence</li><li>thoughtful communication</li><li>mutual growth</li></ul>
@@ -269,47 +698,85 @@ hr.divider {
       <p class="prose">Their ideal partner helps them:</p>
       <ul class="b-list"><li>stay emotionally connected</li></ul>
       <p class="prose">without</p>
-      <ul class="b-list"><li>compromising strategic thinking</li></ul>
-</section>
+      <ul class="b-list"><li>compromising strategic thinking</li></ul></div>
+  </section>
 
-<section class="section" id="stress-behavior">
-  <h2>Stress Behavior</h2>
-  <p class="prose">Under stress, the Optimizer may:</p>
+  <section class="paper-section" id="stress-behavior">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 12</div>
+    <h2 class="ps-title">Stress Behavior</h2>
+    <div class="ps-body"><p class="prose">Under stress, the Optimizer may:</p>
       <ul class="b-list"><li>overanalyze</li><li>obsess over details</li><li>micromanage systems</li><li>mentally spiral through scenarios</li></ul>
       <p class="prose">They may:</p>
       <ul class="b-list"><li>constantly recalculate</li><li>endlessly compare options</li><li>seek “perfect certainty” before acting</li></ul>
-      <p class="prose">Their stress response is often: “If I optimize enough, I can solve this.”</p>
-</section>
+      <p class="prose">Their stress response is often: “If I optimize enough, I can solve this.”</p></div>
+  </section>
 
-<section class="section" id="financial-fear">
-  <h2>Financial Fear</h2>
-  <p class="prose">The Optimizer’s deepest fear is:</p>
+  <section class="paper-section" id="financial-fear">
+    <span class="tape "></span>
+    <div class="ps-eyebrow">§ 13</div>
+    <h2 class="ps-title">Financial Fear</h2>
+    <div class="ps-body"><p class="prose">The Optimizer’s deepest fear is:</p>
       <p class="prose">making preventable mistakes that could have been avoided through better thinking. They fear:</p>
       <ul class="b-list"><li>inefficiency</li><li>wasted potential</li><li>poor decision-making</li><li>loss caused by lack of optimization</li></ul>
-      <p class="prose">More than losing money itself,​ they fear: “I should have known better.”</p>
-</section>
+      <p class="prose">More than losing money itself,​ they fear: “I should have known better.”</p></div>
+  </section>
 
-<section class="section" id="financial-superpower">
-  <h2>Financial Superpower</h2>
-  <h3 class="sub-h">Strategic Optimization</h3>
+  <section class="paper-section" id="financial-superpower">
+    <span class="tape tape--right"></span>
+    <div class="ps-eyebrow">§ 14</div>
+    <h2 class="ps-title">Financial Superpower</h2>
+    <div class="ps-body"><h3 class="sub-h">Strategic Optimization</h3>
       <p class="prose">The Optimizer’s greatest strength is their ability to:</p>
       <ul class="b-list"><li>improve systems</li><li>identify leverage</li><li>make highly informed long-term financial decisions</li></ul>
       <p class="prose">While others act emotionally,​ they think structurally. Their superpower is not emotional intensity. It is:</p>
       <p class="prose">turning intelligence, systems, and strategic refinement into long-term financial advantage.</p>
-      <h3 class="sub-h">The Aggressive Builder</h3>
-</section>
+      <h3 class="sub-h">The Aggressive Builder</h3></div>
+  </section>
 
-<div class="foot-card">
-  <h3>Don&rsquo;t know your Monie ID yet?</h3>
-  <p>Take the 4-minute quiz to discover which of 11 archetypes you are.</p>
-  <a class="cta" href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  <!-- ─── FOOTER CTA ─── -->
+  <div class="foot-card">
+    <div class="foot-tag">your monie id file →</div>
+    <div class="foot-title">Want the full picture?</div>
+    <div class="foot-sub">See how the The Optimizer works with the other 10 Monie IDs, or retake the quiz.</div>
+    <div class="btn-row">
+      <a class="btn btn-secondary" data-back-to-result href="../duRingIt-pilot-quiz.html">&larr; Back to my result</a>
+      <a class="btn btn-primary" href="../compatibility.html?a=ST">🔁 See your compatibility</a>
+    </div>
+  </div>
+
+  <!-- ─── PREV / NEXT NAV ─── -->
+  <nav class="nav-prev" aria-label="Browse">
+    <a href="./index.html">&larr; All archetypes</a>
+    <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
+  </nav>
+
 </div>
 
-<div class="nav-prev">
-  <a href="./index.html">&larr; All archetypes</a>
-  <a href="../duRingIt-pilot-quiz.html">Take the quiz &rarr;</a>
-</div>
+<script>
+(function(){
+  function backToMyResult() {
+    try {
+      var code = document.body.getAttribute('data-archetype') || '';
+      if (!code) { window.location.href = '../duRingIt-pilot-quiz.html'; return; }
+      var NAMES_ALL = ['AB','FC','WA','ST','SS','LI','LR','SG','AX','EE','WN'];
+      var state = {
+        screen: 'result', name: '', scores: {}, scaleAns: {}, mainAns: [],
+        tbPair: null, tbQs: [], tbAns: [], flags: [], qi: 0, val: {}, loadingStep: 0,
+        result: code, bridge: null
+      };
+      NAMES_ALL.forEach(function(k){ state.scores[k] = 4.0; });
+      state.scores[code] = 9.0;
+      sessionStorage.setItem('_quizState', JSON.stringify(state));
+    } catch (e) {}
+    window.location.href = '../duRingIt-pilot-quiz.html';
+  }
+  // Wire up all back-to-result links/buttons
+  document.querySelectorAll('[data-back-to-result]').forEach(function(el){
+    el.addEventListener('click', function(ev){ ev.preventDefault(); backToMyResult(); });
+  });
+})();
+</script>
 
-</div>
 </body>
 </html>
