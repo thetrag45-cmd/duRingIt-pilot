@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>duRingIt — Monie ID (Pilot)</title>
+<meta property="og:title" content="duRingIt — Monie ID Intake">
+<meta property="og:description" content="Discover which of 11 financial archetypes you are. 16 questions, ~4 minutes.">
+<meta property="og:image" content="./og-cover.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./og-cover.png">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
@@ -1318,6 +1325,47 @@ button:focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 2px
   #app { padding: 18px 14px 90px; }
   .coin { font-size: 18px; }
 }
+
+/* ─── PRINT STYLESHEET ─── */
+@media print {
+  html, body { background: #FFFFFF !important; }
+  body { padding: 0 !important; font-size: 12pt; line-height: 1.55; }
+  .phone, .sheet, .page {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    background: #FFFFFF !important;
+  }
+  #app { padding: 14px !important; }
+  /* hide navigational/interactive elements */
+  .topbar, .nav, .back-arrow, .share-coin, .btn-row, .btn, .btn-back, .btn-whatsapp,
+  .btn-blog, .btn-tally-wrap, .btn-tally, .doodle, .nav-prev, .toc {
+    display: none !important;
+  }
+  /* expand cards full-width with simple borders */
+  .qcard, .result-card, .scores-card, .paper-section, .section-card,
+  .meters-card, .you-hero, .pair-row, .bridge-cards, .bridge-pair {
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    background: #FFFFFF !important;
+    border: 1px solid #D8B982 !important;
+  }
+  .card-slot { max-height: 60vh !important; box-shadow: none !important; }
+  /* avoid splitting headings */
+  h1, h2, .hero-title, .ps-title, .result-name, .verdict-title { page-break-after: avoid; }
+  /* link URLs after each anchor (optional, low cost) */
+  a { color: #2A170D !important; text-decoration: none; }
+  /* keep grid backgrounds off for cleaner print */
+  .phone, .sheet, body {
+    background-image: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2823,8 +2871,11 @@ function fallbackCopy(text, btn) {
 }
 
 function restart() {
+  /* Clear any quiz state, then send the user back to the landing page.
+     This is the friendliest entry point now that a homepage exists. */
+  try { sessionStorage.removeItem('_quizState'); } catch (e) {}
   resetState();
-  render(); scrollTo(0, 0);
+  window.location.href = "./index.html";
 }
 
 function escHtml(s) {

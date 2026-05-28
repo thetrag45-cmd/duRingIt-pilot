@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  
+  <circle cx="32" cy="32" r="29" fill="#F6B638" stroke="#A66A2E" stroke-width="3"></circle>
+  
+  <circle cx="32" cy="32" r="22" fill="none" stroke="#A66A2E" stroke-width="1.5" stroke-dasharray="2 3"></circle>
+  
+  <text x="32" y="44" font-family="Bricolage Grotesque, Arial Black, sans-serif" font-size="34" font-weight="800" text-anchor="middle" fill="#2A170D" letter-spacing="-1">M</text>
+</svg>

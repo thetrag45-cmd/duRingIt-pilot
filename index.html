@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>duRingIt — Discover your Monie ID</title>
+<meta property="og:title" content="duRingIt — Discover your Monie ID">
+<meta property="og:description" content="What kind of money person are you? Take the 4-minute quiz to discover one of 11 Monie ID financial archetypes.">
+<meta property="og:image" content="./og-cover.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./og-cover.png">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<meta name="description" content="What kind of money person are you? Not what you think you are. What you actually are. Take the 4-minute quiz to discover one of 11 Monie ID financial archetypes.">
+<meta property="og:title" content="duRingIt — Discover your Monie ID">
+<meta property="og:description" content="Take the 4-minute quiz to discover which of 11 financial archetypes you are.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ─── DESIGN TOKENS (shared Monie ID Intake system) ─── */
+:root {
+  --bg-cream:    #FFF7EA;
+  --paper:       #FFF2D9;
+  --paper-light: #FFFBF3;
+  --paper-warm:  #FAE7C5;
+  --ink:         #2A170D;
+  --ink-soft:    #4A2E1A;
+  --brown:       #6B3F22;
+  --brown-soft:  #8A5A33;
+  --caramel:     #A66A2E;
+  --honey:       #F6B638;
+  --honey-light: #FFD56A;
+  --honey-deep:  #D89724;
+  --sage:        #7F8F5A;
+  --sage-light:  #E6EBD3;
+  --sage-deep:   #5E6E3E;
+  --border:      #D8B982;
+  --border-soft: #E8D4A4;
+  --tan:         #C9A36A;
+  --shadow:      rgba(91, 55, 20, 0.16);
+  --shadow-soft: rgba(91, 55, 20, 0.08);
+  --tape:        #F1E2BD;
+
+  --fam-bld-bg: #F6E2C2; --fam-bld-bd: #E2BE7B; --fam-bld-ink: #7A4B1C;
+  --fam-exp-bg: #F8D7C2; --fam-exp-bd: #E8B58E; --fam-exp-ink: #8C4626;
+  --fam-grd-bg: #E6EBD3; --fam-grd-bd: #B7C28A; --fam-grd-ink: #5E6E3E;
+  --fam-avd-bg: #EADFEC; --fam-avd-bd: #C5A8CA; --fam-avd-ink: #6A4275;
+
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --shadow-card: 0 2px 0 var(--border-soft), 0 8px 18px -6px var(--shadow);
+  --shadow-paper: 0 1px 0 #fff inset, 0 2px 0 var(--border-soft), 0 14px 24px -10px var(--shadow);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: #E8D8B8; }
+body {
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink); line-height: 1.6; font-size: 16px;
+  background:
+    repeating-linear-gradient(0deg, rgba(168,130,72,0.05) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(168,130,72,0.05) 0 1px, transparent 1px 28px),
+    radial-gradient(120% 60% at 50% 0%, #FFF9EC 0%, var(--bg-cream) 50%, #F0DDB7 100%);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── SHELL ─── */
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 24px 80px;
+  position: relative;
+}
+
+/* ─── NAV ─── */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 4;
+}
+.brand-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+}
+.brand-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown); flex: 0 0 auto; }
+.brand-pill .brand-name { white-space: nowrap; }
+.brand-pill .ring { color: var(--honey-deep); font-weight: 700; }
+.nav-links {
+  display: flex; gap: 18px; align-items: center;
+}
+.nav-links a {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--brown);
+  text-decoration: none;
+  border-bottom: 1.5px dotted var(--tan);
+  padding-bottom: 1px;
+  transition: color 0.12s, border-color 0.12s;
+}
+.nav-links a:hover { color: var(--honey-deep); border-color: var(--honey-deep); }
+@media (max-width: 640px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 700;
+  padding: 14px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  border: 2px solid;
+  transition: transform 0.12s, box-shadow 0.12s;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--honey-light), var(--honey));
+  color: var(--ink);
+  border-color: var(--honey-deep);
+  box-shadow: 0 3px 0 var(--honey-deep), 0 10px 18px -6px var(--shadow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--honey-deep), 0 14px 22px -6px var(--shadow); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--honey-deep); }
+.btn-secondary {
+  background: var(--paper-light);
+  color: var(--brown);
+  border-color: var(--tan);
+  border-style: dashed;
+  box-shadow: var(--shadow-card);
+}
+.btn-secondary:hover { border-color: var(--brown); color: var(--ink); }
+.btn-large { font-size: 18px; padding: 18px 32px; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  padding: 28px 0 60px;
+}
+@media (max-width: 880px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; padding: 14px 0 40px; }
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--sage-deep);
+  margin-bottom: 8px;
+  transform: rotate(-1deg);
+}
+.hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 18px;
+  text-wrap: balance;
+}
+.hero-title em {
+  font-style: normal;
+  position: relative;
+  display: inline-block;
+}
+.hero-title em::after {
+  content: "";
+  position: absolute;
+  left: -2px; right: -2px; bottom: 4px;
+  height: 14px;
+  background: var(--honey);
+  z-index: -1;
+  border-radius: 4px;
+  transform: skewX(-6deg);
+  opacity: 0.5;
+}
+.hero-sub {
+  font-size: 18px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: 28px;
+  max-width: 460px;
+  text-wrap: pretty;
+}
+.hero-cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 26px;
+}
+.hero-meta {
+  display: flex; gap: 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  color: var(--brown-soft);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.hero-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-meta .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--honey-deep);
+}
+
+/* HERO RIGHT: card collage */
+.hero-collage {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  margin-left: auto;
+}
+.collage-card {
+  position: absolute;
+  width: 50%;
+  aspect-ratio: 948 / 1659;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #FFF6E6;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-paper);
+  transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+}
+.collage-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.collage-card:hover { transform: translateY(-6px) rotate(0) !important; z-index: 4; }
+.collage-card.c1 { top: 4%;  left: 4%;  transform: rotate(-8deg); z-index: 2; }
+.collage-card.c2 { top: 0;   right: 4%; transform: rotate(7deg);  z-index: 1; }
+.collage-card.c3 { bottom: 6%; left: 18%; transform: rotate(-3deg); z-index: 3; width: 56%; }
+/* washi tape on top of card 3 */
+.collage-card.c3::before {
+  content: "";
+  position: absolute;
+  top: -10px; left: 50%;
+  width: 60px; height: 16px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: translateX(-50%) rotate(-4deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+  z-index: 5;
+}
+/* Floating stamp */
+.collage-stamp {
+  position: absolute;
+  bottom: 0; right: -10px;
+  width: 110px; height: 110px;
+  z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px var(--shadow-soft));
+}
+@media (max-width: 880px) {
+  .hero-collage { max-width: 380px; margin: 0 auto; }
+}
+@media (max-width: 480px) {
+  .hero-collage { max-width: 320px; }
+  .collage-stamp { width: 84px; height: 84px; right: -4px; }
+}
+
+/* ─── DOODLES SCATTERED ON HERO ─── */
+.doodle { position: absolute; pointer-events: none; opacity: 0.7; z-index: 1; }
+.doodle svg { width: 100%; height: auto; display: block; }
+.doodle--coins-hero { top: 30px; left: -30px; width: 80px; transform: rotate(-12deg); }
+.doodle--paperclip-hero { top: 30%; right: -16px; width: 50px; transform: rotate(28deg); }
+
+/* ─── STATS ROW ─── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 20px 0 60px;
+  padding: 26px 24px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+.stats-row::before {
+  content: "";
+  position: absolute;
+  top: -10px; left: 24px;
+  width: 78px; height: 18px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+}
+.stat {
+  text-align: center;
+  padding: 4px;
+}
+.stat-num {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--honey-deep);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brown-soft);
+}
+@media (max-width: 640px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; padding: 24px 16px; }
+  .stat-num { font-size: 30px; }
+}
+
+/* ─── SECTION HEADERS ─── */
+.section-eyebrow {
+  display: inline-block;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--honey-deep);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 14px;
+  text-wrap: balance;
+}
+.section-sub {
+  font-size: 16.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  max-width: 640px;
+  margin-bottom: 36px;
+  text-wrap: pretty;
+}
+.section { padding: 40px 0; position: relative; }
+.section-header { text-align: center; max-width: 680px; margin: 0 auto 36px; }
+.section-header .section-sub { margin: 0 auto; }
+
+/* ─── HOW IT WORKS ─── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 760px) {
+  .steps-grid { grid-template-columns: 1fr; }
+}
+.step-card {
+  position: relative;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 26px 22px;
+  box-shadow: var(--shadow-card);
+}
+.step-card::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, transparent 50%, var(--border-soft) 50%, var(--border-soft) 56%, var(--paper-warm) 56%);
+  border-bottom-right-radius: var(--radius-lg);
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--paper-warm);
+  border: 2px dashed var(--tan);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--brown);
+  margin-bottom: 14px;
+}
+.step-card.active .step-num {
+  background: var(--honey);
+  border-style: solid;
+  border-color: var(--honey-deep);
+  color: var(--ink);
+}
+.step-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.step-body {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* ─── ARCHETYPE GALLERY ─── */
+.fam-row {
+  margin-bottom: 38px;
+}
+.fam-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.fam-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1.5px solid;
+}
+.fam-pill.bld { background: var(--fam-bld-bg); border-color: var(--fam-bld-bd); color: var(--fam-bld-ink); }
+.fam-pill.exp { background: var(--fam-exp-bg); border-color: var(--fam-exp-bd); color: var(--fam-exp-ink); }
+.fam-pill.grd { background: var(--fam-grd-bg); border-color: var(--fam-grd-bd); color: var(--fam-grd-ink); }
+.fam-pill.avd { background: var(--fam-avd-bg); border-color: var(--fam-avd-bd); color: var(--fam-avd-ink); }
+.fam-tagline {
+  font-family: 'Caveat', cursive;
+  font-size: 20px;
+  color: var(--brown-soft);
+  transform: rotate(-1deg);
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.arc-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+  cursor: pointer;
+}
+.arc-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--honey);
+  box-shadow: 0 4px 0 var(--border-soft), 0 14px 24px -6px var(--shadow);
+}
+.arc-card-img {
+  aspect-ratio: 948 / 1659;
+  background: #FFF6E6;
+  position: relative;
+  overflow: hidden;
+}
+.arc-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.arc-card-meta {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.arc-card-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+.arc-card-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--brown-soft);
+  margin-top: 4px;
+}
+
+/* ─── EMAIL CAPTURE ─── */
+.email-capture {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 22px;
+  align-items: center;
+  padding: 28px 28px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+.email-capture::before {
+  content: "";
+  position: absolute;
+  top: -10px; right: 32px;
+  width: 80px; height: 18px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(3deg);
+}
+.email-capture-deco { display: flex; align-items: center; justify-content: center; }
+.email-capture-deco svg { width: 80px; height: 80px; }
+.email-capture-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 26px;
+  line-height: 1.1; color: var(--ink);
+  letter-spacing: -0.015em;
+  margin-bottom: 8px; text-wrap: balance;
+}
+.email-capture-sub {
+  font-size: 14.5px; color: var(--brown-soft);
+  line-height: 1.55; margin-bottom: 16px;
+}
+.email-form { display: flex; gap: 8px; flex-wrap: wrap; max-width: 460px; }
+.email-form input[type="email"] {
+  flex: 1; min-width: 220px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--paper);
+  font-family: inherit; font-size: 15px;
+  color: var(--ink); outline: none;
+}
+.email-form input[type="email"]:focus { border-color: var(--honey-deep); background: #FFFBF0; }
+.email-form input[type="email"]::placeholder { color: #B0915C; }
+.email-form-note {
+  font-size: 11.5px; color: var(--brown-soft);
+  margin-top: 10px; letter-spacing: 0.02em;
+}
+.email-form-success {
+  display: none;
+  background: var(--sage-light);
+  border: 1.5px solid #B7C28A;
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--sage-deep);
+  font-size: 14px; font-weight: 600;
+  margin-top: 12px;
+}
+.email-form-success.show { display: block; }
+@media (max-width: 640px) {
+  .email-capture { grid-template-columns: 1fr; gap: 10px; padding: 24px 20px; }
+  .email-capture-deco svg { width: 60px; height: 60px; }
+  .email-capture-title { font-size: 22px; }
+}
+
+/* ─── BIG CTA CARD ─── */
+.big-cta {
+  position: relative;
+  background: linear-gradient(180deg, #FFF9EC 0%, var(--paper-warm) 100%);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 56px 40px 48px;
+  text-align: center;
+  box-shadow: var(--shadow-paper);
+  margin: 60px 0 40px;
+  overflow: hidden;
+}
+.big-cta::before {
+  content: "";
+  position: absolute;
+  top: -16px; left: 40px;
+  width: 100px; height: 24px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+}
+.big-cta::after {
+  content: "";
+  position: absolute;
+  top: -16px; right: 40px;
+  width: 100px; height: 24px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.04) 6px 7px),
+    var(--tape);
+  border: 1px solid #D9C28A;
+  border-radius: 2px;
+  transform: rotate(4deg);
+  box-shadow: 0 2px 4px var(--shadow-soft);
+}
+.big-cta-eyebrow {
+  font-family: 'Caveat', cursive;
+  font-size: 26px;
+  color: var(--sage-deep);
+  transform: rotate(-1deg);
+  margin-bottom: 8px;
+}
+.big-cta-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 18px;
+  text-wrap: balance;
+}
+.big-cta-sub {
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  max-width: 540px;
+  margin: 0 auto 32px;
+  text-wrap: pretty;
+}
+
+/* ─── FAQ ─── */
+.faq-card {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+}
+.faq-card[open] { border-color: var(--honey-deep); }
+.faq-q {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q::after {
+  content: "+";
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--honey-deep);
+  flex: 0 0 24px;
+  text-align: center;
+  transition: transform 0.18s;
+}
+.faq-card[open] .faq-q::after { content: "−"; }
+.faq-a {
+  margin-top: 10px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1.5px dashed var(--tan);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.footer-meta {
+  font-size: 13px;
+  color: var(--brown-soft);
+  line-height: 1.6;
+  max-width: 360px;
+}
+.footer-links {
+  display: flex;
+  gap: 22px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+.footer-links a {
+  color: var(--brown);
+  text-decoration: none;
+  border-bottom: 1.5px dotted var(--tan);
+  padding-bottom: 1px;
+}
+.footer-links a:hover { color: var(--honey-deep); border-color: var(--honey-deep); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ─── NAV ─── -->
+  <nav class="nav">
+    <a class="brand-pill" href="./index.html">
+      <span class="brand-name">du<span class="ring">Ring</span>It</span>
+      <span class="dot"></span>
+      <span>Monie ID</span>
+    </a>
+    <div class="nav-links">
+      <a href="#archetypes">11 Archetypes</a>
+      <a href="#how">How it works</a>
+      <a href="./blog/index.html">Blog</a>
+      <a href="./about.html">About</a>
+      <a class="btn btn-secondary nav-cta" href="./duRingIt-pilot-quiz.html">Take the quiz →</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="doodle doodle--coins-hero">
+      <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="80" rx="34" ry="8" fill="#A66A2E" opacity="0.2"/><rect x="20" y="50" width="60" height="22" rx="11" fill="#F6B638" stroke="#A66A2E" stroke-width="2"/><rect x="20" y="32" width="60" height="22" rx="11" fill="#FFD56A" stroke="#A66A2E" stroke-width="2"/><rect x="20" y="14" width="60" height="22" rx="11" fill="#F6B638" stroke="#A66A2E" stroke-width="2"/><text x="50" y="30" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="800" fill="#6B3F22" text-anchor="middle">$</text></svg>
+    </div>
+    <div class="doodle doodle--paperclip-hero">
+      <svg viewBox="0 0 50 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8 C12 4 18 2 22 6 L40 28 C44 32 44 40 38 44 C32 48 24 46 22 40 L10 26" stroke="#8A5A33" stroke-width="3" stroke-linecap="round"/><path d="M12 14 L12 50 C12 56 18 60 24 60 C30 60 34 56 34 50 L34 22" stroke="#8A5A33" stroke-width="3" stroke-linecap="round"/></svg>
+    </div>
+
+    <div>
+      <div class="hero-eyebrow">your money intake file →</div>
+      <h1 class="hero-title">What kind of <em>money</em> person are you really?</h1>
+      <p class="hero-sub">Not what you <em>think</em> you are. What you actually are.<br>Take the 4-minute Monie ID quiz to discover which of 11 financial archetypes shapes the way you earn, spend, and save.</p>
+      <div class="hero-cta-row">
+        <a class="btn btn-primary btn-large" href="./duRingIt-pilot-quiz.html">Open my intake file →</a>
+        <a class="btn btn-secondary btn-large" href="#archetypes">Meet the 11 types</a>
+      </div>
+      <div class="hero-meta">
+        <span><span class="dot"></span>16 questions</span>
+        <span><span class="dot"></span>~4 minutes</span>
+        <span><span class="dot"></span>No sign-up</span>
+      </div>
+    </div>
+
+    <div class="hero-collage">
+      <div class="collage-card c1"><img src="cards/WA.jpg" alt="Wealth Architect card" loading="lazy"></div>
+      <div class="collage-card c2"><img src="cards/LR.jpg" alt="Lifestyle Romantic card" loading="lazy"></div>
+      <div class="collage-card c3"><img src="cards/AB.jpg" alt="Aggressive Builder card" loading="lazy"></div>
+      <svg class="collage-stamp" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <g transform="rotate(-8 60 60)">
+          <circle cx="60" cy="60" r="50" fill="#FFF9EC" stroke="#A66A2E" stroke-width="3"/>
+          <circle cx="60" cy="60" r="42" fill="none" stroke="#A66A2E" stroke-width="1.5" stroke-dasharray="2 4"/>
+          <text x="60" y="50" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#A66A2E" text-anchor="middle" letter-spacing="2">MONIE ID</text>
+          <path d="M48 60 L56 70 L74 54" fill="none" stroke="#A66A2E" stroke-width="3" stroke-linecap="round"/>
+          <text x="60" y="86" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#A66A2E" text-anchor="middle" letter-spacing="2">VERIFIED</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ─── STATS ─── -->
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">11</div><div class="stat-label">Archetypes</div></div>
+    <div class="stat"><div class="stat-num">16</div><div class="stat-label">Questions</div></div>
+    <div class="stat"><div class="stat-num">~91%</div><div class="stat-label">Accuracy</div></div>
+    <div class="stat"><div class="stat-num">~4 min</div><div class="stat-label">To finish</div></div>
+  </div>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="section" id="how">
+    <div class="section-header">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-title">An honest read in four short minutes</h2>
+      <p class="section-sub">Three quick stages. No spreadsheets, no signup, no math. Just questions about how you actually think when money is involved.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card active">
+        <div class="step-num">1</div>
+        <div class="step-title">Answer 16 questions</div>
+        <div class="step-body">Twelve about how you think and decide. Four about how you behave under pressure. Phrased like a real conversation — not a test.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">We compile your Monie ID</div>
+        <div class="step-body">Your answers map onto 11 archetypes across four families: Builders, Experiencers, Guardians, and Avoiders.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Read your full profile</div>
+        <div class="step-body">Your card, your hook, your shadow, your blindspot, your secret fear — plus how you click (or clash) with every other type.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ARCHETYPE GALLERY ─── -->
+  <section class="section" id="archetypes">
+    <div class="section-header">
+      <div class="section-eyebrow">The 11 cards</div>
+      <h2 class="section-title">One of these is you</h2>
+      <p class="section-sub">Eleven financial archetypes grouped into four families. Hover or tap any card to read its full profile.</p>
+    </div>
+
+    <!-- BUILDERS -->
+    <div class="fam-row">
+      <div class="fam-header">
+        <span class="fam-pill bld">Builders</span>
+        <span class="fam-tagline">strategic, growth-oriented action</span>
+      </div>
+      <div class="cards-grid">
+        <a class="arc-card" href="archetypes/aggressive-builder.html">
+          <div class="arc-card-img"><img src="cards/AB.jpg" alt="Aggressive Builder" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Aggressive Builder</div><div class="arc-card-code">BLD-AB</div></div>
+        </a>
+        <a class="arc-card" href="archetypes/freedom-chaser.html">
+          <div class="arc-card-img"><img src="cards/FC.jpg" alt="Freedom Chaser" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Freedom Chaser</div><div class="arc-card-code">BLD-FC</div></div>
+        </a>
+        <a class="arc-card" href="archetypes/wealth-architect.html">
+          <div class="arc-card-img"><img src="cards/WA.jpg" alt="Wealth Architect" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Wealth Architect</div><div class="arc-card-code">BLD-WA</div></div>
+        </a>
+        <a class="arc-card" href="archetypes/the-optimizer.html">
+          <div class="arc-card-img"><img src="cards/ST.jpg" alt="The Optimizer" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">The Optimizer</div><div class="arc-card-code">BLD-OP</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- EXPERIENCERS -->
+    <div class="fam-row">
+      <div class="fam-header">
+        <span class="fam-pill exp">Experiencers</span>
+        <span class="fam-tagline">present-moment expression and experience</span>
+      </div>
+      <div class="cards-grid">
+        <a class="arc-card" href="archetypes/status-strategist.html">
+          <div class="arc-card-img"><img src="cards/SS.jpg" alt="Status Strategist" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Status Strategist</div><div class="arc-card-code">EXP-SS</div></div>
+        </a>
+        <a class="arc-card" href="archetypes/lifestyle-inflator.html">
+          <div class="arc-card-img"><img src="cards/LI.jpg" alt="Lifestyle Inflator" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Lifestyle Inflator</div><div class="arc-card-code">EXP-LI</div></div>
+        </a>
+        <a class="arc-card" href="archetypes/lifestyle-romantic.html">
+          <div class="arc-card-img"><img src="cards/LR.jpg" alt="Lifestyle Romantic" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Lifestyle Romantic</div><div class="arc-card-code">EXP-LR</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- GUARDIANS -->
+    <div class="fam-row">
+      <div class="fam-header">
+        <span class="fam-pill grd">Guardians</span>
+        <span class="fam-tagline">security and careful protection</span>
+      </div>
+      <div class="cards-grid">
+        <a class="arc-card" href="archetypes/steady-guardian.html">
+          <div class="arc-card-img"><img src="cards/SG.jpg" alt="Steady Guardian" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Steady Guardian</div><div class="arc-card-code">GRD-SG</div></div>
+        </a>
+        <a class="arc-card" href="archetypes/anxious-achiever.html">
+          <div class="arc-card-img"><img src="cards/AX.jpg" alt="Anxious Achiever" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Anxious Achiever</div><div class="arc-card-code">GRD-AA</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- AVOIDERS -->
+    <div class="fam-row">
+      <div class="fam-header">
+        <span class="fam-pill avd">Avoiders</span>
+        <span class="fam-tagline">avoidance and disengagement</span>
+      </div>
+      <div class="cards-grid">
+        <a class="arc-card" href="archetypes/emotional-escapist.html">
+          <div class="arc-card-img"><img src="cards/EE.jpg" alt="Emotional Escapist" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">Emotional Escapist</div><div class="arc-card-code">AVD-EE</div></div>
+        </a>
+        <a class="arc-card" href="archetypes/the-free-spirit.html">
+          <div class="arc-card-img"><img src="cards/WN.jpg" alt="The Free Spirit" loading="lazy"></div>
+          <div class="arc-card-meta"><div class="arc-card-name">The Free Spirit</div><div class="arc-card-code">AVD-WN</div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── COMPATIBILITY TEASER ─── -->
+  <section class="section" id="compatibility">
+    <div class="section-header">
+      <div class="section-eyebrow">Beyond your type</div>
+      <h2 class="section-title">See how your money patterns interact</h2>
+      <p class="section-sub">Once you know your Monie ID, you can read the compatibility between any pair of types — money chemistry, friction points, what you build best together, what to watch out for.</p>
+      <div style="margin-top: 18px;">
+        <a class="btn btn-secondary" href="./compatibility.html">Explore compatibility →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ─── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Common questions</div>
+      <h2 class="section-title">Quick answers</h2>
+    </div>
+    <details class="faq-card">
+      <summary class="faq-q">Is the quiz really 4 minutes?</summary>
+      <div class="faq-a">Most people finish in 3 to 5 minutes. There are 16 questions: 12 multiple choice and 4 quick 1-to-5 scales. No essays, no math, no sign-up wall.</div>
+    </details>
+    <details class="faq-card">
+      <summary class="faq-q">What if I'm between two types?</summary>
+      <div class="faq-a">If your top two scores are close, the quiz runs a short Identity Calibration to choose between them. If they tie even after that, you become a Bridge — someone whose money behaviour genuinely operates on two tracks. Both card profiles will apply to you.</div>
+    </details>
+    <details class="faq-card">
+      <summary class="faq-q">Is this real psychology or just for fun?</summary>
+      <div class="faq-a">It's a pilot framework — built around behavioural-finance patterns you'd recognise from everyday life. The archetypes describe tendencies, not diagnoses. Treat your result as a mirror, not a verdict.</div>
+    </details>
+    <details class="faq-card">
+      <summary class="faq-q">Do you store my answers?</summary>
+      <div class="faq-a">No accounts, no tracking. Your result lives in your browser. You can copy and share your pilot data manually from the feedback screen if you'd like to send it back to the team.</div>
+    </details>
+    <details class="faq-card">
+      <summary class="faq-q">Can I retake the quiz?</summary>
+      <div class="faq-a">Yes — there's a "Start over" link on the feedback screen, or just reload and tap "Open my intake file" again.</div>
+    </details>
+  </section>
+
+  <!-- ─── EMAIL CAPTURE (deeper-report newsletter) ─── -->
+  <section class="section" id="newsletter">
+    <div class="email-capture">
+      <div class="email-capture-deco">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="6" y="14" width="52" height="36" rx="4" fill="#FFFBF3" stroke="#A66A2E" stroke-width="2.5"/>
+          <path d="M6 18 L32 36 L58 18" fill="none" stroke="#A66A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="50" cy="14" r="9" fill="#F6B638" stroke="#A66A2E" stroke-width="2"/>
+          <text x="50" y="18" font-family="Bricolage Grotesque, sans-serif" font-size="11" font-weight="800" fill="#6B3F22" text-anchor="middle">$</text>
+        </svg>
+      </div>
+      <div class="email-capture-body">
+        <div class="section-eyebrow">The deeper read</div>
+        <h2 class="email-capture-title">Want a longer profile delivered to your inbox?</h2>
+        <p class="email-capture-sub">A monthly note when we publish new posts, archetype deep-dives, and bridge readings. No spam, no upsells.</p>
+        <form class="email-form" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID" method="POST" id="newsletterForm">
+          <input type="email" name="email" required placeholder="your@email.com" aria-label="Email address">
+          <button type="submit" class="btn btn-primary">Sign me up →</button>
+        </form>
+        <div class="email-form-success" id="newsletterSuccess">✓ Thanks — you're on the list. Check your inbox for a confirmation.</div>
+        <div class="email-form-note">We never sell your email. Pilot v1.0 — your address only receives Monie ID updates.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BIG CTA ─── -->
+  <section class="big-cta">
+    <div class="big-cta-eyebrow">ready when you are →</div>
+    <h2 class="big-cta-title">Find out who you really are with money</h2>
+    <p class="big-cta-sub">16 questions. ~4 minutes. One Monie ID card that captures how you actually think, spend, and decide.</p>
+    <a class="btn btn-primary btn-large" href="./duRingIt-pilot-quiz.html">Open my intake file →</a>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="footer-meta">
+      <strong>duRingIt · Monie ID</strong><br>
+      Pilot v1.0 — a behavioural lens on the way you actually move with money. Built for self-knowledge, not financial advice.
+    </div>
+    <div class="footer-links">
+      <a href="./duRingIt-pilot-quiz.html">Take the quiz</a>
+      <a href="#archetypes">All 11 archetypes</a>
+      <a href="./compatibility.html">Compatibility</a>
+      <a href="./blog/index.html">Blog</a>
+      <a href="./about.html">About</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+/* Graceful email form: if the form action still has the placeholder URL, intercept the submit
+   and show the success state without actually POSTing. Swap the action attribute to your real
+   Formspree / MailerLite / ConvertKit / Tally endpoint when you have one. */
+(function(){
+  var f = document.getElementById('newsletterForm');
+  if (!f) return;
+  f.addEventListener('submit', function(ev){
+    if (f.action.indexOf('REPLACE_WITH_YOUR_FORM_ID') > -1) {
+      ev.preventDefault();
+      var emailEl = f.querySelector('input[name="email"]');
+      if (!emailEl || !emailEl.value) return;
+      var success = document.getElementById('newsletterSuccess');
+      if (success) success.classList.add('show');
+      f.style.display = 'none';
+      console.log('[duRingIt] newsletter signup (demo mode):', emailEl.value);
+    }
+  });
+})();
+</script>
+</body>
+</html>

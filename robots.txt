@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thetrag45-cmd.github.io/duRingIt-pilot/sitemap.xml
