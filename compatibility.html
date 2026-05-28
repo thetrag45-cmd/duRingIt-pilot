@@ -687,6 +687,162 @@ body {
   margin-top: 4px;
 }
 
+/* ─── Switch-my-Monie-ID controls (picker view) ─── */
+.id-switch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 18px;
+  justify-content: center;
+}
+.id-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  box-shadow: var(--shadow-card);
+}
+.id-switch-btn:hover { transform: translateY(-1px); border-color: var(--honey-deep); color: var(--honey-deep); }
+.id-switch-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.id-switch-btn[disabled] { opacity: 0.5; cursor: not-allowed; transform: none; }
+.id-switch-btn .icon { font-size: 15px; line-height: 1; }
+.id-switch-tested {
+  background: linear-gradient(180deg, #FFF4D9, #FFE9B0);
+  border-color: var(--honey-deep);
+}
+.id-switch-tested:hover { background: linear-gradient(180deg, #FFEFC9, #FFE099); }
+
+/* Modal for picking a new "your" Monie ID */
+.id-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(40, 26, 12, 0.5);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px 16px;
+  overflow-y: auto;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.id-modal.open { display: flex; }
+.id-modal-inner {
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl, 20px);
+  max-width: 720px;
+  width: 100%;
+  margin: auto;
+  box-shadow: 0 20px 50px -10px rgba(40, 26, 12, 0.35);
+  padding: 22px 22px 24px;
+  position: relative;
+}
+.id-modal-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.id-modal-title-wrap { flex: 1; }
+.id-modal-eyebrow {
+  font-family: 'Caveat', cursive;
+  font-size: 19px;
+  color: var(--sage-deep);
+  margin-bottom: 2px;
+}
+.id-modal-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+.id-modal-sub {
+  font-size: 13px;
+  color: var(--brown-soft);
+  margin-top: 6px;
+  line-height: 1.45;
+}
+.id-modal-close {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  width: 32px; height: 32px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.id-modal-close:hover { border-color: var(--honey-deep); color: var(--honey-deep); }
+.id-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.id-modal-card {
+  background: var(--paper-warm, #FFF6E6);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md, 12px);
+  padding: 10px 10px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.id-modal-card:hover { transform: translateY(-2px); border-color: var(--honey-deep); box-shadow: 0 6px 14px -6px rgba(40, 26, 12, 0.25); }
+.id-modal-card .card-thumb { width: 100%; }
+.id-modal-card.is-current { border-color: var(--honey-deep); background: linear-gradient(180deg, #FFF4D9, #FFEAB6); }
+.id-modal-card.is-tested {
+  border-style: dashed;
+  border-color: var(--sage-deep);
+}
+.id-modal-card-meta { display: flex; flex-direction: column; gap: 2px; }
+.id-modal-card-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.id-modal-card-code {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--brown-soft);
+  text-transform: uppercase;
+}
+.id-modal-card-badges {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.id-modal-card-badge {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.id-modal-card-badge.current { background: var(--honey-deep); color: #FFF9EC; }
+.id-modal-card-badge.tested { background: #D9E5C2; color: var(--sage-deep); }
+
 /* ─── BRIDGE SCREEN ─── */
 .bridge-cards-pair {
   display: grid;
@@ -912,8 +1068,9 @@ button:focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 2px
    DATA
    ═══════════════════════════════════════════════════════════ */
 
-var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
-var COMPAT_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/compatibility.html";
+var QUIZ_URL = "./duRingIt-pilot-quiz.html";
+var COMPAT_URL = "./compatibility.html";
+var HOME_URL = "./index.html";
 
 var NAMES = {
   AB: "Aggressive Builder",  FC: "Freedom Chaser",     WA: "Wealth Architect",
@@ -1234,20 +1391,13 @@ function meterLabel(axis, v) {
    ═══════════════════════════════════════════════════════════ */
 function getParams() {
   var p = new URLSearchParams(window.location.search);
-  return { a: p.get('a'), b: p.get('b'), compare: p.get('compare'), from: p.get('from') };
+  function safe(v) { return (v && NAMES[v]) ? v : null; }
+  return { a: safe(p.get('a')), b: safe(p.get('b')), compare: safe(p.get('compare')), from: safe(p.get('from')) };
 }
 
 function render() {
   var app = document.getElementById('app');
   var p = getParams();
-  /* XSS fix: whitelist every URL param against known archetype codes.
-     Raw params are concatenated into onclick JS strings — any unknown
-     value must be rejected before it reaches HTML output. */
-  var valid = function(v) { return v && NAMES[v] ? v : null; };
-  p.a       = valid(p.a);
-  p.b       = valid(p.b);
-  p.compare = valid(p.compare);
-  p.from    = valid(p.from);
   var view = new URLSearchParams(window.location.search).get('view');
 
   if (view === 'map' && p.a && NAMES[p.a]) {
@@ -1323,6 +1473,7 @@ function renderMap(a, bridgePartner) {
       '<div class="map-center-name">' + escHtml(NAMES[a]) + '</div>' +
       '<div class="map-center-code">' + escHtml(TYPE_CODES[a]) + '</div>' +
     '</div>' +
+    idSwitchRow(a, bridgePartner) +
 
     bucketHtml('es', 'Easy Sync',          'Aligned values, low friction.',          buckets.es) +
     bucketHtml('gb', 'Good Balance',       'Different strengths, same direction.',   buckets.gb) +
@@ -1413,6 +1564,7 @@ function renderPicker(a, bridgePartner) {
     '</div>' +
     '<div class="page-title">Choose a Monie ID<br>to compare with</div>' +
     '<div class="page-sub">Tap any card below to see how your money patterns interact.</div>' +
+    idSwitchRow(a, bridgePartner) +
     '<div class="picker-grid">' +
       others.map(function(c) {
         var clickFn = hasBridge
@@ -1485,7 +1637,7 @@ function renderPair(a, b, bridgePartner) {
     ? "backToMyResult('" + a + "','" + bridgePartner + "')"
     : "backToMyResult('" + a + "')";
 
-  return topbarChrome(pickerCall) +
+  return topbarChrome(backCall) +
     ambient('a') +
     '<div class="page-eyebrow">Compatibility Read' + (hasBridge ? ' · Your ' + escHtml(a) + ' side' : '') + '</div>' +
     '<div class="pair-row">' +
@@ -1495,6 +1647,7 @@ function renderPair(a, b, bridgePartner) {
       '</div>' +
       cardThumb(b, 'them') +
     '</div>' +
+    idSwitchRow(a, bridgePartner) +
 
     '<div class="verdict">' +
       '<div class="verdict-eyebrow"><span class="compat-label compat-label--' + label.code + '">' + label.name + '</span></div>' +
@@ -1614,7 +1767,7 @@ function bridgeCombinedBlurb(a, b) {
    EMPTY / NO-PARAM FALLBACK — invite to take the quiz
    ═══════════════════════════════════════════════════════════ */
 function renderEmpty() {
-  return topbarChrome(null) +
+  return topbarChrome("window.location.href=HOME_URL") +
     ambient('a') +
     '<div class="page-eyebrow">Monie Compatibility</div>' +
     '<div class="page-title">See how your<br>money patterns connect</div>' +
@@ -1679,6 +1832,126 @@ function boltIcon()  { return '<svg viewBox="0 0 24 24" fill="none" xmlns="http:
 /* ═══════════════════════════════════════════════════════════
    NAVIGATION + SHARE
    ═══════════════════════════════════════════════════════════ */
+/* ─── Switch-my-Monie-ID controls ─── */
+function getTestedMonieId() {
+  try { return localStorage.getItem('monieId') || null; } catch (e) { return null; }
+}
+function getTestedBridgePartner() {
+  try { return localStorage.getItem('monieBridge') || null; } catch (e) { return null; }
+}
+function idSwitchRow(currentA, bridgePartner) {
+  var tested = getTestedMonieId();
+  var testedBridge = getTestedBridgePartner();
+  var testedKnown = tested && NAMES[tested];
+  var isOnTested = testedKnown && tested === currentA &&
+    ((bridgePartner || '') === (testedBridge || ''));
+  var testedLabel = testedKnown
+    ? 'Use my tested ID' + (testedBridge && NAMES[testedBridge] ? ' (Bridge)' : '')
+    : 'No tested ID yet';
+  var testedTitle = testedKnown
+    ? 'Switch back to ' + NAMES[tested] + (testedBridge && NAMES[testedBridge] ? ' \u00d7 ' + NAMES[testedBridge] : '')
+    : 'Take the quiz first to save your tested Monie ID.';
+  return '<div class="id-switch-row">' +
+    '<button class="id-switch-btn" type="button" onclick="openIdSwitcher()" aria-haspopup="dialog">' +
+      '<span class="icon">\u21c4</span> Switch my Monie ID' +
+    '</button>' +
+    '<button class="id-switch-btn id-switch-tested" type="button" ' +
+      (testedKnown && !isOnTested ? '' : 'disabled ') +
+      'onclick="revertToTestedId()" title="' + escHtml(testedTitle) + '">' +
+      '<span class="icon">\u21bb</span> ' + escHtml(isOnTested ? "You're on your tested ID" : testedLabel) +
+    '</button>' +
+  '</div>';
+}
+
+function revertToTestedId() {
+  var tested = getTestedMonieId();
+  if (!tested || !NAMES[tested]) return;
+  var bridge = getTestedBridgePartner();
+  var url = COMPAT_URL + '?a=' + tested;
+  if (bridge && NAMES[bridge] && bridge !== tested) url += '&b=' + bridge;
+  window.location.href = url;
+}
+
+function getCurrentParams() {
+  var p = new URLSearchParams(window.location.search);
+  return { a: p.get('a'), b: p.get('b'), compare: p.get('compare'), from: p.get('from') };
+}
+
+function openIdSwitcher() {
+  var p = getCurrentParams();
+  var currentA = p.a;
+  var tested = getTestedMonieId();
+  var cards = ORDER.map(function(c) {
+    var badges = [];
+    if (c === currentA) badges.push('<span class="id-modal-card-badge current">Current</span>');
+    if (c === tested)   badges.push('<span class="id-modal-card-badge tested">My tested</span>');
+    var cls = 'id-modal-card' +
+      (c === currentA ? ' is-current' : '') +
+      (c === tested && c !== currentA ? ' is-tested' : '');
+    return '<button class="' + cls + '" type="button" onclick="pickNewMonieId(\'' + c + '\')" aria-label="Set ' + escHtml(NAMES[c]) + ' as my Monie ID">' +
+      cardThumb(c) +
+      '<div class="id-modal-card-meta">' +
+        '<div class="id-modal-card-name">' + escHtml(NAMES[c]) + '</div>' +
+        '<div class="id-modal-card-code">' + escHtml(TYPE_CODES[c]) + '</div>' +
+        (badges.length ? '<div class="id-modal-card-badges">' + badges.join('') + '</div>' : '') +
+      '</div>' +
+    '</button>';
+  }).join('');
+
+  var testedNote = tested && NAMES[tested]
+    ? 'Your quiz-tested ID is <strong>' + escHtml(NAMES[tested]) + '</strong>. Pick any card below to view compatibility from a different perspective.'
+    : "You haven't taken the quiz yet \u2014 pick any card to explore compatibility, or take the quiz to lock in your real Monie ID.";
+
+  var modal = document.getElementById('idSwitchModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'idSwitchModal';
+    modal.className = 'id-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'idSwitchTitle');
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) closeIdSwitcher();
+    });
+  }
+  modal.innerHTML =
+    '<div class="id-modal-inner">' +
+      '<div class="id-modal-head">' +
+        '<div class="id-modal-title-wrap">' +
+          '<div class="id-modal-eyebrow">switch perspective \u2192</div>' +
+          '<div class="id-modal-title" id="idSwitchTitle">Set your Monie ID</div>' +
+          '<div class="id-modal-sub">' + testedNote + '</div>' +
+        '</div>' +
+        '<button class="id-modal-close" type="button" onclick="closeIdSwitcher()" aria-label="Close">\u00d7</button>' +
+      '</div>' +
+      '<div class="id-modal-grid">' + cards + '</div>' +
+    '</div>';
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeIdSwitcher() {
+  var modal = document.getElementById('idSwitchModal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function pickNewMonieId(newA) {
+  if (!NAMES[newA]) return;
+  closeIdSwitcher();
+  var p = getCurrentParams();
+  var url = COMPAT_URL + '?a=' + newA;
+  if (p.compare && p.compare !== newA && NAMES[p.compare]) {
+    url += '&compare=' + p.compare;
+  }
+  window.location.href = url;
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeIdSwitcher();
+});
+
 function goPicker(a, bridgePartner) {
   var url = COMPAT_URL + '?a=' + a;
   if (bridgePartner) url += '&from=' + bridgePartner;
