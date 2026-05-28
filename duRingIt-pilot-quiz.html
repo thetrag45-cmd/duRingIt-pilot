@@ -154,9 +154,39 @@ body {
 .topbar {
   display: flex;
   justify-content: center;
+  align-items: center;
   position: relative;
   padding: 36px 8px 14px;
   z-index: 2;
+}
+.topbar-back {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 11px; /* visually align with brand pill (accounts for padding) */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper-light);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 14px 7px 11px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.topbar-back:hover { transform: translateY(calc(-50% - 1px)); border-color: var(--honey-deep); color: var(--honey-deep); }
+.topbar-back .arrow { font-size: 15px; line-height: 1; display: inline-block; }
+.topbar-back .label { display: inline; }
+@media (max-width: 520px) {
+  .topbar-back { padding: 7px 10px; }
+  .topbar-back .label { display: none; }
 }
 .brand-pill {
   display: inline-flex;
@@ -2092,6 +2122,7 @@ function render() {
 /* COMMON: top brand pill */
 function topbar() {
   return '<div class="topbar">' +
+    '<a class="topbar-back" href="./index.html" aria-label="Back to landing" title="Back to landing"><span class="arrow">←</span><span class="label">Home</span></a>' +
     '<div class="brand-pill"><span class="brand-name">du<span class="ring">Ring</span>It</span><span class="dot"></span><span>Monie ID Intake</span></div>' +
   '</div>';
 }
@@ -2401,6 +2432,11 @@ function rResult() {
   if (S.result === "BRIDGE") return rBridge();
   var code = S.result;
   var a = ARC[code];
+  try {
+    localStorage.setItem('monieId', code);
+    localStorage.setItem('monieIdName', a.name);
+    localStorage.removeItem('monieBridge');
+  } catch (e) {}
   var sorted = Object.entries(S.scores).sort((x, y) => y[1] - x[1]);
   var maxS = sorted[0][1];
 
@@ -2481,6 +2517,11 @@ function rResult() {
 
 function rBridge() {
   var a = S.bridge[0], b = S.bridge[1];
+  try {
+    localStorage.setItem('monieId', a);
+    localStorage.setItem('monieBridge', b);
+    localStorage.setItem('monieIdName', (ARC[a] && ARC[a].name) ? ARC[a].name : a);
+  } catch (e) {}
   var sorted = Object.entries(S.scores).sort((x, y) => y[1] - x[1]);
   var maxS = sorted[0][1];
   var bridgeCopy = "You sit between two financial identities — " + ARC[a].name + " and " + ARC[b].name +
