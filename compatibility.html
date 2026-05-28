@@ -1068,8 +1068,9 @@ button:focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 2px
    DATA
    ═══════════════════════════════════════════════════════════ */
 
-var QUIZ_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/duRingIt-pilot-quiz.html";
-var COMPAT_URL = "https://thetrag45-cmd.github.io/duRingIt-pilot/compatibility.html";
+var QUIZ_URL = "./duRingIt-pilot-quiz.html";
+var COMPAT_URL = "./compatibility.html";
+var HOME_URL = "./index.html";
 
 var NAMES = {
   AB: "Aggressive Builder",  FC: "Freedom Chaser",     WA: "Wealth Architect",
@@ -1766,7 +1767,7 @@ function bridgeCombinedBlurb(a, b) {
    EMPTY / NO-PARAM FALLBACK — invite to take the quiz
    ═══════════════════════════════════════════════════════════ */
 function renderEmpty() {
-  return topbarChrome(null) +
+  return topbarChrome("window.location.href=HOME_URL") +
     ambient('a') +
     '<div class="page-eyebrow">Monie Compatibility</div>' +
     '<div class="page-title">See how your<br>money patterns connect</div>' +
