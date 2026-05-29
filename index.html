@@ -242,6 +242,8 @@ body {
   font-weight: 600;
   letter-spacing: 0.04em;
 }
+/* Ensure hero text always renders above decorative doodle SVGs (z-index:1) */
+.hero-eyebrow,.hero-title,.hero-sub,.hero-cta-row,.hero-meta { position: relative; z-index: 2; }
 .hero-meta span {
   display: inline-flex;
   align-items: center;
