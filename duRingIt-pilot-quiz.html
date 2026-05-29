@@ -133,8 +133,8 @@ body {
 }
 .doodle svg { display: block; }
 
-/* paperclip top-left */
-.doodle--clip { top: 6px; left: 8px; transform: rotate(-18deg); width: 44px; }
+/* paperclip top-left — shifted right so it doesn't overlap the ← Home button */
+.doodle--clip { top: 6px; left: 56px; transform: rotate(-18deg); width: 44px; }
 /* stamp top-right */
 .doodle--stamp { top: 14px; right: 12px; width: 70px; }
 /* coin stack bottom-right */
@@ -165,6 +165,7 @@ body {
   top: 50%;
   transform: translateY(-50%);
   margin-top: 11px; /* visually align with brand pill (accounts for padding) */
+  z-index: 3; /* always above doodles */
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -184,7 +185,7 @@ body {
 .topbar-back:hover { transform: translateY(calc(-50% - 1px)); border-color: var(--honey-deep); color: var(--honey-deep); }
 .topbar-back .arrow { font-size: 15px; line-height: 1; display: inline-block; }
 .topbar-back .label { display: inline; }
-@media (max-width: 520px) {
+@media (max-width: 360px) {
   .topbar-back { padding: 7px 10px; }
   .topbar-back .label { display: none; }
 }
