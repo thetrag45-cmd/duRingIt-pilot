@@ -262,6 +262,44 @@ body {
   font-size: 13.5px; color: var(--brown-soft); line-height: 1.5;
 }
 
+/* TOPIC PILLS */
+.post-tag-topic {
+  background: var(--sage-light);
+  border-color: var(--sage);
+  color: var(--sage-deep);
+}
+
+/* FILTER ROW */
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--paper-warm);
+  color: var(--brown);
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.filter-pill.active {
+  background: var(--ink);
+  color: var(--paper-light);
+  border-color: var(--ink);
+}
+.filter-pill:hover:not(.active) {
+  border-color: var(--brown);
+  color: var(--ink);
+}
+
 /* FOOTER */
 .footer {
   margin-top: 64px; padding-top: 32px;
@@ -314,24 +352,41 @@ body {
     <p class="empty-sub">Drop your blog post HTML files into the <code>blog/</code> folder next to this file.</p>
   </div>
 
+  <!-- ─── TOPIC FILTERS ─── -->
+  <div class="filter-row" id="filter-row">
+    <button class="filter-pill active" data-filter="all">All</button>
+    <button class="filter-pill" data-filter="money-mindset">Money Mindset</button>
+    <button class="filter-pill" data-filter="investing">Investing</button>
+  </div>
+
   <!-- ─── REAL POSTS ─── -->
   <div class="posts" id="posts">
-    <a class="post-card" href="./why-money-quizzes-are-wrong.html">
-      <span class="post-tag">Field Note</span>
+    <a class="post-card" href="./why-money-quizzes-are-wrong.html" data-topics="money-mindset">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="post-tag">Field Note</span>
+        <span class="post-tag post-tag-topic">Money Mindset</span>
+      </div>
       <div class="post-date">May 2026 · 6 min read</div>
       <h3 class="post-title">Why most money personality quizzes are wrong about you</h3>
       <p class="post-excerpt">Most quizzes mistake what you say for what you do. Here's how behaviour is harder to fake than self-image — and how the Monie ID system tries to do the harder thing.</p>
       <span class="post-foot">Read post →</span>
     </a>
-    <a class="post-card" href="./how-the-bridge-result-works.html">
-      <span class="post-tag">Field Note</span>
+    <a class="post-card" href="./how-the-bridge-result-works.html" data-topics="money-mindset">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="post-tag">Field Note</span>
+        <span class="post-tag post-tag-topic">Money Mindset</span>
+      </div>
       <div class="post-date">May 2026 · 5 min read</div>
       <h3 class="post-title">How the Bridge result actually works</h3>
       <p class="post-excerpt">About 8% of people don't fit a single Monie ID. Their behaviour genuinely operates on two tracks. Here's why the Bridge result isn't a fudge.</p>
       <span class="post-foot">Read post →</span>
     </a>
-    <a class="post-card" href="./aggressive-builder-vs-wealth-architect.html">
-      <span class="post-tag">Archetype Compare</span>
+    <a class="post-card" href="./aggressive-builder-vs-wealth-architect.html" data-topics="investing money-mindset">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="post-tag">Archetype Compare</span>
+        <span class="post-tag post-tag-topic">Investing</span>
+        <span class="post-tag post-tag-topic">Money Mindset</span>
+      </div>
       <div class="post-date">May 2026 · 5 min read</div>
       <h3 class="post-title">Aggressive Builder vs Wealth Architect</h3>
       <p class="post-excerpt">Both want to build wealth. Both delay gratification. Their stress responses are entirely different — and that difference is everything.</p>
@@ -353,5 +408,29 @@ body {
   </footer>
 
 </div>
+
+<script>
+(function () {
+  var pills = document.querySelectorAll('.filter-pill');
+  var cards = document.querySelectorAll('#posts .post-card');
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pills.forEach(function (p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+
+      var filter = pill.getAttribute('data-filter');
+      cards.forEach(function (card) {
+        if (filter === 'all') {
+          card.style.display = '';
+        } else {
+          var topics = (card.getAttribute('data-topics') || '').split(' ');
+          card.style.display = topics.indexOf(filter) !== -1 ? '' : 'none';
+        }
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>

@@ -237,6 +237,32 @@ body {
   border-bottom: 1.5px dotted var(--tan); padding-bottom: 1px;
 }
 .footer-links a:hover { color: var(--honey-deep); border-color: var(--honey-deep); }
+
+/* ─── TOPIC FILTER ─── */
+.topic-filter {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 0 auto 32px;
+  max-width: 800px;
+}
+.topic-pill {
+  display: inline-flex; align-items: center;
+  background: var(--paper-warm);
+  border: 1.5px solid var(--border);
+  color: var(--brown);
+  border-radius: 999px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  user-select: none;
+}
+.topic-pill.active {
+  background: var(--ink);
+  color: var(--paper-light);
+  border-color: var(--ink);
+}
 </style>
 </head>
 <body>
@@ -263,6 +289,19 @@ body {
     <p class="sub">Eleven financial archetypes grouped into four families. Tap any card to read the full profile — or take the quiz to find out which one fits you.</p>
   </header>
 
+  <!-- TOPIC FILTER -->
+  <div class="topic-filter" id="topic-filter">
+    <button class="topic-pill active" data-topic="all">All</button>
+    <button class="topic-pill" data-topic="saving">Saving</button>
+    <button class="topic-pill" data-topic="investing">Investing</button>
+    <button class="topic-pill" data-topic="spending">Spending</button>
+    <button class="topic-pill" data-topic="debt">Debt</button>
+    <button class="topic-pill" data-topic="epf-pension">EPF &amp; Retirement</button>
+    <button class="topic-pill" data-topic="money-mindset">Money Mindset</button>
+    <button class="topic-pill" data-topic="relationships">Relationships</button>
+    <button class="topic-pill" data-topic="income">Income</button>
+  </div>
+
   <!-- BUILDERS -->
   <div class="fam-row">
     <div class="fam-header">
@@ -270,10 +309,10 @@ body {
       <span class="fam-tagline">strategic, growth-oriented action</span>
     </div>
     <div class="cards-grid">
-      <a class="arc-card" href="./aggressive-builder.html"><div class="arc-card-img"><img src="../cards/AB.jpg" alt="Aggressive Builder" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Aggressive Builder</div><div class="arc-card-code">BLD-AB</div></div></a>
-      <a class="arc-card" href="./freedom-chaser.html"><div class="arc-card-img"><img src="../cards/FC.jpg" alt="Freedom Chaser" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Freedom Chaser</div><div class="arc-card-code">BLD-FC</div></div></a>
-      <a class="arc-card" href="./wealth-architect.html"><div class="arc-card-img"><img src="../cards/WA.jpg" alt="Wealth Architect" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Wealth Architect</div><div class="arc-card-code">BLD-WA</div></div></a>
-      <a class="arc-card" href="./the-optimizer.html"><div class="arc-card-img"><img src="../cards/ST.jpg" alt="The Optimizer" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">The Optimizer</div><div class="arc-card-code">BLD-OP</div></div></a>
+      <a class="arc-card" data-topics="investing income money-mindset" href="./aggressive-builder.html"><div class="arc-card-img"><img src="../cards/AB.jpg" alt="Aggressive Builder" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Aggressive Builder</div><div class="arc-card-code">BLD-AB</div></div></a>
+      <a class="arc-card" data-topics="income spending money-mindset" href="./freedom-chaser.html"><div class="arc-card-img"><img src="../cards/FC.jpg" alt="Freedom Chaser" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Freedom Chaser</div><div class="arc-card-code">BLD-FC</div></div></a>
+      <a class="arc-card" data-topics="investing saving epf-pension" href="./wealth-architect.html"><div class="arc-card-img"><img src="../cards/WA.jpg" alt="Wealth Architect" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Wealth Architect</div><div class="arc-card-code">BLD-WA</div></div></a>
+      <a class="arc-card" data-topics="saving investing epf-pension" href="./the-optimizer.html"><div class="arc-card-img"><img src="../cards/ST.jpg" alt="The Optimizer" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">The Optimizer</div><div class="arc-card-code">BLD-OP</div></div></a>
     </div>
   </div>
 
@@ -284,9 +323,9 @@ body {
       <span class="fam-tagline">present-moment expression and experience</span>
     </div>
     <div class="cards-grid">
-      <a class="arc-card" href="./status-strategist.html"><div class="arc-card-img"><img src="../cards/SS.jpg" alt="Status Strategist" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Status Strategist</div><div class="arc-card-code">EXP-SS</div></div></a>
-      <a class="arc-card" href="./lifestyle-inflator.html"><div class="arc-card-img"><img src="../cards/LI.jpg" alt="Lifestyle Inflator" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Lifestyle Inflator</div><div class="arc-card-code">EXP-LI</div></div></a>
-      <a class="arc-card" href="./lifestyle-romantic.html"><div class="arc-card-img"><img src="../cards/LR.jpg" alt="Lifestyle Romantic" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Lifestyle Romantic</div><div class="arc-card-code">EXP-LR</div></div></a>
+      <a class="arc-card" data-topics="spending debt money-mindset" href="./status-strategist.html"><div class="arc-card-img"><img src="../cards/SS.jpg" alt="Status Strategist" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Status Strategist</div><div class="arc-card-code">EXP-SS</div></div></a>
+      <a class="arc-card" data-topics="spending debt" href="./lifestyle-inflator.html"><div class="arc-card-img"><img src="../cards/LI.jpg" alt="Lifestyle Inflator" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Lifestyle Inflator</div><div class="arc-card-code">EXP-LI</div></div></a>
+      <a class="arc-card" data-topics="spending money-mindset" href="./lifestyle-romantic.html"><div class="arc-card-img"><img src="../cards/LR.jpg" alt="Lifestyle Romantic" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Lifestyle Romantic</div><div class="arc-card-code">EXP-LR</div></div></a>
     </div>
   </div>
 
@@ -297,8 +336,8 @@ body {
       <span class="fam-tagline">security and careful protection</span>
     </div>
     <div class="cards-grid">
-      <a class="arc-card" href="./steady-guardian.html"><div class="arc-card-img"><img src="../cards/SG.jpg" alt="Steady Guardian" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Steady Guardian</div><div class="arc-card-code">GRD-SG</div></div></a>
-      <a class="arc-card" href="./anxious-achiever.html"><div class="arc-card-img"><img src="../cards/AX.jpg" alt="Anxious Achiever" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Anxious Achiever</div><div class="arc-card-code">GRD-AA</div></div></a>
+      <a class="arc-card" data-topics="saving epf-pension" href="./steady-guardian.html"><div class="arc-card-img"><img src="../cards/SG.jpg" alt="Steady Guardian" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Steady Guardian</div><div class="arc-card-code">GRD-SG</div></div></a>
+      <a class="arc-card" data-topics="saving money-mindset" href="./anxious-achiever.html"><div class="arc-card-img"><img src="../cards/AX.jpg" alt="Anxious Achiever" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Anxious Achiever</div><div class="arc-card-code">GRD-AA</div></div></a>
     </div>
   </div>
 
@@ -309,8 +348,8 @@ body {
       <span class="fam-tagline">avoidance and disengagement</span>
     </div>
     <div class="cards-grid">
-      <a class="arc-card" href="./emotional-escapist.html"><div class="arc-card-img"><img src="../cards/EE.jpg" alt="Emotional Escapist" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Emotional Escapist</div><div class="arc-card-code">AVD-EE</div></div></a>
-      <a class="arc-card" href="./the-free-spirit.html"><div class="arc-card-img"><img src="../cards/WN.jpg" alt="The Free Spirit" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">The Free Spirit</div><div class="arc-card-code">AVD-WN</div></div></a>
+      <a class="arc-card" data-topics="spending money-mindset" href="./emotional-escapist.html"><div class="arc-card-img"><img src="../cards/EE.jpg" alt="Emotional Escapist" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">Emotional Escapist</div><div class="arc-card-code">AVD-EE</div></div></a>
+      <a class="arc-card" data-topics="spending money-mindset" href="./the-free-spirit.html"><div class="arc-card-img"><img src="../cards/WN.jpg" alt="The Free Spirit" loading="lazy"></div><div class="arc-card-meta"><div class="arc-card-name">The Free Spirit</div><div class="arc-card-code">AVD-WN</div></div></a>
     </div>
   </div>
 
@@ -334,5 +373,48 @@ body {
   </footer>
 
 </div>
+
+<script>
+(function(){
+  var pills = document.querySelectorAll('#topic-filter .topic-pill');
+  pills.forEach(function(pill){
+    pill.addEventListener('click', function(){
+      var topic = this.getAttribute('data-topic');
+      // update active state
+      pills.forEach(function(p){ p.classList.remove('active'); });
+      this.classList.add('active');
+      // filter cards
+      var rows = document.querySelectorAll('.fam-row');
+      rows.forEach(function(row){
+        var cards = row.querySelectorAll('.arc-card');
+        var visibleCount = 0;
+        cards.forEach(function(card){
+          if(topic === 'all'){
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            var topics = (card.getAttribute('data-topics') || '').split(' ');
+            if(topics.indexOf(topic) > -1){
+              card.style.display = '';
+              visibleCount++;
+            } else {
+              card.style.display = 'none';
+            }
+          }
+        });
+        // hide/show entire row (including fam-header)
+        var header = row.querySelector('.fam-header');
+        if(visibleCount === 0){
+          row.style.display = 'none';
+          if(header) header.style.display = 'none';
+        } else {
+          row.style.display = '';
+          if(header) header.style.display = '';
+        }
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>

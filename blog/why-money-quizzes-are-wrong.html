@@ -53,6 +53,8 @@ body{
 
 .post-header{margin:24px 0 28px}
 .post-tag{display:inline-flex;align-items:center;background:var(--paper-warm);border:1.5px solid var(--border);padding:5px 12px;border-radius:999px;font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--brown);margin-bottom:16px}
+.post-tag-topic{background:#E6EBD3;border-color:#7F8F5A;color:#5E6E3E}
+.post-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .post-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(36px,5.5vw,52px);line-height:1.02;letter-spacing:-0.025em;color:var(--ink);margin-bottom:12px;text-wrap:balance}
 .post-meta{font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:600;color:var(--brown-soft);letter-spacing:0.08em;text-transform:uppercase}
 .post-meta .sep{margin:0 8px;opacity:0.5}
@@ -98,7 +100,10 @@ blockquote::before{content:"\201C";position:absolute;top:-8px;left:16px;font-fam
   </nav>
 
   <header class="post-header">
-    <span class="post-tag">Field Note</span>
+    <div class="post-tags">
+      <span class="post-tag">Field Note</span>
+      <span class="post-tag post-tag-topic">Money Mindset</span>
+    </div>
     <h1 class="post-title">Why most money personality quizzes are wrong about you</h1>
     <div class="post-meta">
       <span>The duRingIt team</span>
